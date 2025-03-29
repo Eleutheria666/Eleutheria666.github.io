@@ -1,0 +1,89 @@
+baseURL: https://HuYumu.github.io/
+languageCode: en-us
+title: momo blog
+theme: PaperMod
+
+
+enableEmoji: true
+
+
+menu:
+  main:
+    - identifier: Archives
+      name: archives
+      url: /archives/
+      weight: 10
+    - identifier: categories
+      name: categories
+      url: /categories/
+      weight: 20
+    - identifier: tags
+      name: tags
+      url: /tags/
+      weight: 30
+    - identifier: search
+      name: search
+      url: /search/
+      weight: 40
+
+markup:
+  highlight:
+    codeFences: true
+    guessSyntax: true
+    lineNos: true
+    noClasses: false
+    style: monokai
+
+params:
+  env: production        # to enable google analytics, opengraph, twitter-cards and schema.
+  title: momo blog
+  description: ""
+  defaultTheme: auto
+  # disableThemeToggle: true
+  ShowReadingTime: true
+  ShowShareButtons: false
+  disableSpecial1stPost: true
+  displayFullLangName: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  #ShowRssButtonInSectionTermList: true
+  ShowAllPagesInArchive: true
+  ShowPageNums: true
+  #ShowToc: true
+  #TocOpen: true
+  ShowWordCount: true
+  # comments: false
+  images: ["images/papermod-cover.png"]
+
+  profileMode:
+    enabled: false
+    title: Momo's Blog
+    subtitle:
+    imageUrl: ""
+    imageTitle: my image
+    # imageWidth: 120
+    # imageHeight: 120
+
+  homeInfoParams:
+    Title: "Momo's Blog"
+    Content: >
+          Welcome to my blog page!
+
+
+  socialIcons:
+    - name: github
+      title: Github
+      url: "https://github.com/HuYumu"
+    - name: instagram
+      title: instagram
+      url: "https://instagram.com/"
+    - name: twitter
+      title: twitter
+      url: "https://twitter.com/"
+    - name: KoFi
+      title: Buy me a Ko-Fi :)
+      url: "https://ko-fi.com"
+
+  assets:
+    disableHLJS: true

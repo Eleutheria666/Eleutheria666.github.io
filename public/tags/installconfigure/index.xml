@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Install&amp;configure on momo blog</title>
+    <link>http://localhost:1313/tags/installconfigure/</link>
+    <description>Recent content in Install&amp;configure on momo blog</description>
+    <image>
+      <title>momo blog</title>
+      <url>http://localhost:1313/images/papermod-cover.png</url>
+      <link>http://localhost:1313/images/papermod-cover.png</link>
+    </image>
+    <generator>Hugo -- 0.133.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 12 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/installconfigure/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>compile</title>
+      <link>http://localhost:1313/posts/compile/</link>
+      <pubDate>Thu, 12 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/compile/</guid>
+      <description>compile</description>
+    </item>
+    <item>
+      <title>hugo</title>
+      <link>http://localhost:1313/posts/hugo/</link>
+      <pubDate>Tue, 20 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/hugo/</guid>
+      <description>installation &amp;amp; configuration about hugo</description>
+    </item>
+  </channel>
+</rss>

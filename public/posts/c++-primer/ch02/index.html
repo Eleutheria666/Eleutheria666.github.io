@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Chapter 2. Variables and Basic Types | momo blog</title>
+<meta name="keywords" content="lang, C&#43;&#43;">
+<meta name="description" content="2.1 内置类型 2.1.1 基本内置类型 C&#43;&#43; 定义了各类型的最小尺寸：bool 未定义、char 8位、short 16位、int 16位、long 32位、long long 64位
+类型选择：
+明确知晓数值不可能为负时，选用无符号类型
+整数运算用 int，数值太大时用 long long，不用 short 和 long
+2.1.2 类型转换 1 2 3 4 5 6 bool b = 42; // b is true int i = b; // i has value 1 i = 3.14; // i has value 3 double pi = i; // pi has value 3.0 unsigned char c = -1; // assuming 8-bit chars, c has value 255 signed char c2 = 256; // assuming 8-bit chars, the value of c2 is undefined 几种自动转换情况：">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch02/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8f541c169a12d0d6bb704527bb78f6481fb4f5a39b7171fc16fab8c03ae6b1bd.css" integrity="sha256-j1QcFpoS0Na7cEUnu3j2SB&#43;09aObcXH8Fvq4wDrmsb0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch02/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  
+
+<meta property="og:title" content="Chapter 2. Variables and Basic Types" />
+<meta property="og:description" content="2.1 内置类型 2.1.1 基本内置类型 C&#43;&#43; 定义了各类型的最小尺寸：bool 未定义、char 8位、short 16位、int 16位、long 32位、long long 64位
+类型选择：
+明确知晓数值不可能为负时，选用无符号类型
+整数运算用 int，数值太大时用 long long，不用 short 和 long
+2.1.2 类型转换 1 2 3 4 5 6 bool b = 42; // b is true int i = b; // i has value 1 i = 3.14; // i has value 3 double pi = i; // pi has value 3.0 unsigned char c = -1; // assuming 8-bit chars, c has value 255 signed char c2 = 256; // assuming 8-bit chars, the value of c2 is undefined 几种自动转换情况：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/posts/c&#43;&#43;-primer/ch02/" />
+<meta property="og:image" content="http://localhost:1313/images/papermod-cover.png" />
+<meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-08-25T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-08-25T00:00:00+00:00" /><meta property="og:site_name" content="momo blog" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png" />
+<meta name="twitter:title" content="Chapter 2. Variables and Basic Types"/>
+<meta name="twitter:description" content="2.1 内置类型 2.1.1 基本内置类型 C&#43;&#43; 定义了各类型的最小尺寸：bool 未定义、char 8位、short 16位、int 16位、long 32位、long long 64位
+类型选择：
+明确知晓数值不可能为负时，选用无符号类型
+整数运算用 int，数值太大时用 long long，不用 short 和 long
+2.1.2 类型转换 1 2 3 4 5 6 bool b = 42; // b is true int i = b; // i has value 1 i = 3.14; // i has value 3 double pi = i; // pi has value 3.0 unsigned char c = -1; // assuming 8-bit chars, c has value 255 signed char c2 = 256; // assuming 8-bit chars, the value of c2 is undefined 几种自动转换情况："/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "C++ Primer",
+      "item": "http://localhost:1313/posts/c++-primer/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "Chapter 2. Variables and Basic Types",
+      "item": "http://localhost:1313/posts/c++-primer/ch02/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Chapter 2. Variables and Basic Types",
+  "name": "Chapter 2. Variables and Basic Types",
+  "description": "2.1 内置类型 2.1.1 基本内置类型 C++ 定义了各类型的最小尺寸：bool 未定义、char 8位、short 16位、int 16位、long 32位、long long 64位\n类型选择：\n明确知晓数值不可能为负时，选用无符号类型\n整数运算用 int，数值太大时用 long long，不用 short 和 long\n2.1.2 类型转换 1 2 3 4 5 6 bool b = 42; // b is true int i = b; // i has value 1 i = 3.14; // i has value 3 double pi = i; // pi has value 3.0 unsigned char c = -1; // assuming 8-bit chars, c has value 255 signed char c2 = 256; // assuming 8-bit chars, the value of c2 is undefined 几种自动转换情况：",
+  "keywords": [
+    "lang", "C++"
+  ],
+  "articleBody": "2.1 内置类型 2.1.1 基本内置类型 C++ 定义了各类型的最小尺寸：bool 未定义、char 8位、short 16位、int 16位、long 32位、long long 64位\n类型选择：\n明确知晓数值不可能为负时，选用无符号类型\n整数运算用 int，数值太大时用 long long，不用 short 和 long\n2.1.2 类型转换 1 2 3 4 5 6 bool b = 42; // b is true int i = b; // i has value 1 i = 3.14; // i has value 3 double pi = i; // pi has value 3.0 unsigned char c = -1; // assuming 8-bit chars, c has value 255 signed char c2 = 256; // assuming 8-bit chars, the value of c2 is undefined 几种自动转换情况：\n算术型赋值给布尔型时，如果算术型值为0，结果为false，否则为true 布尔型赋值给算术型时，结果只为0或1，不可能是其他 浮点数赋给整型时，结果仅保留小数点前的部分 整性赋值给浮点型时，小数部分为零 无符号整型赋值超出范围时，结果为初始值对无符号类型表示的最大数值取模后的余数 有符号整型赋值超出范围时，结果是未定义的。程序可能工作，可能崩溃 建议：程序尽量避免依赖于运行环境的行为。比如 int 尺寸在不同运行环境位数可能不同。\n一个表达式中既有无符号数又有int值时，int会被转换成无符号数\n1 2 3 4 unsigned u = 10; int i = -42; std::cout \u003c\u003c i + i \u003c\u003c std::endl; // prints -84 std::cout \u003c\u003c u + i \u003c\u003c std::endl; // prints 4294967264 (-42 = 4294967254) 无论操作数两端是否是无符号的，如果我们从无符号中减去一个值，我们必须确保结果不能为负：\n1 2 3 unsigned u1 = 52, u2 = 10; std::cout \u003c\u003c u1 - u2 \u003c\u003c std::endl; // ok: result is 42 std::cout \u003c\u003c u2 - u1 \u003c\u003c std::endl; // result is 4294967264 (-42 = 4294967254) 不宜使用unsigned作为计数变量的类型，因为unsigned永远不会为负数\n1 2 3 // WRONG: u can never be less than 0; the loop never stops for (unsigned u = 10; u \u003e= 0; --u) std::cout \u003c\u003c u \u003c\u003c std::endl; 2.1.3 字面常量 整型浮点型字面值 整型字面值的数据类型由进制类型和大小决定，默认情况下：\n0开头的整数是八进制，0x 开头的整数是十六进制 十进制字面值：有符号数，类型是 int, long, long long 中能容纳当前值的尺寸中最小的那个 八/十六进制字面值：有/无符号数，类型是int/unsigned int/long/unsigned long/long long/unsigned long long中能容纳当前值的尺寸中最小的那个 整数字面值没有short类型 浮点型字面值默认数据类型为double。浮点型字面值必须包含小数点，指数e或E可有可无：\n1 2 3 4 5 6 3.14159 3.14159E0 0. 0e0 .001 12f // 错误，必须是12.f, 12是整数型字面值不能表示使用浮点型字面值符号f 指定字面常量类型符号 上述都是默认类型，实际可以使用特殊符号指定字面常量类型：\n字符型字面值\nPrefix Meaning Type u Unicode 16 character char16_t U Unicode 32 character char32_t L Wide character wchar_t u8 UTF-8 (string literals only) char 整数型字面值\nSuffix Minimum Type u or U unsigned l or L long ll or LL long long 浮点型字面值\nSuffix Type f or F float l or L long double 逃逸字符 \\ 后跟 1~3 个八进制数字：\\123合法，\\1234不合法，实际为两个字符（\\123所表示的字符和'4'）\n\\x 后跟 1 个或多个十六进制数字：\\x4cd\n练习 1 2 3 4 (a) 'a', L'a', \"a\", L\"a\" // 字符型字面常量，宽字符型字面常量，字符串~ (b) 10, 10u, 10L, 10uL, 012, 0xC // 整型字面量，默认int、unint、long、long、unlong (c) 3.14, 3.14f, 3.14L // 浮点型字面量，默认double、float、long double (d) 10, 10u, 10., 10e-2 // 默认int、unint、double、double 2.2 变量 2.2.1 变量初始化 初始化≠赋值：初始化是创建变量时赋予一个初始值，赋值是把对象当前值擦除并用一个新值来替代\n对于未被显式初始化的内置类型变量，在块作用域外定义初始化为0；在块作用域内定义初始化为undefined\n对于未被显式初始化的自定义类型对象，由该类型自身决定对象初始化的值，例如std::string类型初始化为\"\"\n1 2 3 4 5 6 7 std::string global_str; // \"\" int global_int; // 0 int main() { int local_int; // undefined std::string local_str; // \"\" } 2.2.2 变量声明和定义 为了支持分离式编译，C++将声明和定义区分开：\n声明declaration：声明变量的类型和名字，使得名字为程序所知 **定义definition：**除了声明的功能之外，还为变量分配了内存并初始化 多文件使用同一变量：变量只能被一个文件定义一次，但可以在多个使用它的文件中声明 只声明而不定义： 在定义变量前添加关键字 extern，如extern int i\n但如果包含了初始值，就变成了定义：extern double pi = 3.14\n1 2 3 extern int i; // declares but does not define i int j; // declares and defines j extern double pi = 3.14 // declares and defines pi ⭐C++是静态类型语言（statically typed）\n其含义是在编译阶段就进行类型检查：在编译阶段检查每个操作是否被操作变量的类型所支持，若不支持，编译器会报错。虽然这样可以更好进行调试，但是在编程时就需要声明变量的类型\n2.2.3 变量作用域 变量从声明点开始可见，直到声明所在的作用域结束。\n2.3 复合类型 2.3.1 引用 引用是一个已存在对象的别名：\n引用定义后必须初始化，引用的初始值必须是一个对象，不能是字面值 引用和它的初始值是绑定bind在一起的，而不是拷贝 不能定义对引用的引用，因为引用非对象 引用只能绑定同类型对象 引用初始化后就不能更改绑定为其他对象 对引用的所有操作都是对与之绑定的对象的操作 下述四个操作均合法，引用定义之后可以当成被引用对象看待：\n1 2 3 4 5 int i = 0, \u0026r1 = i; double d = 0, \u0026r2 = d; (a) r2 = 3.14159; // d = 3.14159 (b) r2 = r1; // d = r1 = i = 0 (c) i = r2; // i = d = 0 (d) r1 = d; // i = d = 0 1 2 3 int i, \u0026ri = i; i = 5; ri = 10; // i = 5 -\u003e i = 10 std::cout \u003c\u003c i \u003c\u003c \" \" \u003c\u003c ri \u003c\u003c std::endl; // 10 10 2.3.2 指针 由于引用不是对象，指针不能指向引用的地址 对于块作用域内未初始化的指针，值将不确定 空指针不指向任何对象 ⭐指针和引用的区别\n是否是对象：引用是一个对象的别名；指针本身就是一个对象 初始化：引用必须初始化，并且一旦定义了引用就无法再绑定到其他对象；指针无须在定义时赋初值 重定向：指针所指向的对象可以改变（重定向为新的对象）；但引用所指向的对象不可更改 套娃：有指向指针的指针无引用的引用 使用如下语句判断指针是否为空\n1 if(p == 0) // 此时p为空指针 空指针 void*空指针可以存放任意对象地址，可以指向任何对象，可以和任意类型的指针进行比较\n但因为空指针无类型，不能对其指向位置的对象进行操作\n空指针更多用于内存操作，而不是使用指针访问存储在该内存中的对象\n⚠️空指针也是一个类型，只能在类型为空指针的指针之间进行赋值\n1 2 3 int i = 42; void *p = \u0026i; long *lp = \u0026i; 2.3.3 复合类型 在这里只强调指针引用，如下例子了解全部：\n1 2 3 4 5 int i = 42; int *p; // p is a pointer to int int *\u0026r = p; // r is a reference to the pointer p r = \u0026i; // r refers to a pointer; assigning \u0026i to r makes p point to i *r = 0; // dereferencing r yields i, the object to which p points; changes i to 0 2.4 const 2.4.1 const 被const修饰的变量，定义时就要初始化，定义后不能修改\n默认情况下，const变量仅在所定义的文件内有效。\n如果想在多个文件间共享const变量：\n在定义const变量的文件中，在定义处添加extern关键字 在使用const变量的文件中，在声明处添加extern关键字 2.4.2 const引用 const引用不是指必须引用常量对象，而是不能通过const引用改变引用对象的值\n1 2 3 4 5 int i = 42; int \u0026r1 = i; // r1 bound to i const int \u0026r2 = i; // r2 also bound to i; but cannot be used to change i r1 = 0; // r1 is not const; i is now 0 r2 = 0; // error: r2 is a reference to const 🌻 就相当于r2是i的别名，但是r2引用是const类型的，所以不能通过r2修改变量i的值\n不能用非const引用指向一个常量对象，可以用const引用指向一个非常量对象，否则可以通过非const引用修改常量对象，这是不符合规定的\n1 2 3 4 5 const int ci = 1024; int \u0026r2 = ci; // error: non const reference to a const object int i = 20; const int \u0026r1 = i; // ok: both reference and underlying object are const r1 = 42; // error i-\u003e42: r1 is a reference to const 引用的类型必须与其所引用对象的类型一致，但是有两个例外。其中一个例外就是初始化常量引用时允许用任意表达式作为初始值（包括常量表达式），只要该表达式结果可以转换为引用的类型。\n1 2 3 4 5 int i = 42; const int \u0026r1 = i; // we can bind a const int\u0026 to a plain int object const int \u0026r2 = 42; // ok: r1 is a reference to const const int \u0026r3 = r1 * 2; // ok: r3 is a reference to const int \u0026r4 = r * 2; // error: r4 is a plain, non const reference 2.4.3 const指针 int* const表明这是一个指向int变量的指针，并且永远指向这个常量，需要初始化\n🌴This placement indicates that it is the pointer, not the pointed-to type, that is const\nconst int*表明这是一个指向int常量的指针\n1 2 3 4 int errNumb = 0; int *const curErr = \u0026errNumb; // curErr will always point to errNumb const double pi = 3.14159; const double *const pip = \u0026pi; // pip is a const pointer to a const object 2.4.4 顶层const 顶层const表示变量本身是个常量，底层const表示变量所指的对象是一个常量\n🌴We use the term top-level const to indicate that the pointer itself is a const. When a pointer can point to a const object, we refer to that const as a low-level const.\n顶层const对任何数据类型通用 引用只能是底层const 指针既可以是顶层const也可以是底层const 1 2 3 4 5 6 int i = 0; int *const p1 = \u0026i; // we can't change the value of p1; const is top-level const int ci = 42; // we cannot change ci; const is top-level const int *p2 = \u0026ci; // we can change p2; const is low-level const int *const p3 = p2; // right-most const is top-level, left-most is not const int \u0026r = ci; // const in reference types is always low-level 执行对象拷贝操作时，不能将底层 const 拷贝给非常量，反之可以，非常量将会转化为常量\n1 2 3 4 5 6 7 i = ci; // ok: copying the value of ci; top-level const in ci is ignored p2 = p3; // ok: pointed-to type matches; top-level const in p3 is ignored int *p = p3; // error: p3 has a low-level const but p doesn't p2 = \u0026i; // ok: we can convert int* to const int* int \u0026r = ci; // error: can't bind an ordinary int\u0026 to a const int object const int \u0026r2 = i; // ok: can bind const int\u0026 to plain int 练习 初始化\nconst int，int常量 const int*，指向int常量的指针 int const*，指向int的常量指针 const int\u0026，int的常量引用 1 2 3 4 5 6 7 8 9 int i = -1, \u0026r = 0; // 不合法 int \u0026r = 0; 只有const int \u0026r才可以使用字面常量赋值 const int i = -1, \u0026r = 0; // 合法 const int \u0026const r2; // 不合法，对于引用类型，没必要在引用变量前佳const（指针才需要） int i, *const cp; // 不合法，int const*必须初始化 int *p1, *const p2; // 不合法，int const*必须初始化 const int *p; // 合法，const int*(指向const int的指针)无需初始化 const int ic, \u0026r = ic; // 不合法，const int必须初始化 const int *const p3;// 不合法，const int *const必须初始化 赋值\n对于左值而言，顶层const不能被赋值只能被初始化 对于右值而言 底层const不被忽略，不能赋值给非常量 顶层const被忽略，因为右值不会被更改 1 2 3 4 5 i = ic; // 合法，const int可以作为右值，不能被赋值 ic = *p3; // 不合法，const int不能被赋值 p1 = p3; // 不合法，int* ≠ const int* p3 = \u0026ic; // 不合法，int *const不能被赋值 p2 = p1; // 不合法，int *const不能被赋值 顶层/底层const判断\n1 2 3 const int v2 = 0; int v1 = v2; int *p1 = \u0026v1, \u0026r1 = v1; const int *p2 = \u0026v2, *const p3 = \u0026i, \u0026r2 = v2; v2是顶层const；p2是底层const；p3既是顶层const也是底层const；r2是底层const\n1 2 3 4 5 r1 = v2; // 合法, 顶层const在拷贝时不受影响 p1 = p2; // 不合法, int* ≠ const int* p2 = p1; // 合法, const int* = int* p1 = p3; // 不合法, int* ≠ const int* const p2 = p3; // 合法, const int* ≠ const int* const 2.4.5 常量表达式 常量表达式：值不会改变并且在编译过程就能得到计算结果的表达式。\n字面值属于常量表达式，由常量表达式初始化的const对象也是常量表达式。\n1 2 3 const int a = 32; // 是常量表达式 const int b = a + 1; // 是常量表达式 const int sz = get_size(); // 不是常量表达式，因为虽然 sz 是常量，但它的具体值等到运行时才知道。 constexpr 通过将变量声明为constexpr类型即可由编译器来检查。\n由constexpr声明的变量必须用常量表达式初始化。\n1 constexpr int sz = size(); //只有当 size() 是一个 constexpr 函数时这才是一条正确的声明语句。 constexpr指针的初始值必须是如下之一：\nnullptr或0 存储于固定地址的对象：函数体之外的对象和静态变量的地址是固定不变的 constexpr都是顶层 const\n1 2 const int *p = nullptr; // p 是一个指向整型常量的指针, 底层const constexpr int *q = nullptr; // q 是一个指向整数的常量指针, 顶层const const和constexpr的区别 constexpr限定了变量是编译器常量，即变量的值在编译期间就可以得到 const则并未区分是编译器常量还是运行期常量。const变量可以在运行期间初始化，只是初始化后不能更改 constexpr表示“常量”，而const一般用来表示 “只读” 2.5 类型 2.5.1 类型别名 有两种方法定义类型别名：\ntypedef：原类型名 新类型名，可以组合 using（C++11）：新类型名 = 原类型名 1 2 3 typedef double wages; // typedef typedef wages base, *p; // base is a synonym for double, p for double* using wages = double; // using（C++11） 2.5.2 auto自动推断 auto让编译器根据初始值来分析变量所属类型：\n使用 auto 会增加编译时间，但不会增加运行时间 auto修饰的变量必须被初始化 1 2 // the type of item is deduced from the type of the result of adding val1 and val2 auto item = val1 + val2; auto可以在一条语句中声明多个变量，但是多个变量必须是同一个基本数据类型（整型、整型指针、整型引用算一个类型）\n1 2 auto i = 0, *p = \u0026i; // ok: i is int and p is a pointer to int auto sz = 0, pi = 3.14; // error: inconsistent types for sz and pi 复合类型、常量和auto 编译器推断出的auto类型有时和初始值并不一样，编译器会进行适当的调整：\nauto会保留底层const。 1 2 const int ci = 100, \u0026cr = ci; auto e = \u0026ci; // e is const int*(\u0026 of a const object is low-level const) auto一般会忽略掉顶层const，因此对于非指针类型的常量对象，auto推断出的结果是不含const的。如果希望auto是一个顶层const，需要明确指出。 1 2 3 const int ci = 100; auto b = ci; // b is an int (top-level const in ci is dropped) const auto f = ci; // deduced type of ci is int; f has type const int auto根据引用来推断类型时会以引用对象的类型作为auto的类型。 1 2 const int ci = i, \u0026cr = ci; auto c = cr; // c is an int (cr is an alias for ci whose const is top-level) 用auto定义引用时，必须用\u0026指明要定义的是引用 1 2 const int ci = i, \u0026cr = ci; auto \u0026g = ci; // g is a const int\u0026 that is bound to ci 练习 1 2 3 4 5 const int i = 42; // const int auto j = i; // int const auto \u0026k = i; // const int\u0026 auto *p = \u0026i; // const int* const auto j2 = i; // const int 2.5.3 decltype类型指示符 我们希望从表达式中推断出的类型定义一个变量，但不使用该表达式来初始化变量，这时可以使用decltype\n如下例子不会调用f()，根据函数的类型获得返回值的类型\n1 decltype(f()) sum = x; // sum has whatever type f returns decltype与引用 decltype不会忽略引用和顶层const 1 2 3 4 const int ci = 0, \u0026cj = ci; decltype(ci) x = 0; // x has type const int decltype(cj) y = x; // y has type const int\u0026 and is bound to x decltype(cj) z; // error: z is a reference and must be initialized 如果decltype的参数是表达式，decltype返回的是表达式计算结果的类型，例如： 通过将引用用于表达式中，decltype返回引用所指向对象的类型 *p运算获得指针指向对象的一个引用，因此*p是引用类型，decltype(*p) is int\u0026, not plain int 1 2 3 int i = 42, \u0026r = i; decltype(r + 0) b; // ok: addition yields an int; b is an (uninitialized) int decltype(*p) c; // error: c is int\u0026 and must be initialized decltype((var)) 不管var是什么类型，返回的都是var的引用，由于是引用，必须要初始化 1 decltype((i)) d; // error: d is int\u0026 and must be initialized 2.5.4 左值右值 左值（lvalue） 是可以获取地址并在程序执行后继续存在的值。 右值（rvalue） 是临时的、不可寻址的值，通常用在表达式的右侧。 2.6 预处理 预处理器：\n确保头文件多次包含仍能安全工作的常用技术 在编译器之前运行 更改程序源文本的程序 预处理器会将#include指令替换为#include文件的内容 预处理变量有两种状态：已定义和未定义。\n整个程序中的预处理变量必须唯一，一般把预处理变量的名字全部大写。\n为什么会出现头文件多次包含不安全的情况？\n假若文件A需要引用文件B和文件C的内容；文件B需要引用文件C的内容 这样的结果为文件A对文件C的内容定义了两次 预处理器保证头文件多次包含仍然安全工作的原理：\n#ifndef：如果当前头文件保护符已定义，说明已经包含该文件的相关定义，无需重复；否则继续 #define：定义当前头文件保护符，表示已经包含相关定义 #endif：结束 1 2 3 4 5 6 7 8 9 #ifndef STRING_H #define STRING_H #include class string{ }; #endif ",
+  "wordCount" : "1844",
+  "inLanguage": "en",
+  "image": "http://localhost:1313/images/papermod-cover.png","datePublished": "2024-08-25T00:00:00Z",
+  "dateModified": "2024-08-25T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/c++-primer/ch02/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "momo blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="momo blog (Alt + H)">momo blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/archives/" title="archives">
+                    <span>archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="search (Alt &#43; /)" accesskey=/>
+                    <span>search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/c&#43;&#43;-primer/">C&#43;&#43; Primer</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Chapter 2. Variables and Basic Types
+    </h1>
+    <div class="post-meta"><span title='2024-08-25 00:00:00 +0000 UTC'>August 25, 2024</span>&nbsp;·&nbsp;9 min&nbsp;·&nbsp;1844 words
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#21-%e5%86%85%e7%bd%ae%e7%b1%bb%e5%9e%8b" aria-label="2.1 内置类型">2.1 内置类型</a><ul>
+                        
+                <li>
+                    <a href="#211-%e5%9f%ba%e6%9c%ac%e5%86%85%e7%bd%ae%e7%b1%bb%e5%9e%8b" aria-label="2.1.1 基本内置类型">2.1.1 基本内置类型</a></li>
+                <li>
+                    <a href="#212-%e7%b1%bb%e5%9e%8b%e8%bd%ac%e6%8d%a2" aria-label="2.1.2 类型转换">2.1.2 类型转换</a></li>
+                <li>
+                    <a href="#213-%e5%ad%97%e9%9d%a2%e5%b8%b8%e9%87%8f" aria-label="2.1.3 字面常量">2.1.3 字面常量</a><ul>
+                        
+                <li>
+                    <a href="#%e6%95%b4%e5%9e%8b%e6%b5%ae%e7%82%b9%e5%9e%8b%e5%ad%97%e9%9d%a2%e5%80%bc" aria-label="整型浮点型字面值">整型浮点型字面值</a></li>
+                <li>
+                    <a href="#%e6%8c%87%e5%ae%9a%e5%ad%97%e9%9d%a2%e5%b8%b8%e9%87%8f%e7%b1%bb%e5%9e%8b%e7%ac%a6%e5%8f%b7" aria-label="指定字面常量类型符号">指定字面常量类型符号</a></li>
+                <li>
+                    <a href="#%e9%80%83%e9%80%b8%e5%ad%97%e7%ac%a6" aria-label="逃逸字符">逃逸字符</a></li>
+                <li>
+                    <a href="#%e7%bb%83%e4%b9%a0" aria-label="练习">练习</a></li></ul>
+                </li></ul>
+                </li>
+                <li>
+                    <a href="#22-%e5%8f%98%e9%87%8f" aria-label="2.2 变量">2.2 变量</a><ul>
+                        
+                <li>
+                    <a href="#221-%e5%8f%98%e9%87%8f%e5%88%9d%e5%a7%8b%e5%8c%96" aria-label="2.2.1 变量初始化">2.2.1 变量初始化</a></li>
+                <li>
+                    <a href="#222-%e5%8f%98%e9%87%8f%e5%a3%b0%e6%98%8e%e5%92%8c%e5%ae%9a%e4%b9%89" aria-label="2.2.2 变量声明和定义">2.2.2 变量声明和定义</a></li>
+                <li>
+                    <a href="#223-%e5%8f%98%e9%87%8f%e4%bd%9c%e7%94%a8%e5%9f%9f" aria-label="2.2.3 变量作用域">2.2.3 变量作用域</a></li></ul>
+                </li>
+                <li>
+                    <a href="#23-%e5%a4%8d%e5%90%88%e7%b1%bb%e5%9e%8b" aria-label="2.3 复合类型">2.3 复合类型</a><ul>
+                        
+                <li>
+                    <a href="#231-%e5%bc%95%e7%94%a8" aria-label="2.3.1 引用">2.3.1 引用</a></li>
+                <li>
+                    <a href="#232-%e6%8c%87%e9%92%88" aria-label="2.3.2 指针">2.3.2 指针</a><ul>
+                        
+                <li>
+                    <a href="#%e7%a9%ba%e6%8c%87%e9%92%88" aria-label="空指针">空指针</a></li></ul>
+                </li>
+                <li>
+                    <a href="#233-%e5%a4%8d%e5%90%88%e7%b1%bb%e5%9e%8b" aria-label="2.3.3 复合类型">2.3.3 复合类型</a></li></ul>
+                </li>
+                <li>
+                    <a href="#24-const" aria-label="2.4 const">2.4 const</a><ul>
+                        
+                <li>
+                    <a href="#241-const" aria-label="2.4.1 const">2.4.1 const</a></li>
+                <li>
+                    <a href="#242-const%e5%bc%95%e7%94%a8" aria-label="2.4.2 const引用">2.4.2 const引用</a></li>
+                <li>
+                    <a href="#243-const%e6%8c%87%e9%92%88" aria-label="2.4.3 const指针">2.4.3 const指针</a></li>
+                <li>
+                    <a href="#244-%e9%a1%b6%e5%b1%82const" aria-label="2.4.4 顶层const">2.4.4 顶层const</a><ul>
+                        
+                <li>
+                    <a href="#%e7%bb%83%e4%b9%a0-1" aria-label="练习">练习</a></li></ul>
+                </li>
+                <li>
+                    <a href="#245-%e5%b8%b8%e9%87%8f%e8%a1%a8%e8%be%be%e5%bc%8f" aria-label="2.4.5 常量表达式">2.4.5 常量表达式</a><ul>
+                        
+                <li>
+                    <a href="#constexpr" aria-label="constexpr">constexpr</a></li>
+                <li>
+                    <a href="#const%e5%92%8cconstexpr%e7%9a%84%e5%8c%ba%e5%88%ab" aria-label="const和constexpr的区别">const和constexpr的区别</a></li></ul>
+                </li></ul>
+                </li>
+                <li>
+                    <a href="#25-%e7%b1%bb%e5%9e%8b" aria-label="2.5 类型">2.5 类型</a><ul>
+                        
+                <li>
+                    <a href="#251-%e7%b1%bb%e5%9e%8b%e5%88%ab%e5%90%8d" aria-label="2.5.1 类型别名">2.5.1 类型别名</a></li>
+                <li>
+                    <a href="#252-auto%e8%87%aa%e5%8a%a8%e6%8e%a8%e6%96%ad" aria-label="2.5.2 auto自动推断">2.5.2 auto自动推断</a><ul>
+                        
+                <li>
+                    <a href="#%e5%a4%8d%e5%90%88%e7%b1%bb%e5%9e%8b%e5%b8%b8%e9%87%8f%e5%92%8cauto" aria-label="复合类型、常量和auto">复合类型、常量和auto</a></li>
+                <li>
+                    <a href="#%e7%bb%83%e4%b9%a0-2" aria-label="练习">练习</a></li></ul>
+                </li>
+                <li>
+                    <a href="#253-decltype%e7%b1%bb%e5%9e%8b%e6%8c%87%e7%a4%ba%e7%ac%a6" aria-label="2.5.3 decltype类型指示符">2.5.3 decltype类型指示符</a><ul>
+                        
+                <li>
+                    <a href="#decltype%e4%b8%8e%e5%bc%95%e7%94%a8" aria-label="decltype与引用">decltype与引用</a></li></ul>
+                </li>
+                <li>
+                    <a href="#254-%e5%b7%a6%e5%80%bc%e5%8f%b3%e5%80%bc" aria-label="2.5.4 左值右值">2.5.4 左值右值</a></li></ul>
+                </li>
+                <li>
+                    <a href="#26-%e9%a2%84%e5%a4%84%e7%90%86" aria-label="2.6 预处理">2.6 预处理</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h1 id="21-内置类型">2.1 内置类型<a hidden class="anchor" aria-hidden="true" href="#21-内置类型">#</a></h1>
+<h2 id="211-基本内置类型">2.1.1 基本内置类型<a hidden class="anchor" aria-hidden="true" href="#211-基本内置类型">#</a></h2>
+<p>C++ 定义了<strong>各类型的最小尺寸</strong>：bool 未定义、char 8位、short 16位、int 16位、long 32位、long long 64位</p>
+<p>类型选择：</p>
+<ul>
+<li>
+<p>明确知晓数值不可能为负时，选用无符号类型</p>
+</li>
+<li>
+<p>整数运算用 int，数值太大时用 long long，不用 short 和 long</p>
+</li>
+</ul>
+<h2 id="212-类型转换">2.1.2 类型转换<a hidden class="anchor" aria-hidden="true" href="#212-类型转换">#</a></h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>            <span class="c1">// b is true
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>              <span class="c1">// i has value 1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">i</span> <span class="o">=</span> <span class="mf">3.14</span><span class="p">;</span>               <span class="c1">// i has value 3
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">double</span> <span class="n">pi</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>          <span class="c1">// pi has value 3.0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>   <span class="c1">// assuming 8-bit chars, c has value 255
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">signed</span> <span class="kt">char</span> <span class="n">c2</span> <span class="o">=</span> <span class="mi">256</span><span class="p">;</span>   <span class="c1">// assuming 8-bit chars, the value of c2 is undefined
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>几种自动转换情况：</p>
+<ul>
+<li>算术型赋值给布尔型时，如果算术型值为0，结果为false，否则为true</li>
+<li>布尔型赋值给算术型时，<strong>结果只为0或1，不可能是其他</strong></li>
+<li>浮点数赋给整型时，结果仅保留小数点前的部分</li>
+<li>整性赋值给浮点型时，小数部分为零</li>
+<li>无符号整型赋值超出范围时，结果为<strong>初始值对无符号类型表示的最大数值取模后的余数</strong></li>
+<li><strong>有符号整型赋值超出范围时，结果是未定义的</strong>。程序可能工作，可能崩溃</li>
+</ul>
+<p><strong>建议：程序尽量避免依赖于运行环境的行为。比如 int 尺寸在不同运行环境位数可能不同。</strong></p>
+<p>一个表达式中既有无符号数又有int值时，<strong>int会被转换成无符号数</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">unsigned</span> <span class="n">u</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">42</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">+</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>  <span class="c1">// prints -84
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">u</span> <span class="o">+</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>  <span class="c1">// prints 4294967264 (-42 = 4294967254)
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>无论操作数两端是否是无符号的，如果我们从无符号中减去一个值，我们必须确保结果不能为负：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">unsigned</span> <span class="n">u1</span> <span class="o">=</span> <span class="mi">52</span><span class="p">,</span> <span class="n">u2</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">u1</span> <span class="o">-</span> <span class="n">u2</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// ok: result is 42
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">u2</span> <span class="o">-</span> <span class="n">u1</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// result is 4294967264 (-42 = 4294967254)
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>不宜使用unsigned作为计数变量的类型，因为unsigned永远不会为负数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="c1">// WRONG: u can never be less than 0; the loop never stops
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="n">u</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="n">u</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="o">--</span><span class="n">u</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">u</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="213-字面常量">2.1.3 字面常量<a hidden class="anchor" aria-hidden="true" href="#213-字面常量">#</a></h2>
+<h3 id="整型浮点型字面值">整型浮点型字面值<a hidden class="anchor" aria-hidden="true" href="#整型浮点型字面值">#</a></h3>
+<p>整型字面值的数据类型由<strong>进制类型和大小</strong>决定，默认情况下：</p>
+<ul>
+<li>0开头的整数是八进制，0x 开头的整数是十六进制</li>
+<li>十进制字面值：有符号数，类型是 int, long, long long 中能容纳当前值的尺寸中最小的那个</li>
+<li>八/十六进制字面值：有/无符号数，类型是int/unsigned int/long/unsigned long/long long/unsigned long long中能容纳当前值的尺寸中最小的那个</li>
+<li>整数字面值没有short类型</li>
+</ul>
+<p>浮点型字面值默认数据类型为double。浮点型字面值必须包含<strong>小数点</strong>，指数<code>e</code>或<code>E</code>可有可无：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="mf">3.14159</span>    
+</span></span><span class="line"><span class="cl"><span class="mf">3.14159E0</span>    
+</span></span><span class="line"><span class="cl"><span class="mf">0.</span>    
+</span></span><span class="line"><span class="cl"><span class="mf">0e0</span>    
+</span></span><span class="line"><span class="cl"><span class="mf">.001</span>
+</span></span><span class="line"><span class="cl"><span class="mf">12f</span>  <span class="c1">// 错误，必须是12.f, 12是整数型字面值不能表示使用浮点型字面值符号f
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="指定字面常量类型符号">指定字面常量类型符号<a hidden class="anchor" aria-hidden="true" href="#指定字面常量类型符号">#</a></h3>
+<p>上述都是默认类型，实际可以使用特殊符号指定字面常量类型：</p>
+<p>字符型字面值</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Prefix</th>
+<th style="text-align:left">Meaning</th>
+<th style="text-align:left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>u</code></td>
+<td style="text-align:left">Unicode 16 character</td>
+<td style="text-align:left"><code>char16_t</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>U</code></td>
+<td style="text-align:left">Unicode 32 character</td>
+<td style="text-align:left"><code>char32_t</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>L</code></td>
+<td style="text-align:left">Wide character</td>
+<td style="text-align:left"><code>wchar_t</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>u8</code></td>
+<td style="text-align:left">UTF-8 (string literals only)</td>
+<td style="text-align:left"><code>char</code></td>
+</tr>
+</tbody>
+</table>
+<p>整数型字面值</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Suffix</th>
+<th style="text-align:left">Minimum Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>u</code> or <code>U</code></td>
+<td style="text-align:left"><code>unsigned</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>l</code> or <code>L</code></td>
+<td style="text-align:left"><code>long</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>ll</code> or <code>LL</code></td>
+<td style="text-align:left"><code>long long</code></td>
+</tr>
+</tbody>
+</table>
+<p>浮点型字面值</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Suffix</th>
+<th style="text-align:left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>f</code> or <code>F</code></td>
+<td style="text-align:left"><code>float</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>l</code> or <code>L</code></td>
+<td style="text-align:left"><code>long double</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="逃逸字符">逃逸字符<a hidden class="anchor" aria-hidden="true" href="#逃逸字符">#</a></h3>
+<ul>
+<li>
+<p>\  后跟 1~3 个八进制数字：<code>\123</code>合法，<code>\1234</code>不合法，实际为两个字符（<code>\123</code>所表示的字符和'4'）</p>
+</li>
+<li>
+<p>\x 后跟 1 个或多个十六进制数字：<code>\x4cd</code></p>
+</li>
+</ul>
+<h3 id="练习">练习<a hidden class="anchor" aria-hidden="true" href="#练习">#</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="sa">L</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="sa">L</span><span class="s">&#34;a&#34;</span> <span class="c1">// 字符型字面常量，宽字符型字面常量，字符串~
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10u</span><span class="p">,</span> <span class="mi">10L</span><span class="p">,</span> <span class="mi">10uL</span><span class="p">,</span> <span class="mo">012</span><span class="p">,</span> <span class="mh">0xC</span> <span class="c1">// 整型字面量，默认int、unint、long、long、unlong
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="mf">3.14</span><span class="p">,</span> <span class="mf">3.14f</span><span class="p">,</span> <span class="mf">3.14</span><span class="n">L</span> <span class="c1">// 浮点型字面量，默认double、float、long double
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10u</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">10e-2</span> <span class="c1">// 默认int、unint、double、double
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="22-变量">2.2 变量<a hidden class="anchor" aria-hidden="true" href="#22-变量">#</a></h1>
+<h2 id="221-变量初始化">2.2.1 变量初始化<a hidden class="anchor" aria-hidden="true" href="#221-变量初始化">#</a></h2>
+<p>初始化≠赋值：初始化是<strong>创建变量时</strong>赋予一个初始值，赋值是把对象当前值<strong>擦除</strong>并用一个新值来替代</p>
+<p>对于未被显式初始化的<strong>内置类型</strong>变量，在块作用域外定义初始化为0；在块作用域内定义初始化为undefined</p>
+<p>对于未被显式初始化的<strong>自定义类型</strong>对象，由该类型自身决定对象初始化的值，例如std::string类型初始化为&quot;&quot;</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">global_str</span><span class="p">;</span>   <span class="c1">// &#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">global_int</span><span class="p">;</span>  <span class="c1">// 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">local_int</span><span class="p">;</span> <span class="c1">// undefined
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">local_str</span><span class="p">;</span> <span class="c1">// &#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="222-变量声明和定义">2.2.2 变量声明和定义<a hidden class="anchor" aria-hidden="true" href="#222-变量声明和定义">#</a></h2>
+<p>为了支持分离式编译，C++将声明和定义区分开：</p>
+<ul>
+<li><strong>声明declaration</strong>：声明变量的类型和名字，使得名字为程序所知</li>
+<li>**定义definition：**除了声明的功能之外，还为变量分配了内存并初始化</li>
+<li>多文件使用同一变量：变量只能被一个文件定义一次，但可以在多个使用它的文件中声明</li>
+</ul>
+<p>只声明而不定义： 在定义变量前添加关键字 <code>extern</code>，如<code>extern int i</code></p>
+<p>但如果包含了初始值，就变成了定义：<code>extern double pi = 3.14</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">extern</span> <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>   <span class="c1">// declares but does not define i
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">j</span><span class="p">;</span>          <span class="c1">// declares and defines j
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">extern</span> <span class="kt">double</span> <span class="n">pi</span> <span class="o">=</span> <span class="mf">3.14</span> <span class="c1">// declares and defines pi
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>&#x2b50;C++是静态类型语言（<em>statically typed</em>）</p>
+<p>其含义是<strong>在编译阶段就进行类型检查</strong>：在编译阶段检查每个操作是否被操作变量的类型所支持，若不支持，编译器会报错。虽然这样可以更好进行调试，但是<strong>在编程时就需要声明变量的类型</strong></p>
+</blockquote>
+<h2 id="223-变量作用域">2.2.3 变量作用域<a hidden class="anchor" aria-hidden="true" href="#223-变量作用域">#</a></h2>
+<p>变量从声明点开始可见，直到声明所在的作用域结束。</p>
+<h1 id="23-复合类型">2.3 复合类型<a hidden class="anchor" aria-hidden="true" href="#23-复合类型">#</a></h1>
+<h2 id="231-引用">2.3.1 引用<a hidden class="anchor" aria-hidden="true" href="#231-引用">#</a></h2>
+<p>引用是一个已存在对象的别名：</p>
+<ul>
+<li>引用定义后<strong>必须初始化</strong>，引用的初始值<strong>必须是一个对象，不能是字面值</strong></li>
+<li>引用和它的初始值是<strong>绑定bind</strong>在一起的，而<strong>不是拷贝</strong></li>
+<li>不能定义对引用的引用，因为引用非对象</li>
+<li>引用只能绑定同类型对象</li>
+<li>引用初始化后就不能更改绑定为其他对象</li>
+<li>对引用的所有操作都是对与之绑定的对象的操作</li>
+</ul>
+<p>下述四个操作均合法，引用定义之后可以当成被引用对象看待：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">r1</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span> <span class="kt">double</span> <span class="n">d</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">r2</span> <span class="o">=</span> <span class="n">d</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="n">r2</span> <span class="o">=</span> <span class="mf">3.14159</span><span class="p">;</span>   <span class="c1">// d = 3.14159
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="n">r2</span> <span class="o">=</span> <span class="n">r1</span><span class="p">;</span> <span class="c1">// d = r1 = i = 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="n">i</span> <span class="o">=</span> <span class="n">r2</span><span class="p">;</span> <span class="c1">// i = d = 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="n">r1</span> <span class="o">=</span> <span class="n">d</span><span class="p">;</span> <span class="c1">// i = d = 0
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ri</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">i</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span> <span class="n">ri</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="c1">// i = 5 -&gt; i = 10
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&#34; &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">ri</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>   <span class="c1">// 10 10
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="232-指针">2.3.2 指针<a hidden class="anchor" aria-hidden="true" href="#232-指针">#</a></h2>
+<ul>
+<li>由于引用不是对象，指针不能指向引用的地址</li>
+<li>对于块作用域内未初始化的指针，值将不确定</li>
+<li>空指针不指向任何对象</li>
+</ul>
+<blockquote>
+<p>&#x2b50;指针和引用的区别</p>
+<ul>
+<li>是否是对象：引用是一个对象的别名；指针本身就是一个对象</li>
+<li>初始化：引用必须初始化，并且一旦定义了引用就无法再绑定到其他对象；指针无须在定义时赋初值</li>
+<li>重定向：指针所指向的对象可以改变（重定向为新的对象）；但引用所指向的对象不可更改</li>
+<li>套娃：有指向指针的指针无引用的引用</li>
+</ul>
+</blockquote>
+<p>使用如下语句判断指针是否为空</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">// 此时p为空指针
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="空指针">空指针<a hidden class="anchor" aria-hidden="true" href="#空指针">#</a></h3>
+<p><code>void*</code>空指针可以<strong>存放任意对象地址</strong>，可以指向任何对象，可以<strong>和任意类型的指针进行比较</strong></p>
+<p>但因为空指针无类型，<strong>不能对其指向位置的对象进行操作</strong></p>
+<p>空指针更多用于内存操作，而不是使用指针访问存储在该内存中的对象</p>
+<p>&#x26a0;&#xfe0f;空指针也是一个类型，只能在类型为空指针的指针之间进行赋值</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">long</span> <span class="o">*</span><span class="n">lp</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="233-复合类型">2.3.3 复合类型<a hidden class="anchor" aria-hidden="true" href="#233-复合类型">#</a></h2>
+<p>在这里只强调指针引用，如下例子了解全部：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>        <span class="c1">// p is a pointer to int
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="o">*&amp;</span><span class="n">r</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span>   <span class="c1">// r is a reference to the pointer p
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">;</span> <span class="c1">//  r refers to a pointer; assigning &amp;i to r makes p point to i
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">*</span><span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//  dereferencing r yields i, the object to which p points; changes i to 0
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="24-const">2.4 const<a hidden class="anchor" aria-hidden="true" href="#24-const">#</a></h1>
+<h2 id="241-const">2.4.1 const<a hidden class="anchor" aria-hidden="true" href="#241-const">#</a></h2>
+<p>被const修饰的变量，定义时就要初始化，定义后不能修改</p>
+<p>默认情况下，const变量仅在所定义的文件内有效。</p>
+<p>如果想在多个文件间共享const变量：</p>
+<ul>
+<li>在定义const变量的文件中，在定义处添加extern关键字</li>
+<li>在使用const变量的文件中，在声明处添加extern关键字</li>
+</ul>
+<h2 id="242-const引用">2.4.2 const引用<a hidden class="anchor" aria-hidden="true" href="#242-const引用">#</a></h2>
+<p>const引用不是指必须引用常量对象，而是<strong>不能通过const引用改变引用对象的值</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">&amp;</span><span class="n">r1</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>          <span class="c1">// r1 bound to i
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">r2</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>    <span class="c1">// r2 also bound to i; but cannot be used to change i
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>               <span class="c1">// r1 is not const; i is now 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>               <span class="c1">// error: r2 is a reference to const
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>&#x1f33b; 就相当于r2是i的别名，但是r2引用是const类型的，所以不能通过r2修改变量i的值</p>
+</blockquote>
+<p><strong>不能用非const引用指向一个常量对象</strong>，可以用const引用指向一个非常量对象，否则可以通过非const引用修改常量对象，这是不符合规定的</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">ci</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">&amp;</span><span class="n">r2</span> <span class="o">=</span> <span class="n">ci</span><span class="p">;</span>         <span class="c1">// error: non const reference to a const object
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">r1</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>    <span class="c1">// ok: both reference and underlying object are const
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r1</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>              <span class="c1">// error i-&gt;42: r1 is a reference to const
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>引用的类型必须与其所引用对象的类型一致，但是有两个例外。其中一个例外就是初始化常量引用时允许用任意表达式作为初始值（包括常量表达式），只要该表达式结果可以转换为引用的类型。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">r1</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>      <span class="c1">// we can bind a const int&amp; to a plain int object
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">r2</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>     <span class="c1">// ok: r1 is a reference to const
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">r3</span> <span class="o">=</span> <span class="n">r1</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">// ok: r3 is a reference to const
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="o">&amp;</span><span class="n">r4</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>        <span class="c1">// error: r4 is a plain, non const reference
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="243-const指针">2.4.3 const指针<a hidden class="anchor" aria-hidden="true" href="#243-const指针">#</a></h2>
+<p><code>int* const</code>表明这是一个指向int变量的指针，并且永远指向这个常量，<strong>需要初始化</strong></p>
+<blockquote>
+<p>&#x1f334;This placement indicates that it is the pointer, not the pointed-to type, that is <code>const</code></p>
+</blockquote>
+<p><code>const int*</code>表明这是一个指向int常量的指针</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">errNumb</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span><span class="k">const</span> <span class="n">curErr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">errNumb</span><span class="p">;</span>  <span class="c1">// curErr will always point to errNumb
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">double</span> <span class="n">pi</span> <span class="o">=</span> <span class="mf">3.14159</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">double</span> <span class="o">*</span><span class="k">const</span> <span class="n">pip</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">pi</span><span class="p">;</span> <span class="c1">// pip is a const pointer to a const object
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="244-顶层const">2.4.4 顶层const<a hidden class="anchor" aria-hidden="true" href="#244-顶层const">#</a></h2>
+<p>顶层const表示变量本身是个常量，底层const表示变量所指的对象是一个常量</p>
+<blockquote>
+<p>&#x1f334;We use the term <a href="https://cpp-primer.pages.dev/book/028-defined_terms.html#filepos627813">top-level <code>const</code></a> to indicate that the pointer itself is a <code>const</code>. When a pointer can point to a <code>const</code> object, we refer to that <code>const</code> as a <a href="https://cpp-primer.pages.dev/book/028-defined_terms.html#filepos621521">low-level <code>const</code></a>.</p>
+</blockquote>
+<ul>
+<li>顶层const对任何数据类型通用</li>
+<li><strong>引用只能是底层const</strong></li>
+<li>指针既可以是顶层const也可以是底层const</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span><span class="k">const</span> <span class="n">p1</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">;</span>  <span class="c1">// we can&#39;t change the value of p1; const is top-level
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="n">ci</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>   <span class="c1">// we cannot change ci; const is top-level
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="o">*</span><span class="n">p2</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ci</span><span class="p">;</span> <span class="c1">// we can change p2; const is low-level
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="o">*</span><span class="k">const</span> <span class="n">p3</span> <span class="o">=</span> <span class="n">p2</span><span class="p">;</span> <span class="c1">// right-most const is top-level, left-most is not
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">r</span> <span class="o">=</span> <span class="n">ci</span><span class="p">;</span>  <span class="c1">// const in reference types is always low-level
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>执行对象拷贝操作时，不能将底层 const 拷贝给非常量，反之可以，非常量将会转化为常量</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">i</span> <span class="o">=</span> <span class="n">ci</span><span class="p">;</span>  <span class="c1">// ok: copying the value of ci; top-level const in ci is ignored
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">p2</span> <span class="o">=</span> <span class="n">p3</span><span class="p">;</span> <span class="c1">// ok: pointed-to type matches; top-level const in p3 is ignored
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="n">p3</span><span class="p">;</span> <span class="c1">// error: p3 has a low-level const but p doesn&#39;t
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">p2</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">;</span>     <span class="c1">// ok: we can convert int* to const int*
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="o">&amp;</span><span class="n">r</span> <span class="o">=</span> <span class="n">ci</span><span class="p">;</span> <span class="c1">// error: can&#39;t bind an ordinary int&amp; to a const int object
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">r2</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span> <span class="c1">// ok: can bind const int&amp; to plain int
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="练习-1">练习<a hidden class="anchor" aria-hidden="true" href="#练习-1">#</a></h3>
+<p><strong>初始化</strong></p>
+<ul>
+<li><code>const int</code>，int常量</li>
+<li><code>const int*</code>，指向int常量的指针</li>
+<li><code>int const*</code>，指向int的常量指针</li>
+<li><code>const int&amp;</code>，int的常量引用</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// 不合法 int &amp;r = 0; 只有const int &amp;r才可以使用字面常量赋值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 合法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="k">const</span> <span class="n">r2</span><span class="p">;</span>  <span class="c1">// 不合法，对于引用类型，没必要在引用变量前佳const（指针才需要）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="o">*</span><span class="k">const</span> <span class="n">cp</span><span class="p">;</span>  <span class="c1">// 不合法，int const*必须初始化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="o">*</span><span class="n">p1</span><span class="p">,</span> <span class="o">*</span><span class="k">const</span> <span class="n">p2</span><span class="p">;</span>  <span class="c1">// 不合法，int const*必须初始化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span> <span class="c1">// 合法，const int*(指向const int的指针)无需初始化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="n">ic</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">r</span> <span class="o">=</span> <span class="n">ic</span><span class="p">;</span>  <span class="c1">// 不合法，const int必须初始化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="o">*</span><span class="k">const</span> <span class="n">p3</span><span class="p">;</span><span class="c1">// 不合法，const int *const必须初始化
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>赋值</p>
+<ul>
+<li>对于左值而言，顶层const不能被赋值只能被初始化</li>
+<li>对于右值而言
+<ul>
+<li>底层const不被忽略，不能赋值给非常量</li>
+<li>顶层const被忽略，因为右值不会被更改</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">i</span> <span class="o">=</span> <span class="n">ic</span><span class="p">;</span>  <span class="c1">// 合法，const int可以作为右值，不能被赋值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ic</span> <span class="o">=</span> <span class="o">*</span><span class="n">p3</span><span class="p">;</span> <span class="c1">// 不合法，const int不能被赋值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">p1</span> <span class="o">=</span> <span class="n">p3</span><span class="p">;</span> <span class="c1">// 不合法，int* ≠ const int*
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">p3</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ic</span><span class="p">;</span> <span class="c1">// 不合法，int *const不能被赋值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">p2</span> <span class="o">=</span> <span class="n">p1</span><span class="p">;</span> <span class="c1">// 不合法，int *const不能被赋值
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>顶层/底层const判断</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">v2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="kt">int</span> <span class="n">v1</span> <span class="o">=</span> <span class="n">v2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span><span class="n">p1</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">v1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">r1</span> <span class="o">=</span> <span class="n">v1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="o">*</span><span class="n">p2</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">v2</span><span class="p">,</span> <span class="o">*</span><span class="k">const</span> <span class="n">p3</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">r2</span> <span class="o">=</span> <span class="n">v2</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>v2是顶层const；p2是底层const；p3既是顶层const也是底层const；r2是底层const</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">r1</span> <span class="o">=</span> <span class="n">v2</span><span class="p">;</span> <span class="c1">// 合法, 顶层const在拷贝时不受影响
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">p1</span> <span class="o">=</span> <span class="n">p2</span><span class="p">;</span> <span class="c1">// 不合法, int* ≠ const int*
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">p2</span> <span class="o">=</span> <span class="n">p1</span><span class="p">;</span> <span class="c1">// 合法,  const int* = int* 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">p1</span> <span class="o">=</span> <span class="n">p3</span><span class="p">;</span> <span class="c1">// 不合法, int* ≠ const int* const
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">p2</span> <span class="o">=</span> <span class="n">p3</span><span class="p">;</span> <span class="c1">// 合法, const int* ≠ const int* const
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="245-常量表达式">2.4.5 常量表达式<a hidden class="anchor" aria-hidden="true" href="#245-常量表达式">#</a></h2>
+<p>常量表达式：<strong>值不会改变</strong>并且<strong>在编译过程就能得到计算结果</strong>的表达式。</p>
+<p><strong>字面值属于常量表达式</strong>，由常量表达式初始化的const对象也是常量表达式。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>          <span class="c1">// 是常量表达式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>       <span class="c1">// 是常量表达式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">get_size</span><span class="p">();</span> <span class="c1">// 不是常量表达式，因为虽然 sz 是常量，但它的具体值等到运行时才知道。
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="constexpr">constexpr<a hidden class="anchor" aria-hidden="true" href="#constexpr">#</a></h3>
+<p>通过将变量声明为<strong>constexpr类型</strong>即可由编译器来检查。</p>
+<p>由constexpr声明的变量必须<strong>用常量表达式初始化</strong>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="kt">int</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">size</span><span class="p">();</span> <span class="c1">//只有当 size() 是一个 constexpr 函数时这才是一条正确的声明语句。
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>constexpr指针</strong>的初始值必须是如下之一：</p>
+<ul>
+<li>nullptr或0</li>
+<li>存储于固定地址的对象：函数体之外的对象和静态变量的地址是固定不变的</li>
+</ul>
+<p>constexpr都是顶层 const</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>     <span class="c1">// p 是一个指向整型常量的指针, 底层const
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">constexpr</span> <span class="kt">int</span> <span class="o">*</span><span class="n">q</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span> <span class="c1">// q 是一个指向整数的常量指针, 顶层const
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="const和constexpr的区别">const和constexpr的区别<a hidden class="anchor" aria-hidden="true" href="#const和constexpr的区别">#</a></h3>
+<ul>
+<li>constexpr限定了变量是<strong>编译器常量</strong>，即变量的值在编译期间就可以得到</li>
+<li>const则并未区分是编译器常量还是运行期常量。const变量可以在运行期间初始化，只是初始化后不能更改</li>
+<li><strong>constexpr表示“常量”</strong>，而<strong>const一般用来表示 “只读”</strong></li>
+</ul>
+<h1 id="25-类型">2.5 类型<a hidden class="anchor" aria-hidden="true" href="#25-类型">#</a></h1>
+<h2 id="251-类型别名">2.5.1 类型别名<a hidden class="anchor" aria-hidden="true" href="#251-类型别名">#</a></h2>
+<p>有两种方法定义类型别名：</p>
+<ul>
+<li>typedef：原类型名 新类型名，可以组合</li>
+<li>using（C++11）：新类型名 = 原类型名</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="kt">double</span> <span class="n">wages</span><span class="p">;</span>  <span class="c1">// typedef
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">typedef</span> <span class="n">wages</span> <span class="n">base</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span> <span class="c1">// base is a synonym for double, p for double*
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">using</span> <span class="n">wages</span> <span class="o">=</span> <span class="kt">double</span><span class="p">;</span>  <span class="c1">// using（C++11）
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="252-auto自动推断">2.5.2 auto自动推断<a hidden class="anchor" aria-hidden="true" href="#252-auto自动推断">#</a></h2>
+<p>auto让<strong>编译器根据初始值来分析</strong>变量所属类型：</p>
+<ul>
+<li>使用 auto 会<strong>增加编译时间</strong>，但不会增加运行时间</li>
+<li>auto修饰的变量<strong>必须被初始化</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="c1">// the type of item is deduced from the type of the result of adding val1 and val2
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">auto</span> <span class="n">item</span> <span class="o">=</span> <span class="n">val1</span> <span class="o">+</span> <span class="n">val2</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>auto可以在一条语句中声明多个变量，但是多个变量必须是同一个基本数据类型（整型、整型指针、整型引用算一个类型）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">;</span>      <span class="c1">// ok: i is int and p is a pointer to int
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">auto</span> <span class="n">sz</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pi</span> <span class="o">=</span> <span class="mf">3.14</span><span class="p">;</span>   <span class="c1">// error: inconsistent types for sz and pi
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="复合类型常量和auto">复合类型、常量和auto<a hidden class="anchor" aria-hidden="true" href="#复合类型常量和auto">#</a></h3>
+<p>编译器推断出的auto类型有时和初始值并不一样，编译器会进行适当的调整：</p>
+<ul>
+<li>auto会保留底层const。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">ci</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cr</span> <span class="o">=</span> <span class="n">ci</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">e</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ci</span><span class="p">;</span> <span class="c1">// e is const int*(&amp; of a const object is low-level const)
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>auto一般会忽略掉顶层const，因此对于非指针类型的常量对象，auto推断出的结果是不含const的。如果希望auto是一个顶层const，需要明确指出。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">ci</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">b</span> <span class="o">=</span> <span class="n">ci</span><span class="p">;</span>  <span class="c1">// b is an int (top-level const in ci is dropped)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="n">ci</span><span class="p">;</span> <span class="c1">// deduced type of ci is int; f has type const int
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>auto根据引用来推断类型时会以引用对象的类型作为auto的类型。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">ci</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cr</span> <span class="o">=</span> <span class="n">ci</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">c</span> <span class="o">=</span> <span class="n">cr</span><span class="p">;</span>  <span class="c1">// c is an int (cr is an alias for ci whose const is top-level)
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>用auto定义引用时，必须用&amp;指明要定义的是引用</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">ci</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cr</span> <span class="o">=</span> <span class="n">ci</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="o">&amp;</span><span class="n">g</span> <span class="o">=</span> <span class="n">ci</span><span class="p">;</span>  <span class="c1">// g is a const int&amp; that is bound to ci
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="练习-2">练习<a hidden class="anchor" aria-hidden="true" href="#练习-2">#</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>  <span class="c1">// const int 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">auto</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span> <span class="c1">// int
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="n">k</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span> <span class="c1">// const int&amp;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">auto</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">;</span> <span class="c1">// const int*
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="k">auto</span> <span class="n">j2</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span> <span class="c1">// const int
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="253-decltype类型指示符">2.5.3 decltype类型指示符<a hidden class="anchor" aria-hidden="true" href="#253-decltype类型指示符">#</a></h2>
+<p>我们希望<strong>从表达式中推断出的类型</strong>定义一个变量，但不使用该表达式来初始化变量，这时可以使用<code>decltype</code></p>
+<p>如下例子<strong>不会调用<code>f()</code></strong>，根据函数的类型获得返回值的类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">decltype</span><span class="p">(</span><span class="n">f</span><span class="p">())</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span> <span class="c1">// sum has whatever type f returns
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="decltype与引用">decltype与引用<a hidden class="anchor" aria-hidden="true" href="#decltype与引用">#</a></h3>
+<ul>
+<li>decltype不会忽略引用和顶层const</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">ci</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cj</span> <span class="o">=</span> <span class="n">ci</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">decltype</span><span class="p">(</span><span class="n">ci</span><span class="p">)</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// x has type const int
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">decltype</span><span class="p">(</span><span class="n">cj</span><span class="p">)</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span> <span class="c1">// y has type const int&amp; and is bound to x
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">decltype</span><span class="p">(</span><span class="n">cj</span><span class="p">)</span> <span class="n">z</span><span class="p">;</span>     <span class="c1">// error: z is a reference and must be initialized
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>如果decltype的参数是表达式，decltype返回的是表达式计算结果的类型，例如：
+<ul>
+<li>通过将引用用于表达式中，decltype返回引用所指向对象的类型</li>
+<li><code>*p</code>运算获得指针指向对象的一个引用，因此<code>*p</code>是引用类型，<code>decltype(*p)</code> is <code>int&amp;</code>, not plain <code>int</code></li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">r</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">decltype</span><span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="mi">0</span><span class="p">)</span> <span class="n">b</span><span class="p">;</span>  <span class="c1">// ok: addition yields an int; b is an (uninitialized) int
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">decltype</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">)</span> <span class="n">c</span><span class="p">;</span>     <span class="c1">// error: c is int&amp; and must be initialized
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>decltype((</code><em>var</em><code>))</code> 不管var是什么类型，返回的都是var的引用，由于是引用，必须要初始化</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">decltype</span><span class="p">((</span><span class="n">i</span><span class="p">))</span> <span class="n">d</span><span class="p">;</span>    <span class="c1">// error: d is int&amp; and must be initialized
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="254-左值右值">2.5.4 左值右值<a hidden class="anchor" aria-hidden="true" href="#254-左值右值">#</a></h2>
+<ul>
+<li><strong>左值（lvalue）</strong> 是可以获取地址并在程序执行后继续存在的值。</li>
+<li><strong>右值（rvalue）</strong> 是临时的、不可寻址的值，通常用在表达式的右侧。</li>
+</ul>
+<h1 id="26-预处理">2.6 预处理<a hidden class="anchor" aria-hidden="true" href="#26-预处理">#</a></h1>
+<p>预处理器：</p>
+<ul>
+<li>确保头文件多次包含仍能安全工作的常用技术</li>
+<li>在编译器之前运行</li>
+<li>更改程序源文本的程序</li>
+<li>预处理器会将<code>#include</code>指令替换为<code>#include</code>文件的内容</li>
+</ul>
+<p>预处理变量有两种状态：已定义和未定义。</p>
+<p>整个程序中的预处理变量必须唯一，一般把预处理变量的名字全部大写。</p>
+<p>为什么会出现头文件多次包含不安全的情况？</p>
+<ul>
+<li>假若文件A需要引用文件B和文件C的内容；文件B需要引用文件C的内容</li>
+<li>这样的结果为文件A对文件C的内容定义了两次</li>
+</ul>
+<p>预处理器保证头文件多次包含仍然安全工作的原理：</p>
+<ul>
+<li><code>#ifndef</code>：如果当前头文件保护符已定义，说明已经包含该文件的相关定义，无需重复；否则继续</li>
+<li><code>#define</code>：定义当前头文件保护符，表示已经包含相关定义</li>
+<li><code>#endif</code>：结束</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="cp">#ifndef STRING_H
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define STRING_H
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">class</span> <span class="nc">string</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/lang/">Lang</a></li>
+      <li><a href="http://localhost:1313/tags/c&#43;&#43;/">C&#43;&#43;</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/c&#43;&#43;%E5%85%AB%E8%82%A1/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>C&#43;&#43;八股</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/beauty_of_programming/ch02/">
+    <span class="title">Next »</span>
+    <br>
+    <span>ch02: 数字之谜</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/">momo blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

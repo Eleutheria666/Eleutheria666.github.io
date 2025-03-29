@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Chapter 4. Expressions | momo blog</title>
+<meta name="keywords" content="lang, C&#43;&#43;">
+<meta name="description" content="4.2 算术运算符 算术运算符包含以下3种类型，按优先级从高到低排序：
+&#43;、- ：一元正号与一元负号 *、/、% ：乘法、除法、求余 &#43;、- ：加法、减法 当算数操作符是布尔类型时，会将布尔变量转化为int类型进行运算（true为1，false为0）。当算数操作符运算的数字结果赋值给布尔变量时，会将算术类型转化为布尔类型（0为false，其他为true）
+除法运算如果两个操作数均为整数，结果是向零舍入
+求余运算符的运算对象必须是整数，运算结果始终与被除数符号相同
+编译器和运行期间没有对运算溢出错误的警告，当发生溢出时，会产生不可预知的行为。
+4.3 逻辑关系运算符 逻辑运算符：！、&amp;&amp;、||。逻辑运算符的作用对象必须是能转换成布尔值的类型 关系运算符：&lt;, &lt;=, &gt;, &gt;=, !=, == ：大于小于的优先级高于等于和不等于 以下值转化为布尔类型的结果为false：
+算术类型：int num = 0
+指针类型：int *p = 0
+字符类型：char ch = &#39;\0&#39;
+以算数值作为if判断条件：直接用，不要与布尔值做比较
+布尔字面量true和false只适用于和布尔变量进行比较
+1 2 if(a); //正确 if(a == true); //错误：会将 true 先转换为 int 再比较，比较结果是不相等 4.5 递增递减运算符 前置版本&#43;&#43;i：首先将运算对象加 1，然后将改变后的对象作为求值结果，返回对象本身作为左值
+后置版本i&#43;&#43;：也是将运算对象加 1，但结果是运算对象改变之前那个值的副本，返回将对象原始值的副本
+如无必要，不要使用后置版本：前置版本直接返回改变了的运算对象，后置版本需要将原始值保存下来以便于返回，是一种浪费。后置版本对于整数和指针来说影响不大，对于迭代器而言消耗巨大。
+提倡一种写法：*p&#43;&#43;：
+由于递增运算符优先级高于解引用，所以先进行递增运算：先将p值加一，然后返回p的初始值的副本作为求值结果用于解引用
+1 2 3 auto pbeg = v.begin(); while(pbeg != v.end()) cout &lt;&lt; *pbeg&#43;&#43; &lt;&lt; endl; 练习 *beg作为左值时已经&#43;1">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch04/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8f541c169a12d0d6bb704527bb78f6481fb4f5a39b7171fc16fab8c03ae6b1bd.css" integrity="sha256-j1QcFpoS0Na7cEUnu3j2SB&#43;09aObcXH8Fvq4wDrmsb0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch04/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  
+
+<meta property="og:title" content="Chapter 4. Expressions" />
+<meta property="og:description" content="4.2 算术运算符 算术运算符包含以下3种类型，按优先级从高到低排序：
+&#43;、- ：一元正号与一元负号 *、/、% ：乘法、除法、求余 &#43;、- ：加法、减法 当算数操作符是布尔类型时，会将布尔变量转化为int类型进行运算（true为1，false为0）。当算数操作符运算的数字结果赋值给布尔变量时，会将算术类型转化为布尔类型（0为false，其他为true）
+除法运算如果两个操作数均为整数，结果是向零舍入
+求余运算符的运算对象必须是整数，运算结果始终与被除数符号相同
+编译器和运行期间没有对运算溢出错误的警告，当发生溢出时，会产生不可预知的行为。
+4.3 逻辑关系运算符 逻辑运算符：！、&amp;&amp;、||。逻辑运算符的作用对象必须是能转换成布尔值的类型 关系运算符：&lt;, &lt;=, &gt;, &gt;=, !=, == ：大于小于的优先级高于等于和不等于 以下值转化为布尔类型的结果为false：
+算术类型：int num = 0
+指针类型：int *p = 0
+字符类型：char ch = &#39;\0&#39;
+以算数值作为if判断条件：直接用，不要与布尔值做比较
+布尔字面量true和false只适用于和布尔变量进行比较
+1 2 if(a); //正确 if(a == true); //错误：会将 true 先转换为 int 再比较，比较结果是不相等 4.5 递增递减运算符 前置版本&#43;&#43;i：首先将运算对象加 1，然后将改变后的对象作为求值结果，返回对象本身作为左值
+后置版本i&#43;&#43;：也是将运算对象加 1，但结果是运算对象改变之前那个值的副本，返回将对象原始值的副本
+如无必要，不要使用后置版本：前置版本直接返回改变了的运算对象，后置版本需要将原始值保存下来以便于返回，是一种浪费。后置版本对于整数和指针来说影响不大，对于迭代器而言消耗巨大。
+提倡一种写法：*p&#43;&#43;：
+由于递增运算符优先级高于解引用，所以先进行递增运算：先将p值加一，然后返回p的初始值的副本作为求值结果用于解引用
+1 2 3 auto pbeg = v.begin(); while(pbeg != v.end()) cout &lt;&lt; *pbeg&#43;&#43; &lt;&lt; endl; 练习 *beg作为左值时已经&#43;1" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/posts/c&#43;&#43;-primer/ch04/" />
+<meta property="og:image" content="http://localhost:1313/images/papermod-cover.png" />
+<meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-08-28T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-08-28T00:00:00+00:00" /><meta property="og:site_name" content="momo blog" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png" />
+<meta name="twitter:title" content="Chapter 4. Expressions"/>
+<meta name="twitter:description" content="4.2 算术运算符 算术运算符包含以下3种类型，按优先级从高到低排序：
+&#43;、- ：一元正号与一元负号 *、/、% ：乘法、除法、求余 &#43;、- ：加法、减法 当算数操作符是布尔类型时，会将布尔变量转化为int类型进行运算（true为1，false为0）。当算数操作符运算的数字结果赋值给布尔变量时，会将算术类型转化为布尔类型（0为false，其他为true）
+除法运算如果两个操作数均为整数，结果是向零舍入
+求余运算符的运算对象必须是整数，运算结果始终与被除数符号相同
+编译器和运行期间没有对运算溢出错误的警告，当发生溢出时，会产生不可预知的行为。
+4.3 逻辑关系运算符 逻辑运算符：！、&amp;&amp;、||。逻辑运算符的作用对象必须是能转换成布尔值的类型 关系运算符：&lt;, &lt;=, &gt;, &gt;=, !=, == ：大于小于的优先级高于等于和不等于 以下值转化为布尔类型的结果为false：
+算术类型：int num = 0
+指针类型：int *p = 0
+字符类型：char ch = &#39;\0&#39;
+以算数值作为if判断条件：直接用，不要与布尔值做比较
+布尔字面量true和false只适用于和布尔变量进行比较
+1 2 if(a); //正确 if(a == true); //错误：会将 true 先转换为 int 再比较，比较结果是不相等 4.5 递增递减运算符 前置版本&#43;&#43;i：首先将运算对象加 1，然后将改变后的对象作为求值结果，返回对象本身作为左值
+后置版本i&#43;&#43;：也是将运算对象加 1，但结果是运算对象改变之前那个值的副本，返回将对象原始值的副本
+如无必要，不要使用后置版本：前置版本直接返回改变了的运算对象，后置版本需要将原始值保存下来以便于返回，是一种浪费。后置版本对于整数和指针来说影响不大，对于迭代器而言消耗巨大。
+提倡一种写法：*p&#43;&#43;：
+由于递增运算符优先级高于解引用，所以先进行递增运算：先将p值加一，然后返回p的初始值的副本作为求值结果用于解引用
+1 2 3 auto pbeg = v.begin(); while(pbeg != v.end()) cout &lt;&lt; *pbeg&#43;&#43; &lt;&lt; endl; 练习 *beg作为左值时已经&#43;1"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "C++ Primer",
+      "item": "http://localhost:1313/posts/c++-primer/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "Chapter 4. Expressions",
+      "item": "http://localhost:1313/posts/c++-primer/ch04/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Chapter 4. Expressions",
+  "name": "Chapter 4. Expressions",
+  "description": "4.2 算术运算符 算术运算符包含以下3种类型，按优先级从高到低排序：\n+、- ：一元正号与一元负号 *、/、% ：乘法、除法、求余 +、- ：加法、减法 当算数操作符是布尔类型时，会将布尔变量转化为int类型进行运算（true为1，false为0）。当算数操作符运算的数字结果赋值给布尔变量时，会将算术类型转化为布尔类型（0为false，其他为true）\n除法运算如果两个操作数均为整数，结果是向零舍入\n求余运算符的运算对象必须是整数，运算结果始终与被除数符号相同\n编译器和运行期间没有对运算溢出错误的警告，当发生溢出时，会产生不可预知的行为。\n4.3 逻辑关系运算符 逻辑运算符：！、\u0026amp;\u0026amp;、||。逻辑运算符的作用对象必须是能转换成布尔值的类型 关系运算符：\u0026lt;, \u0026lt;=, \u0026gt;, \u0026gt;=, !=, == ：大于小于的优先级高于等于和不等于 以下值转化为布尔类型的结果为false：\n算术类型：int num = 0\n指针类型：int *p = 0\n字符类型：char ch = '\\0'\n以算数值作为if判断条件：直接用，不要与布尔值做比较\n布尔字面量true和false只适用于和布尔变量进行比较\n1 2 if(a); //正确 if(a == true); //错误：会将 true 先转换为 int 再比较，比较结果是不相等 4.5 递增递减运算符 前置版本++i：首先将运算对象加 1，然后将改变后的对象作为求值结果，返回对象本身作为左值\n后置版本i++：也是将运算对象加 1，但结果是运算对象改变之前那个值的副本，返回将对象原始值的副本\n如无必要，不要使用后置版本：前置版本直接返回改变了的运算对象，后置版本需要将原始值保存下来以便于返回，是一种浪费。后置版本对于整数和指针来说影响不大，对于迭代器而言消耗巨大。\n提倡一种写法：*p++：\n由于递增运算符优先级高于解引用，所以先进行递增运算：先将p值加一，然后返回p的初始值的副本作为求值结果用于解引用\n1 2 3 auto pbeg = v.begin(); while(pbeg != v.end()) cout \u0026lt;\u0026lt; *pbeg++ \u0026lt;\u0026lt; endl; 练习 *beg作为左值时已经+1",
+  "keywords": [
+    "lang", "C++"
+  ],
+  "articleBody": "4.2 算术运算符 算术运算符包含以下3种类型，按优先级从高到低排序：\n+、- ：一元正号与一元负号 *、/、% ：乘法、除法、求余 +、- ：加法、减法 当算数操作符是布尔类型时，会将布尔变量转化为int类型进行运算（true为1，false为0）。当算数操作符运算的数字结果赋值给布尔变量时，会将算术类型转化为布尔类型（0为false，其他为true）\n除法运算如果两个操作数均为整数，结果是向零舍入\n求余运算符的运算对象必须是整数，运算结果始终与被除数符号相同\n编译器和运行期间没有对运算溢出错误的警告，当发生溢出时，会产生不可预知的行为。\n4.3 逻辑关系运算符 逻辑运算符：！、\u0026\u0026、||。逻辑运算符的作用对象必须是能转换成布尔值的类型 关系运算符：\u003c, \u003c=, \u003e, \u003e=, !=, == ：大于小于的优先级高于等于和不等于 以下值转化为布尔类型的结果为false：\n算术类型：int num = 0\n指针类型：int *p = 0\n字符类型：char ch = '\\0'\n以算数值作为if判断条件：直接用，不要与布尔值做比较\n布尔字面量true和false只适用于和布尔变量进行比较\n1 2 if(a); //正确 if(a == true); //错误：会将 true 先转换为 int 再比较，比较结果是不相等 4.5 递增递减运算符 前置版本++i：首先将运算对象加 1，然后将改变后的对象作为求值结果，返回对象本身作为左值\n后置版本i++：也是将运算对象加 1，但结果是运算对象改变之前那个值的副本，返回将对象原始值的副本\n如无必要，不要使用后置版本：前置版本直接返回改变了的运算对象，后置版本需要将原始值保存下来以便于返回，是一种浪费。后置版本对于整数和指针来说影响不大，对于迭代器而言消耗巨大。\n提倡一种写法：*p++：\n由于递增运算符优先级高于解引用，所以先进行递增运算：先将p值加一，然后返回p的初始值的副本作为求值结果用于解引用\n1 2 3 auto pbeg = v.begin(); while(pbeg != v.end()) cout \u003c\u003c *pbeg++ \u003c\u003c endl; 练习 *beg作为左值时已经+1\n1 2 3 4 while (beg != s.end() \u0026\u0026 !isspace(*beg)) *beg = toupper(*beg++); // error: this assignment is undefined *beg = toupper(*beg); // execution if left-hand side is evaluated first *(beg + 1) = toupper(*beg); // execution if right-hand side is evaluated first 首先判断ival的值是否为0，然后对ival+1，再判断ival+1是否为0\n1 ival++ \u0026\u0026 ival // 第一个逻辑运算，返回的时ival+1前ival的副本 4.6 成员访问运算符 成员访问运算符优先级高于解引用\n1 2 *p.size() // 错误，先进行p.size()运算，p是指针，不存在size函数 (*p).size() // 正确 4.8 位运算符 位运算符作用于整数类型的对象\n位运算符有六种：求反~、位与|、位或\u0026、位异或^、左移«、右移»\n位运算符处理 char 时，都会把 char 类型的运算对象首先零扩展提升成 int 类型再进行位运算\n在写代码时，考虑到可移植性，选取数据类型应考虑到某一类型的最大字节和最小字节，比如 int 的最小位是 2 字节。建议仅用位运算符来处理无符号类型\n« 运算符：右侧插入 0，左侧舍弃\n\u003e\u003e 运算符无符号数：左侧插入 0，右侧舍弃\n\u003e\u003e 运算符有符号数：左侧插入 0 也可能插入符号位的副本，由机器决定使用哪种方式\n4.9 sizeof运算符 sizeof返回一条表达式或一个类型名字所占的字节数，值为size_t类型：\n对数组执行sizeof运算符得到的是整个数组所占空间的大小，不会把数组转换为指针来处理\n对指针执行sizeof运算符得到的是指针类型的大小，也就是8\n对 string 或 vector 对象执行sizeof运算只返回该类型固定部分的大小，不会计算对象中元素占了多少空间\n对引用类型执行sizeof返回被引用类型对象的大小\n4.11 类型转换 隐式转换 算术隐式转换 算数隐式转换发生在如下情况之一：\n整型自动提升：比 int 类型小的整型值首先提升为较大的整数类型 条件判断时，把非布尔值转换成布尔值 初始化时，初始值转换为变量的类型 赋值时，右侧运算对象转换成左侧类型 算数运算或关系运算的运算对象有多种类型，统一转换成操作数精度最高的类型 整型提升\n把小整数类型（包括 bool, char, signed char, unsigned char, short,和 unsigned short等）转换成int，若int不能容纳值则提升成unsigned int\n较大char类型（ wchar_t, char16_t, and char32_t）被提升为最小的int, unsigned int, long, unsigned long, long long, or unsigned long long类型，只要提升后的类型能容纳值即可\n无符号类型\n当两个操作数符号类型不同时：\n如果无符号类型不小于带符号类型（比如都是 4 字节），则带符号转换为无符号\n如果无符号类型小于带符号，转换结果依赖机器，尽量避免\n练习 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 bool flag; char cval; short sval; unsigned short usval; int ival; unsigned int uival; long lval; unsigned long ulval; float fval; double dval; 3.14159L + 'a'; // 'a' promoted to int, then that int converted to long double dval + ival; // ival converted to double dval + fval; // fval converted to double ival = dval; // dval converted (by truncation) to int flag = dval; // if dval is 0, then flag is false, otherwise true cval + fval; // cval promoted to int, then that int converted to float sval + cval; // sval and cval promoted to int cval + lval; // cval converted to long ival + ulval; // ival converted to unsigned long usval + ival; // promotion depends on the size of unsigned short and int uival + lval; // conversion depends on the size of unsigned int and long A\n1 2 3 4 5 6 7 char cval; int ival; unsigned int ui; float fval; double dval; (a) cval = 'a' + 3; (b) fval = ui - ival * 1.0; (c) dval = ui * fval; (d) cval = ival + fval + dval; (a) 'a' 转换为 int ，然后与 3 相加的结果转换为 char\n(b) ival 转换为 double，ui 转换为 double，结果转换为 float\n(c) ui 转换为 float，结果转换为 double\n(d) ival 转换为 float，与fval相加后的结果转换为 double，最后的结果转换为char\n指针引用的隐式转换 数组转换为指针\n数组名隐式转换成指向数组首元素的指针 decltype关键字参数、取地址符(\u0026)、sizeof、typeid 都不会发生这种转换，仍然是int[5] 1 2 int arr[5] = {1,2,3,4,5}; // arr类型为int[5] int *p = arr; // arr单独使用，隐式转换为int* 指针转换为void*\n0 或 nullptr 都能转换成任意指针类型\n指向非常量的指针（例如 int*, double*, char*）能转换成void*\n1 2 3 int x = 42; int *int_ptr = \u0026x; // 指向 int 的指针 void *void_ptr = int_ptr; // 隐式转换成 v\toid* 任何类型的指针（例如 int*, const int*, double*, const double* ）都能转换成const void* 1 2 3 4 5 6 7 8 int x = 42; const int y = 100; int *int_ptr = \u0026x; // 指向 int 的指针 const int *const_int_ptr = \u0026y; // 指向 const int 的指针 const void *c_void_ptr1 = int_ptr; // int* 隐式转换成 const void* const void *c_void_ptr2 = const_int_ptr; // const int* 隐式转换成 const vo 常量指针的转换\n√：const int *p = int *p 、const int \u0026p = int \u0026p\n×：int *p = const int *p 、int \u0026p = const int \u0026p\n1 2 3 4 int i; const int \u0026j = i; // convert a nonconst to a reference to const int const int *p = \u0026i; // convert address of a nonconst to the address of a const int \u0026r = j, *q = p; // error: conversion from const to nonconst not allowed 类类型转换\n1 2 while(cin\u003e\u003es); //将 cin 转换为 bool 值 string s = \"value\"; //将C风格字符串转换为 string 显式转换 强制类型转换非常危险，尽量避免使用。如果使用了，应反复思考是否可以用其他方式代替。\nC++11标准的显式转换：\n1 cast-name\u003ctype\u003e(expression); type表明转换的类型 cast-name表明转换的方式 有四种显式转换的方式：static_cast、dynamic_cast、const_cast、reinterpret_cast ：\nstatic_cast\n1 double slope = static_cast\u003cdouble\u003e(j)/i; //将 j 转换成 double 以便执行浮点数除法 任何类型转换，只要不包含底层const，都可以用static_cast\n通常用于将较大类型转化为较小类型\n使用static_cast编译器不会警告精度损失，这时它告诉读者和编译器：我们知道且不在乎精度损失。\nconst_cast\n1 2 3 string\u0026 s; const_cast \u003cconst string\u0026\u003e (s); // 将 s 转换为常量引用 const_cast \u003cstring\u0026\u003e (s); // 将 s 转换回非常量引用 const_cast只能改变对象的底层const，不能改变对象的类型\nconst_cast可以去掉或增加 const 性质\n只有const_cast能改变表达式的常量属性，其他都不行\ncosnt_cast常用于有函数重载的上下文中\nreinterpret_cast\n它依赖于机器，使用门槛很高，且使用时充满风险，不要用它。 旧式的强制类型转换\n1 2 int(a); // 函数形式 (int)a; // C语言风格 旧式的强制类型转换本质上采用 const_cast、static_cast 或 reinterpret_cast 的一种\n4.12 运算符优先级 1 2 3 4 5 6 :: //作用域 . 和 -\u003e //成员访问。注意它非常高，比括号还高。 [] 和 () ++、-- //注意递增递减运算符的优先级非常高，括号之下最高的。 , //逗号是最低的 ",
+  "wordCount" : "754",
+  "inLanguage": "en",
+  "image": "http://localhost:1313/images/papermod-cover.png","datePublished": "2024-08-28T00:00:00Z",
+  "dateModified": "2024-08-28T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/c++-primer/ch04/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "momo blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="momo blog (Alt + H)">momo blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/archives/" title="archives">
+                    <span>archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="search (Alt &#43; /)" accesskey=/>
+                    <span>search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/c&#43;&#43;-primer/">C&#43;&#43; Primer</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Chapter 4. Expressions
+    </h1>
+    <div class="post-meta"><span title='2024-08-28 00:00:00 +0000 UTC'>August 28, 2024</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;754 words
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#42-%e7%ae%97%e6%9c%af%e8%bf%90%e7%ae%97%e7%ac%a6" aria-label="4.2 算术运算符">4.2 算术运算符</a></li>
+                <li>
+                    <a href="#43-%e9%80%bb%e8%be%91%e5%85%b3%e7%b3%bb%e8%bf%90%e7%ae%97%e7%ac%a6" aria-label="4.3 逻辑关系运算符">4.3 逻辑关系运算符</a></li>
+                <li>
+                    <a href="#45-%e9%80%92%e5%a2%9e%e9%80%92%e5%87%8f%e8%bf%90%e7%ae%97%e7%ac%a6" aria-label="4.5 递增递减运算符">4.5 递增递减运算符</a><ul>
+                        <ul>
+                        
+                <li>
+                    <a href="#%e7%bb%83%e4%b9%a0" aria-label="练习">练习</a></li></ul>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#46-%e6%88%90%e5%91%98%e8%ae%bf%e9%97%ae%e8%bf%90%e7%ae%97%e7%ac%a6" aria-label="4.6 成员访问运算符">4.6 成员访问运算符</a></li>
+                <li>
+                    <a href="#48-%e4%bd%8d%e8%bf%90%e7%ae%97%e7%ac%a6" aria-label="4.8 位运算符">4.8 位运算符</a></li>
+                <li>
+                    <a href="#49-sizeof%e8%bf%90%e7%ae%97%e7%ac%a6" aria-label="4.9 sizeof运算符">4.9 sizeof运算符</a></li>
+                <li>
+                    <a href="#411-%e7%b1%bb%e5%9e%8b%e8%bd%ac%e6%8d%a2" aria-label="4.11 类型转换">4.11 类型转换</a><ul>
+                        
+                <li>
+                    <a href="#%e9%9a%90%e5%bc%8f%e8%bd%ac%e6%8d%a2" aria-label="隐式转换">隐式转换</a><ul>
+                        
+                <li>
+                    <a href="#%e7%ae%97%e6%9c%af%e9%9a%90%e5%bc%8f%e8%bd%ac%e6%8d%a2" aria-label="算术隐式转换">算术隐式转换</a></li>
+                <li>
+                    <a href="#%e7%bb%83%e4%b9%a0-1" aria-label="练习">练习</a></li>
+                <li>
+                    <a href="#%e6%8c%87%e9%92%88%e5%bc%95%e7%94%a8%e7%9a%84%e9%9a%90%e5%bc%8f%e8%bd%ac%e6%8d%a2" aria-label="指针引用的隐式转换">指针引用的隐式转换</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e6%98%be%e5%bc%8f%e8%bd%ac%e6%8d%a2" aria-label="显式转换">显式转换</a></li></ul>
+                </li>
+                <li>
+                    <a href="#412-%e8%bf%90%e7%ae%97%e7%ac%a6%e4%bc%98%e5%85%88%e7%ba%a7" aria-label="4.12 运算符优先级">4.12 运算符优先级</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h1 id="42-算术运算符">4.2 算术运算符<a hidden class="anchor" aria-hidden="true" href="#42-算术运算符">#</a></h1>
+<p>算术运算符包含以下3种类型，按优先级从高到低排序：</p>
+<ol>
+<li>+、- ：一元正号与一元负号</li>
+<li>*、/、% ：乘法、除法、求余</li>
+<li>+、- ：加法、减法</li>
+</ol>
+<p>当算数操作符是布尔类型时，会将布尔变量转化为<code>int</code>类型进行运算（true为1，false为0）。当算数操作符运算的数字结果赋值给布尔变量时，会将算术类型转化为布尔类型（0为false，其他为true）</p>
+<p>除法运算如果两个操作数均为整数，结果是<strong>向零舍入</strong></p>
+<p>求余运算符的<strong>运算对象必须是整数</strong>，<strong>运算结果始终与被除数符号相同</strong></p>
+<p>编译器和运行期间没有对运算溢出错误的警告，当发生溢出时，会产生不可预知的行为。</p>
+<h1 id="43-逻辑关系运算符">4.3 逻辑关系运算符<a hidden class="anchor" aria-hidden="true" href="#43-逻辑关系运算符">#</a></h1>
+<ul>
+<li>逻辑运算符：！、&amp;&amp;、||。逻辑运算符的作用对象必须是能转换成布尔值的类型</li>
+<li>关系运算符：&lt;, &lt;=, &gt;, &gt;=, !=, == ：大于小于的优先级高于等于和不等于</li>
+</ul>
+<p>以下值转化为布尔类型的结果为false：</p>
+<ul>
+<li>
+<p>算术类型：<code>int num = 0</code></p>
+</li>
+<li>
+<p>指针类型：<code>int *p = 0</code></p>
+</li>
+<li>
+<p>字符类型：<code>char ch = '\0'</code></p>
+</li>
+</ul>
+<p>以算数值作为if判断条件：直接用，不要与布尔值做比较</p>
+<p>布尔字面量<code>true</code>和<code>false</code>只适用于和布尔变量进行比较</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>  <span class="c1">//正确 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span><span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="nb">true</span><span class="p">);</span>  <span class="c1">//错误：会将 true 先转换为 int 再比较，比较结果是不相等           
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="45-递增递减运算符">4.5 递增递减运算符<a hidden class="anchor" aria-hidden="true" href="#45-递增递减运算符">#</a></h1>
+<p>前置版本<code>++i</code>：首先将运算对象加 1，然后将<strong>改变后的对象作为求值结果</strong>，<strong>返回对象本身作为左值</strong></p>
+<p>后置版本<code>i++</code>：也是将运算对象加 1，但结果是<strong>运算对象改变之前那个值的副本</strong>，<strong>返回将对象原始值的副本</strong></p>
+<p><strong>如无必要，不要使用后置版本</strong>：前置版本直接返回改变了的运算对象，后置版本需要<strong>将原始值保存下来</strong>以便于返回，是一种浪费。<strong>后置版本对于整数和指针来说影响不大，对于迭代器而言消耗巨大。</strong></p>
+<p>提倡一种写法：<code>*p++</code>：</p>
+<p>由于<strong>递增运算符优先级高于解引用</strong>，所以<strong>先进行递增运算</strong>：先将p值加一，然后返回p的初始值的副本作为求值结果用于解引用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">pbeg</span> <span class="o">=</span> <span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> 
+</span></span><span class="line"><span class="cl"><span class="k">while</span><span class="p">(</span><span class="n">pbeg</span> <span class="o">!=</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>    
+</span></span><span class="line"><span class="cl">    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">pbeg</span><span class="o">++</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>             
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="练习">练习<a hidden class="anchor" aria-hidden="true" href="#练习">#</a></h3>
+<p><code>*beg</code>作为左值时已经+1</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">while</span> <span class="p">(</span><span class="n">beg</span> <span class="o">!=</span> <span class="n">s</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">isspace</span><span class="p">(</span><span class="o">*</span><span class="n">beg</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="o">*</span><span class="n">beg</span> <span class="o">=</span> <span class="n">toupper</span><span class="p">(</span><span class="o">*</span><span class="n">beg</span><span class="o">++</span><span class="p">);</span>   <span class="c1">// error: this assignment is undefined
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">*</span><span class="n">beg</span> <span class="o">=</span> <span class="n">toupper</span><span class="p">(</span><span class="o">*</span><span class="n">beg</span><span class="p">);</span>        <span class="c1">// execution if left-hand side is evaluated first
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">*</span><span class="p">(</span><span class="n">beg</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">toupper</span><span class="p">(</span><span class="o">*</span><span class="n">beg</span><span class="p">);</span>  <span class="c1">// execution if right-hand side is evaluated first
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>首先判断<code>ival</code>的值是否为0，然后对<code>ival</code>+1，再判断<code>ival+1</code>是否为0</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">ival</span><span class="o">++</span> <span class="o">&amp;&amp;</span> <span class="n">ival</span> <span class="c1">// 第一个逻辑运算，返回的时ival+1前ival的副本
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="46-成员访问运算符">4.6 成员访问运算符<a hidden class="anchor" aria-hidden="true" href="#46-成员访问运算符">#</a></h1>
+<p><strong>成员访问运算符优先级高于解引用</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="o">*</span><span class="n">p</span><span class="p">.</span><span class="n">size</span><span class="p">()</span>    <span class="c1">// 错误，先进行p.size()运算，p是指针，不存在size函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">).</span><span class="n">size</span><span class="p">()</span> <span class="c1">// 正确
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="48-位运算符">4.8 位运算符<a hidden class="anchor" aria-hidden="true" href="#48-位运算符">#</a></h1>
+<p>位运算符作用于整数类型的对象</p>
+<p>位运算符有六种：求反~、位与|、位或&amp;、位异或^、左移&laquo;、右移&raquo;</p>
+<p>位运算符处理 char 时，都会把 char 类型的运算对象首先零扩展提升成 int 类型再进行位运算</p>
+<p><strong>在写代码时，考虑到可移植性，选取数据类型应考虑到某一类型的最大字节和最小字节，比如 int 的最小位是 2 字节。建议仅用位运算符来处理无符号类型</strong></p>
+<p>&laquo; 运算符：右侧插入 0，左侧舍弃</p>
+<p>&gt;&gt; 运算符无符号数：左侧插入 0，右侧舍弃</p>
+<p>&gt;&gt; 运算符有符号数：左侧插入 0 也可能插入符号位的副本，由机器决定使用哪种方式</p>
+<h1 id="49-sizeof运算符">4.9 sizeof运算符<a hidden class="anchor" aria-hidden="true" href="#49-sizeof运算符">#</a></h1>
+<p><code>sizeof</code>返回<strong>一条表达式</strong>或<strong>一个类型名字</strong>所占的字节数，值为<code>size_t</code>类型：</p>
+<ul>
+<li>
+<p>对数组执行<code>sizeof</code>运算符得到的是整个数组所占空间的大小，不会把数组转换为指针来处理</p>
+</li>
+<li>
+<p>对指针执行<code>sizeof</code>运算符得到的是指针类型的大小，也就是8</p>
+</li>
+<li>
+<p>对 string 或 vector 对象执行<code>sizeof</code>运算只返回该类型固定部分的大小，<strong>不会计算对象中元素占了多少空间</strong></p>
+</li>
+<li>
+<p>对引用类型执行<code>sizeof</code>返回被引用类型对象的大小</p>
+</li>
+</ul>
+<h1 id="411-类型转换">4.11 类型转换<a hidden class="anchor" aria-hidden="true" href="#411-类型转换">#</a></h1>
+<h2 id="隐式转换">隐式转换<a hidden class="anchor" aria-hidden="true" href="#隐式转换">#</a></h2>
+<h3 id="算术隐式转换">算术隐式转换<a hidden class="anchor" aria-hidden="true" href="#算术隐式转换">#</a></h3>
+<p>算数隐式转换发生在如下情况之一：</p>
+<ul>
+<li><strong>整型自动提升</strong>：比 int 类型小的整型值首先提升为较大的整数类型</li>
+<li><strong>条件判断时</strong>，把非布尔值<strong>转换成布尔值</strong></li>
+<li><strong>初始化时</strong>，初始值转换为<strong>变量的类型</strong></li>
+<li><strong>赋值时</strong>，右侧运算对象转换成<strong>左侧类型</strong></li>
+<li>算数运算或关系运算的<strong>运算对象有多种类型</strong>，统一转换成操作数精度最高的类型</li>
+</ul>
+<p><strong>整型提升</strong></p>
+<p>把小整数类型（包括 <code>bool</code>, <code>char</code>, <code>signed char</code>, <code>unsigned char</code>, <code>short</code>,和 <code>unsigned short</code>等）转换成<code>int</code>，若int不能容纳值则提升成<code>unsigned int</code></p>
+<p>较大<code>char</code>类型（ <code>wchar_t</code>, <code>char16_t</code>, and <code>char32_t</code>）被提升为最小的<code>int</code>, <code>unsigned int</code>, <code>long</code>, <code>unsigned long</code>, <code>long long</code>, or <code>unsigned long long</code>类型，只要提升后的类型能容纳值即可</p>
+<p><strong>无符号类型</strong></p>
+<p>当两个操作数符号类型不同时：</p>
+<ul>
+<li>
+<p>如果<strong>无符号类型不小于带符号类型</strong>（比如都是 4 字节），则带符号转换为无符号</p>
+</li>
+<li>
+<p>如果<strong>无符号类型小于带符号</strong>，转换结果依赖机器，尽量避免</p>
+</li>
+</ul>
+<h3 id="练习-1">练习<a hidden class="anchor" aria-hidden="true" href="#练习-1">#</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">bool</span>      <span class="n">flag</span><span class="p">;</span>         <span class="kt">char</span>           <span class="n">cval</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">short</span>     <span class="n">sval</span><span class="p">;</span>         <span class="kt">unsigned</span> <span class="kt">short</span> <span class="n">usval</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span>       <span class="n">ival</span><span class="p">;</span>         <span class="kt">unsigned</span> <span class="kt">int</span>   <span class="n">uival</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">long</span>      <span class="n">lval</span><span class="p">;</span>         <span class="kt">unsigned</span> <span class="kt">long</span>  <span class="n">ulval</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span>     <span class="n">fval</span><span class="p">;</span>         <span class="kt">double</span>         <span class="n">dval</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="mf">3.14159</span><span class="n">L</span> <span class="o">+</span> <span class="sc">&#39;a&#39;</span><span class="p">;</span> <span class="c1">//  &#39;a&#39; promoted to int, then that int converted to long double
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">dval</span> <span class="o">+</span> <span class="n">ival</span><span class="p">;</span>    <span class="c1">//  ival converted to double
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">dval</span> <span class="o">+</span> <span class="n">fval</span><span class="p">;</span>    <span class="c1">//  fval converted to double
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ival</span> <span class="o">=</span> <span class="n">dval</span><span class="p">;</span>    <span class="c1">//  dval converted (by truncation) to int
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">flag</span> <span class="o">=</span> <span class="n">dval</span><span class="p">;</span>    <span class="c1">//  if dval is 0, then flag is false, otherwise true
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">cval</span> <span class="o">+</span> <span class="n">fval</span><span class="p">;</span>    <span class="c1">//  cval promoted to int, then that int converted to float
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">sval</span> <span class="o">+</span> <span class="n">cval</span><span class="p">;</span>    <span class="c1">//  sval and cval promoted to int
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">cval</span> <span class="o">+</span> <span class="n">lval</span><span class="p">;</span>    <span class="c1">//  cval converted to long
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ival</span> <span class="o">+</span> <span class="n">ulval</span><span class="p">;</span>   <span class="c1">//  ival converted to unsigned long
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">usval</span> <span class="o">+</span> <span class="n">ival</span><span class="p">;</span>   <span class="c1">//  promotion depends on the size of unsigned short and int
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uival</span> <span class="o">+</span> <span class="n">lval</span><span class="p">;</span>   <span class="c1">//  conversion depends on the size of unsigned int and long
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>A</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">cval</span><span class="p">;</span>     <span class="kt">int</span> <span class="n">ival</span><span class="p">;</span>    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">ui</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">fval</span><span class="p">;</span>    <span class="kt">double</span> <span class="n">dval</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="n">cval</span> <span class="o">=</span> <span class="sc">&#39;a&#39;</span> <span class="o">+</span> <span class="mi">3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="n">fval</span> <span class="o">=</span> <span class="n">ui</span> <span class="o">-</span> <span class="n">ival</span> <span class="o">*</span> <span class="mf">1.0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="n">dval</span> <span class="o">=</span> <span class="n">ui</span> <span class="o">*</span> <span class="n">fval</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="n">cval</span> <span class="o">=</span> <span class="n">ival</span> <span class="o">+</span> <span class="n">fval</span> <span class="o">+</span> <span class="n">dval</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(a) <code>'a'</code> 转换为 <code>int</code> ，然后与 <code>3</code> 相加的结果转换为 <code>char</code></p>
+<p>(b) <code>ival</code> 转换为 <code>double</code>，<code>ui</code> 转换为 <code>double</code>，结果转换为 <code>float</code></p>
+<p>(c) <code>ui</code> 转换为 <code>float</code>，结果转换为 <code>double</code></p>
+<p>(d) <strong><code>ival</code> 转换为 <code>float</code>，与<code>fval</code>相加后的结果转换为 <code>double</code>，最后的结果转换为<code>char</code></strong></p>
+<h3 id="指针引用的隐式转换">指针引用的隐式转换<a hidden class="anchor" aria-hidden="true" href="#指针引用的隐式转换">#</a></h3>
+<p><strong>数组转换为指针</strong></p>
+<ul>
+<li>数组名隐式转换成指向数组首元素的指针</li>
+<li>decltype关键字参数、取地址符(&amp;)、sizeof、typeid 都不会发生这种转换，仍然是<code>int[5]</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">arr</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">};</span> <span class="c1">// arr类型为int[5]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="n">arr</span><span class="p">;</span> <span class="c1">// arr单独使用，隐式转换为int*
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>指针转换为<code>void*</code></strong></p>
+<ul>
+<li>
+<p>0 或 nullptr 都能转换成任意指针类型</p>
+</li>
+<li>
+<p><strong>指向非常量的指针</strong>（例如 <code>int*</code>, <code>double*</code>, <code>char*</code>）能转换成<code>void*</code></p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span><span class="n">int_ptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">;</span>   <span class="c1">// 指向 int 的指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="o">*</span><span class="n">void_ptr</span> <span class="o">=</span> <span class="n">int_ptr</span><span class="p">;</span>  <span class="c1">// 隐式转换成 v	oid*
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>任何类型的指针（例如 <code>int*</code>, <code>const int*</code>, <code>double*</code>, <code>const double*</code> ）都能转换成<code>const void*</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span><span class="n">int_ptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">;</span>       <span class="c1">// 指向 int 的指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="o">*</span><span class="n">const_int_ptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">;</span> <span class="c1">// 指向 const int 的指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">c_void_ptr1</span> <span class="o">=</span> <span class="n">int_ptr</span><span class="p">;</span>      <span class="c1">// int* 隐式转换成 const void*
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">c_void_ptr2</span> <span class="o">=</span> <span class="n">const_int_ptr</span><span class="p">;</span> <span class="c1">// const int* 隐式转换成 const vo
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>常量指针的转换</strong></p>
+<p>√：<code>const int *p</code> = <code>int *p</code> 、<code>const int &amp;p</code> = <code>int &amp;p</code></p>
+<p>×：<code>int *p</code> = <code>const int *p</code> 、<code>int &amp;p</code> = <code>const int &amp;p</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>  <span class="c1">// convert a nonconst to a reference to const int
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">;</span> <span class="c1">// convert address of a nonconst to the address of a const
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="o">&amp;</span><span class="n">r</span> <span class="o">=</span> <span class="n">j</span><span class="p">,</span> <span class="o">*</span><span class="n">q</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span> <span class="c1">// error: conversion from const to nonconst not allowed
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>类类型转换</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">while</span><span class="p">(</span><span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">s</span><span class="p">);</span>   <span class="c1">//将 cin 转换为 bool 值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">string</span> <span class="n">s</span> <span class="o">=</span> <span class="s">&#34;value&#34;</span><span class="p">;</span>   <span class="c1">//将C风格字符串转换为 string
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="显式转换">显式转换<a hidden class="anchor" aria-hidden="true" href="#显式转换">#</a></h2>
+<p>强制类型转换<strong>非常危险</strong>，尽量避免使用。如果使用了，应反复思考是否可以用其他方式代替。</p>
+<p><strong><code>C++11</code>标准的显式转换</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">cast</span><span class="o">-</span><span class="n">name</span><span class="o">&lt;</span><span class="n">type</span><span class="o">&gt;</span><span class="p">(</span><span class="n">expression</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>type</code>表明转换的类型</li>
+<li><code>cast-name</code>表明转换的方式</li>
+</ul>
+<p>有四种显式转换的方式：<strong>static_cast、dynamic_cast、const_cast、reinterpret_cast</strong> ：</p>
+<ul>
+<li>
+<p><strong>static_cast</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">double</span> <span class="n">slope</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">/</span><span class="n">i</span><span class="p">;</span> <span class="c1">//将 j 转换成 double 以便执行浮点数除法
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>任何类型转换，<strong>只要不包含底层const</strong>，都可以用static_cast</p>
+</li>
+<li>
+<p>通常用于<strong>将较大类型转化为较小类型</strong></p>
+</li>
+<li>
+<p>使用static_cast编译器<strong>不会警告精度损失</strong>，这时它告诉读者和编译器：我们知道且不在乎精度损失。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>const_cast</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const_cast</span> <span class="o">&lt;</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;&gt;</span> <span class="p">(</span><span class="n">s</span><span class="p">);</span>  <span class="c1">// 将 s 转换为常量引用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const_cast</span> <span class="o">&lt;</span><span class="n">string</span><span class="o">&amp;&gt;</span> <span class="p">(</span><span class="n">s</span><span class="p">);</span>   <span class="c1">// 将 s 转换回非常量引用
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>const_cast<strong>只能改变对象的底层const，不能改变对象的类型</strong></p>
+</li>
+<li>
+<p>const_cast可以<strong>去掉或增加 const 性质</strong></p>
+</li>
+<li>
+<p>只有const_cast能改变表达式的常量属性，其他都不行</p>
+</li>
+<li>
+<p>cosnt_cast常用于有函数重载的上下文中</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>reinterpret_cast</strong></p>
+<ul>
+<li>它依赖于机器，使用门槛很高，且使用时充满风险，<strong>不要用它</strong>。</li>
+</ul>
+</li>
+</ul>
+<p><strong>旧式的强制类型转换</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>  <span class="c1">// 函数形式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">a</span><span class="p">;</span>  <span class="c1">// C语言风格
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>旧式的强制类型转换本质上采用 const_cast、static_cast 或 reinterpret_cast 的一种</p>
+<h1 id="412-运算符优先级">4.12 运算符优先级<a hidden class="anchor" aria-hidden="true" href="#412-运算符优先级">#</a></h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="o">::</span> <span class="c1">//作用域
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">.</span> <span class="err">和</span> <span class="o">-&gt;</span> <span class="c1">//成员访问。注意它非常高，比括号还高。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">[]</span> <span class="err">和</span> <span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="o">++</span><span class="err">、</span><span class="o">--</span> <span class="c1">//注意递增递减运算符的优先级非常高，括号之下最高的。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="p">,</span> <span class="c1">//逗号是最低的
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/lang/">Lang</a></li>
+      <li><a href="http://localhost:1313/tags/c&#43;&#43;/">C&#43;&#43;</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/compile/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>compile</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch05/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Chapter 4. Expressions</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/">momo blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

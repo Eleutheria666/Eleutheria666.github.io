@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head>
+	<meta name="generator" content="Hugo 0.133.0"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>momo blog</title>
+
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8f541c169a12d0d6bb704527bb78f6481fb4f5a39b7171fc16fab8c03ae6b1bd.css" integrity="sha256-j1QcFpoS0Na7cEUnu3j2SB&#43;09aObcXH8Fvq4wDrmsb0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  
+
+<meta property="og:title" content="momo blog" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://localhost:1313/" />
+<meta property="og:image" content="http://localhost:1313/images/papermod-cover.png" />
+<meta property="og:site_name" content="momo blog" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png" />
+<meta name="twitter:title" content="momo blog"/>
+<meta name="twitter:description" content=""/>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "momo blog",
+  "url": "http://localhost:1313/",
+  "description": "",
+  "thumbnailUrl": "http://localhost:1313/favicon.ico",
+  "sameAs": [
+      "https://github.com/HuYumu", "https://instagram.com/", "https://twitter.com/", "https://ko-fi.com"
+  ]
+}
+</script>
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="momo blog (Alt + H)">momo blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/archives/" title="archives">
+                    <span>archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="search (Alt &#43; /)" accesskey=/>
+                    <span>search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<article class="first-entry home-info">
+    <header class="entry-header">
+        <h1>Momo&rsquo;s Blog</h1>
+    </header>
+    <div class="entry-content">
+        Welcome to my blog page!
+    </div>
+    <footer class="entry-footer">
+        <div class="social-icons" >
+    <a href="https://github.com/HuYumu" target="_blank" rel="noopener noreferrer me"
+        title="Github">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path
+        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+    </path>
+</svg>
+    </a>
+    <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer me"
+        title="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line>
+</svg>
+    </a>
+    <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer me"
+        title="Twitter">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path
+        d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
+    </path>
+</svg>
+    </a>
+    <a href="https://ko-fi.com" target="_blank" rel="noopener noreferrer me"
+        title="Buy Me a Ko-Fi :)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -3 23 27" preserveAspectRatio="xMidYMid meet" fill="none"
+    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path
+        d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734c4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09c-.443-.441-3.368-3.049-4.034-3.954c-.709-.965-1.041-2.7-.091-3.71c.951-1.01 3.005-1.086 4.363.407c0 0 1.565-1.782 3.468-.963c1.904.82 1.832 3.011.723 4.311zm6.173.478c-.928.116-1.682.028-1.682.028V7.284h1.77s1.971.551 1.971 2.638c0 1.913-.985 2.667-2.059 3.015z" />
+</svg>
+    </a>
+</div>
+
+    </footer>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">netty学习
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Netty是什么？
+Netty 是基于 Java NIO 异步事件驱动的网络应用框架，使用 Netty 可以快速开发网络应用。
+Netty的优势？
+对各种传输协议提供统一的 API（使用阻塞和非阻塞套接字时候使用的是同一个 API，只是需要设置的参数不一样）。 基于一个灵活、可扩展的事件模型来实现关注点清晰分离。 高度可定制的线程模型——单线程、一个或多个线程池。 完整的 SSL/TLS 和 StartTLS 支持。 Netty的应用？
+许多开源框架和组件底层RPC是基于Netty的，例如Dubbo、Elasticsearch等
+1 Netty环境搭建 创建一个简单的Netty项目，确保可以编译和运行。 2 Netty核心组件 EventLoopGroup：
+什么是EventLoopGroup？ BossGroup和WorkerGroup的作用。 Channel：
+Channel的概念和类型。 Channel的生命周期。 ChannelHandler：
+ChannelHandler的作用和类型。 如何编写自定义的ChannelHandler。 实践任务：
+编写一个简单的Echo Server和Client，实现消息的接收和回显。 Netty的事件处理 目标：
+理解Netty的事件处理机制。 学习内容：
+ChannelPipeline： ChannelPipeline的作用和工作原理。 如何添加和移除ChannelHandler。 事件类型： 常见的事件类型（如channelRead、channelActive等）。 事件的传播和处理顺序。 实践任务：
+扩展Echo Server，增加日志记录和异常处理。 Netty编解码器 目标：
+学习Netty的编解码器，处理复杂的数据格式。 学习内容：
+ByteBuf： ByteBuf的概念和使用方法。 与ByteBuffer的区别。 编解码器： LineBasedFrameDecoder和StringDecoder的使用。 自定义编解码器的编写。 实践任务：
+编写一个简单的协议解析器，处理自定义的二进制协议。 Netty高级特性 目标：
+学习Netty的一些高级特性，提升性能和稳定性。 学习内容：
+连接管理： 如何管理连接的生命周期。 连接的心跳检测和超时处理。 性能优化： 选择合适的线程模型。 使用零拷贝技术。 安全性和加密： SSL/TLS的支持。 如何配置SSL/TLS。 实践任务：...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-11-25 00:00:00 +0000 UTC'>November 25, 2024</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;127 words</footer>
+  <a class="entry-link" aria-label="post link to netty学习" href="http://localhost:1313/posts/netty/im%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">netty学习
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>2 Netty核心组件 EventLoopGroup：
+什么是EventLoopGroup？ BossGroup和WorkerGroup的作用。 Channel：
+Channel的概念和类型。 Channel的生命周期。 ChannelHandler：
+ChannelHandler的作用和类型。 如何编写自定义的ChannelHandler。 实践任务：
+编写一个简单的Echo Server和Client，实现消息的接收和回显。 Netty的事件处理 目标：
+理解Netty的事件处理机制。 学习内容：
+ChannelPipeline： ChannelPipeline的作用和工作原理。 如何添加和移除ChannelHandler。 事件类型： 常见的事件类型（如channelRead、channelActive等）。 事件的传播和处理顺序。 实践任务：
+扩展Echo Server，增加日志记录和异常处理。 Netty编解码器 目标：
+学习Netty的编解码器，处理复杂的数据格式。 学习内容：
+ByteBuf： ByteBuf的概念和使用方法。 与ByteBuffer的区别。 编解码器： LineBasedFrameDecoder和StringDecoder的使用。 自定义编解码器的编写。 实践任务：
+编写一个简单的协议解析器，处理自定义的二进制协议。 Netty高级特性 目标：
+学习Netty的一些高级特性，提升性能和稳定性。 学习内容：
+连接管理： 如何管理连接的生命周期。 连接的心跳检测和超时处理。 性能优化： 选择合适的线程模型。 使用零拷贝技术。 安全性和加密： SSL/TLS的支持。 如何配置SSL/TLS。 实践任务：
+实现一个带有心跳检测的TCP服务器。 配置SSL/TLS，实现安全的通信。 Netty的最佳实践 目标：
+学习Netty的最佳实践，避免常见错误。 学习内容：
+资源管理： 如何正确关闭资源。 避免内存泄漏。 错误处理： 异常处理的最佳实践。 日志记录的重要性。 性能调优： 常见的性能瓶颈。 如何进行性能调优。 实践任务：
+优化之前的Echo Server，确保资源正确释放和异常处理。 进行性能测试，找出并解决性能瓶颈。 </p>
+  </div>
+  <footer class="entry-footer"><span title='2024-11-25 00:00:00 +0000 UTC'>November 25, 2024</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;72 words</footer>
+  <a class="entry-link" aria-label="post link to netty学习" href="http://localhost:1313/posts/netty/netty/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">slfj&#43;logback源码解析
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>SLF4j是一个日志门面，类似于JDBC，提供Java日志记录的统一接口
+Logback是一个日志实现，类似于mysql-connector，实现SLF4j提供的接口以实现日志打印功能。
+类似的日志实现还有Log4j、JDK Logging等。但由于这些日志实现实现的不是SLF4j提供的接口，因此需要使用转换器转换至SLF4j的接口
+Logback 核心模块主要包括以下部分：
+Core：处理日志事件的核心逻辑 Classic：基于 SLF4J 提供的接口实现日志记录功能 Access：用于 Web 应用程序中的 HTTP 访问日志记录 Logger的获取 Java项目中获取Logger示例：
+1 2 3 4 5 6 import org.slf4j.Logger; import org.slf4j.LoggerFactory; private static final Logger logger = LoggerFactory.getLogger(Example.class); // Class获取 private static final Logger logger = LoggerFactory.getLogger(&#34;example&#34;); // String获取 logger.info(&#34;This is an info message&#34;); LoggerFactory的创建 首先，通过LoggerFactory.getLogger()获得Logger对象
+返回底层日志实现的ILoggerFactory对象，若未初始化，先初始化日志实现的ILoggerFactory 获取特定ILoggerFactory生产的Logger对象 1 2 3 4 5 6 7 8 9 10 11 12 public static Logger getLogger(String name) { ILoggerFactory iLoggerFactory = getILoggerFactory(); // 初始化底层日志实现的ILoggerFactory return iLoggerFactory....</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-10-04 00:00:00 +0000 UTC'>October 4, 2024</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;476 words</footer>
+  <a class="entry-link" aria-label="post link to slfj&#43;logback源码解析" href="http://localhost:1313/posts/logback/log/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">compile
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>编译的过程 预编译：源代码的预编译指令替换。宏替换、条件预编译指令、头文件展开#&lt;include&gt;、#pragma
+gcc -E hello.c -o hello.i
+编译：源代码→汇编代码
+gcc -S hello.i -o hello.s
+汇编：汇编代码→目标代码
+gcc -c hello.s -o hello.o
+链接：将多个可重定位目标文件、库文件进行链接
+gcc hello1.o hello2.o -o hello 动态库和静态库 概念：
+静态库：在编译时，静态库的代码被直接嵌入到最终的可执行文件中。 动态库：在编译时，动态库的代码不会被嵌入到可执行文件中。而是在运行时，系统动态地加载动态库文件到内存中，并将其映射到进程的地址空间中。 文件名：
+Linux系统下，静态库后缀为.a，动态库后缀为.so Windows系统下，静态库后缀为.lib，动态库后缀为.dll 所在位置
+Linux系统下，头文件在/usr/include/下，库文件在/usr/lib64下 从以下三个角度分析静态库和动态库的适用场景：
+加载时间：使用静态库的程序启动时不需要额外的加载时间；使用动态库的程序由于需要在运行时加载动态库到进程的地址空间，需要额外的加载时间。
+由于静态库的代码与程序的其他部分紧密地结合在一起，因此可能获得更好的性能优化。
+内存占用：由于每个静态库在使用它的程序都会有一份代码的拷贝，因此使用静态库内存占用较高。特别是当多个程序同时使用相同的静态库时，这种内存浪费更加明显。而动态库允许多个程序共享同一份库代码，内存占用较低。当系统加载动态库时，它会在内存中为库代码创建一个单独的段，并将该段的地址映射到每个使用它的进程的地址空间中。
+更新与维护：所有使用静态库的程序在其更新时都需要重新编译。因为静态库的代码已经嵌入到可执行文件中，所以无法单独更新库文件。动态库更新后，只需替换旧的动态库文件即可，无需重新编译使用它的程序。
+参考文章
+Linux - 编译器 - 掘金 (juejin.cn)
+https://mp.weixin.qq.com/s/u1V_T8cSbL3TC_kq5lWaQw</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-09-12 00:00:00 +0000 UTC'>September 12, 2024</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;47 words</footer>
+  <a class="entry-link" aria-label="post link to compile" href="http://localhost:1313/posts/compile/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Chapter 4. Expressions
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>4.2 算术运算符 算术运算符包含以下3种类型，按优先级从高到低排序：
+&#43;、- ：一元正号与一元负号 *、/、% ：乘法、除法、求余 &#43;、- ：加法、减法 当算数操作符是布尔类型时，会将布尔变量转化为int类型进行运算（true为1，false为0）。当算数操作符运算的数字结果赋值给布尔变量时，会将算术类型转化为布尔类型（0为false，其他为true）
+除法运算如果两个操作数均为整数，结果是向零舍入
+求余运算符的运算对象必须是整数，运算结果始终与被除数符号相同
+编译器和运行期间没有对运算溢出错误的警告，当发生溢出时，会产生不可预知的行为。
+4.3 逻辑关系运算符 逻辑运算符：！、&amp;&amp;、||。逻辑运算符的作用对象必须是能转换成布尔值的类型 关系运算符：&lt;, &lt;=, &gt;, &gt;=, !=, == ：大于小于的优先级高于等于和不等于 以下值转化为布尔类型的结果为false：
+算术类型：int num = 0
+指针类型：int *p = 0
+字符类型：char ch = &#39;\0&#39;
+以算数值作为if判断条件：直接用，不要与布尔值做比较
+布尔字面量true和false只适用于和布尔变量进行比较
+1 2 if(a); //正确 if(a == true); //错误：会将 true 先转换为 int 再比较，比较结果是不相等 4.5 递增递减运算符 前置版本&#43;&#43;i：首先将运算对象加 1，然后将改变后的对象作为求值结果，返回对象本身作为左值
+后置版本i&#43;&#43;：也是将运算对象加 1，但结果是运算对象改变之前那个值的副本，返回将对象原始值的副本
+如无必要，不要使用后置版本：前置版本直接返回改变了的运算对象，后置版本需要将原始值保存下来以便于返回，是一种浪费。后置版本对于整数和指针来说影响不大，对于迭代器而言消耗巨大。
+提倡一种写法：*p&#43;&#43;：
+由于递增运算符优先级高于解引用，所以先进行递增运算：先将p值加一，然后返回p的初始值的副本作为求值结果用于解引用
+1 2 3 auto pbeg = v.begin(); while(pbeg != v.end()) cout &lt;&lt; *pbeg&#43;&#43; &lt;&lt; endl; 练习 *beg作为左值时已经&#43;1...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-28 00:00:00 +0000 UTC'>August 28, 2024</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;754 words</footer>
+  <a class="entry-link" aria-label="post link to Chapter 4. Expressions" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch04/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Chapter 4. Expressions
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p></p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-28 00:00:00 +0000 UTC'>August 28, 2024</span>&nbsp;·&nbsp;0 min&nbsp;·&nbsp;0 words</footer>
+  <a class="entry-link" aria-label="post link to Chapter 4. Expressions" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch05/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Chapter 4. Expressions
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p></p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-28 00:00:00 +0000 UTC'>August 28, 2024</span>&nbsp;·&nbsp;0 min&nbsp;·&nbsp;0 words</footer>
+  <a class="entry-link" aria-label="post link to Chapter 4. Expressions" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch06/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Chapter 3. Strings, Vectors, and Arrays
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>3.1 String 使用字符串字面值或字符数组初始化 string 对象时，string 不包含末尾的空字符。
+3.1.1 输入输出 cin &gt;&gt; string
+cin自动忽略开头的空白，遇到空白停止读取，返回true 当cin输入错误或到达输入流末尾，返回false 1 2 3 4 5 6 int main() { string word; while (cin &gt;&gt; word) // read until end-of-file cout &lt;&lt; word &lt;&lt; endl; // write each word followed by a new line return 0; } getline(cin, string)
+定义在头文件 string 中，以一个 istream 对象和一个 string 对象为输入参数 getline读取输入流直到遇到换行符停止，然后将读入的数据存入 string 对象，适用于读取一行 getline也会读入换行符，但是不将换行符存入 string 对象：若只输入一个换行符，读取的结果为空字符串 getline读取为止 1 2 3 4 5 6 int main() { string line; // read input a line at a time until end-of-file while (getline(cin, line)) cout &lt;&lt; line &lt;&lt; endl; } 3....</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-27 00:00:00 +0000 UTC'>August 27, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;305 words</footer>
+  <a class="entry-link" aria-label="post link to Chapter 3. Strings, Vectors, and Arrays" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch03/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">C&#43;&#43;八股
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>ch03 decltype 是什么，如何使用
+如何声明而非定义一个变量
+如果指针不初始化会有什么影响
+如何在多个文件间共享 const 对象
+使用 auto 来定义引用时要注意什么
+预处理变量的作用范围是什么
+C&#43;&#43;属于静态类型语言，静态类型语言的含义是什么？
+C&#43;&#43;有两种定义类型别名的方式，分别是什么
+指针和引用有4点不同，分别是哪些？
+const 对象必须怎样
+const 对象的作用范围
+什么是常量引用，如何声明，是顶层还是底层
+常量引用与常量对象、非常量对象的关系。
+什么是常量指针，如何声明，是顶层还是底层
+常量指针与常量对象、非常量对象的关系。
+顶层 const 和底层 const 都是什么，在什么位置
+如何区分顶层 const 和底层 const
+constexpr 是什么，特点是什么
+ch04 左值与右值的不同
+左值使用的是对象的身份（在内存中的位置），使用右值使用的是对象的值（内容）。需要右值的地方可以用左值代替，反之不行。
+左值对 decltype 的影响
+如果 decltype 中的表达式返回的是左值，那么 decltype 得到是一个引用类型。
+递增运算符的前置与后置版本
+sizeof 运算符的返回值是什么
+常见的隐式类型转换的方式
+四种显示类型转换是什么
+常见的如 int 转换为 double 这样的转换用什么
+const_cast 用于什么时候
+旧式的两种强制类型转换方式
+最长连续序列
+最长无重复字母：不固定窗口的移动模板代码
+找到字符串中所有字母异位词：固定窗口预先设定，vector直接比较
+螺旋矩阵：设定上右下左边界urdl，到边界则改变边界数值（l/u&#43;1,r/d-1），当l&gt;r || u&gt;d退出
+旋转矩阵
+电话号码的数字组合 vector初始化方式
+括号生成 将tmp保存为结果的前提条件：pos==0</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-26 00:00:00 +0000 UTC'>August 26, 2024</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;69 words</footer>
+  <a class="entry-link" aria-label="post link to C&#43;&#43;八股" href="http://localhost:1313/posts/c&#43;&#43;%E5%85%AB%E8%82%A1/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Chapter 2. Variables and Basic Types
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>2.1 内置类型 2.1.1 基本内置类型 C&#43;&#43; 定义了各类型的最小尺寸：bool 未定义、char 8位、short 16位、int 16位、long 32位、long long 64位
+类型选择：
+明确知晓数值不可能为负时，选用无符号类型
+整数运算用 int，数值太大时用 long long，不用 short 和 long
+2.1.2 类型转换 1 2 3 4 5 6 bool b = 42; // b is true int i = b; // i has value 1 i = 3.14; // i has value 3 double pi = i; // pi has value 3.0 unsigned char c = -1; // assuming 8-bit chars, c has value 255 signed char c2 = 256; // assuming 8-bit chars, the value of c2 is undefined 几种自动转换情况：...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-25 00:00:00 +0000 UTC'>August 25, 2024</span>&nbsp;·&nbsp;9 min&nbsp;·&nbsp;1844 words</footer>
+  <a class="entry-link" aria-label="post link to Chapter 2. Variables and Basic Types" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch02/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="http://localhost:1313/page/2/">Next&nbsp;2/2&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/">momo blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

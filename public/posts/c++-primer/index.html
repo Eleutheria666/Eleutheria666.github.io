@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>C&#43;&#43; Primer | momo blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="Notes of C&#43;&#43; Primer">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/posts/c&#43;&#43;-primer/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8f541c169a12d0d6bb704527bb78f6481fb4f5a39b7171fc16fab8c03ae6b1bd.css" integrity="sha256-j1QcFpoS0Na7cEUnu3j2SB&#43;09aObcXH8Fvq4wDrmsb0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/posts/c&#43;&#43;-primer/index.xml">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/c&#43;&#43;-primer/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  
+
+<meta property="og:title" content="C&#43;&#43; Primer" />
+<meta property="og:description" content="Notes of C&#43;&#43; Primer" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://localhost:1313/posts/c&#43;&#43;-primer/" />
+<meta property="og:image" content="http://localhost:1313/images/papermod-cover.png" />
+<meta property="og:site_name" content="momo blog" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png" />
+<meta name="twitter:title" content="C&#43;&#43; Primer"/>
+<meta name="twitter:description" content="Notes of C&#43;&#43; Primer"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "C++ Primer",
+      "item": "http://localhost:1313/posts/c++-primer/"
+    }
+  ]
+}
+</script>
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="momo blog (Alt + H)">momo blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/archives/" title="archives">
+                    <span>archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="search (Alt &#43; /)" accesskey=/>
+                    <span>search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a></div>
+  <h1>
+    C&#43;&#43; Primer
+  </h1>
+  <div class="post-description">
+    Notes of C++ Primer
+  </div>
+</header>
+<div class="post-content"><p>电子版地址：<a href="https://cpp-primer.pages.dev/">Home | C++ Primer, Fifth Edition (cpp-primer.pages.dev)</a></p>
+<p>阅读指南：<a href="https://book.douban.com/review/7567776/">如何更好的利用《C++ Primer》学习C++？书评 (douban.com)</a></p>
+<p>练习答案：<a href="https://github.com/applenob/Cpp_Primer_Practice/tree/master/excersize">Cpp_Primer_Practice/excersize (github.com)</a></p>
+<p>他人笔记：<a href="https://github.com/applenob/Cpp_Primer_Practice/blob/master/notes/ch04.md">Cpp_Primer_Practice/notes/ch04.md (github.com)</a></p>
+<p><a href="https://buxianchen.gitbook.io/notes/learn/c++primer_5ed">C++ Primer | notes (gitbook.io)</a></p>
+
+
+</div>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Chapter 4. Expressions
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>4.2 算术运算符 算术运算符包含以下3种类型，按优先级从高到低排序：
+&#43;、- ：一元正号与一元负号 *、/、% ：乘法、除法、求余 &#43;、- ：加法、减法 当算数操作符是布尔类型时，会将布尔变量转化为int类型进行运算（true为1，false为0）。当算数操作符运算的数字结果赋值给布尔变量时，会将算术类型转化为布尔类型（0为false，其他为true）
+除法运算如果两个操作数均为整数，结果是向零舍入
+求余运算符的运算对象必须是整数，运算结果始终与被除数符号相同
+编译器和运行期间没有对运算溢出错误的警告，当发生溢出时，会产生不可预知的行为。
+4.3 逻辑关系运算符 逻辑运算符：！、&amp;&amp;、||。逻辑运算符的作用对象必须是能转换成布尔值的类型 关系运算符：&lt;, &lt;=, &gt;, &gt;=, !=, == ：大于小于的优先级高于等于和不等于 以下值转化为布尔类型的结果为false：
+算术类型：int num = 0
+指针类型：int *p = 0
+字符类型：char ch = &#39;\0&#39;
+以算数值作为if判断条件：直接用，不要与布尔值做比较
+布尔字面量true和false只适用于和布尔变量进行比较
+1 2 if(a); //正确 if(a == true); //错误：会将 true 先转换为 int 再比较，比较结果是不相等 4.5 递增递减运算符 前置版本&#43;&#43;i：首先将运算对象加 1，然后将改变后的对象作为求值结果，返回对象本身作为左值
+后置版本i&#43;&#43;：也是将运算对象加 1，但结果是运算对象改变之前那个值的副本，返回将对象原始值的副本
+如无必要，不要使用后置版本：前置版本直接返回改变了的运算对象，后置版本需要将原始值保存下来以便于返回，是一种浪费。后置版本对于整数和指针来说影响不大，对于迭代器而言消耗巨大。
+提倡一种写法：*p&#43;&#43;：
+由于递增运算符优先级高于解引用，所以先进行递增运算：先将p值加一，然后返回p的初始值的副本作为求值结果用于解引用
+1 2 3 auto pbeg = v.begin(); while(pbeg != v.end()) cout &lt;&lt; *pbeg&#43;&#43; &lt;&lt; endl; 练习 *beg作为左值时已经&#43;1...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-28 00:00:00 +0000 UTC'>August 28, 2024</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;754 words</footer>
+  <a class="entry-link" aria-label="post link to Chapter 4. Expressions" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch04/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Chapter 4. Expressions
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p></p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-28 00:00:00 +0000 UTC'>August 28, 2024</span>&nbsp;·&nbsp;0 min&nbsp;·&nbsp;0 words</footer>
+  <a class="entry-link" aria-label="post link to Chapter 4. Expressions" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch05/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Chapter 4. Expressions
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p></p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-28 00:00:00 +0000 UTC'>August 28, 2024</span>&nbsp;·&nbsp;0 min&nbsp;·&nbsp;0 words</footer>
+  <a class="entry-link" aria-label="post link to Chapter 4. Expressions" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch06/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Chapter 3. Strings, Vectors, and Arrays
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>3.1 String 使用字符串字面值或字符数组初始化 string 对象时，string 不包含末尾的空字符。
+3.1.1 输入输出 cin &gt;&gt; string
+cin自动忽略开头的空白，遇到空白停止读取，返回true 当cin输入错误或到达输入流末尾，返回false 1 2 3 4 5 6 int main() { string word; while (cin &gt;&gt; word) // read until end-of-file cout &lt;&lt; word &lt;&lt; endl; // write each word followed by a new line return 0; } getline(cin, string)
+定义在头文件 string 中，以一个 istream 对象和一个 string 对象为输入参数 getline读取输入流直到遇到换行符停止，然后将读入的数据存入 string 对象，适用于读取一行 getline也会读入换行符，但是不将换行符存入 string 对象：若只输入一个换行符，读取的结果为空字符串 getline读取为止 1 2 3 4 5 6 int main() { string line; // read input a line at a time until end-of-file while (getline(cin, line)) cout &lt;&lt; line &lt;&lt; endl; } 3....</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-27 00:00:00 +0000 UTC'>August 27, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;305 words</footer>
+  <a class="entry-link" aria-label="post link to Chapter 3. Strings, Vectors, and Arrays" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch03/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Chapter 2. Variables and Basic Types
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>2.1 内置类型 2.1.1 基本内置类型 C&#43;&#43; 定义了各类型的最小尺寸：bool 未定义、char 8位、short 16位、int 16位、long 32位、long long 64位
+类型选择：
+明确知晓数值不可能为负时，选用无符号类型
+整数运算用 int，数值太大时用 long long，不用 short 和 long
+2.1.2 类型转换 1 2 3 4 5 6 bool b = 42; // b is true int i = b; // i has value 1 i = 3.14; // i has value 3 double pi = i; // pi has value 3.0 unsigned char c = -1; // assuming 8-bit chars, c has value 255 signed char c2 = 256; // assuming 8-bit chars, the value of c2 is undefined 几种自动转换情况：...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-25 00:00:00 +0000 UTC'>August 25, 2024</span>&nbsp;·&nbsp;9 min&nbsp;·&nbsp;1844 words</footer>
+  <a class="entry-link" aria-label="post link to Chapter 2. Variables and Basic Types" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch02/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/">momo blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

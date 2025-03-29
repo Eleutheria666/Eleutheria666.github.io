@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Chapter 3. Strings, Vectors, and Arrays | momo blog</title>
+<meta name="keywords" content="lang, C&#43;&#43;">
+<meta name="description" content="3.1 String 使用字符串字面值或字符数组初始化 string 对象时，string 不包含末尾的空字符。
+3.1.1 输入输出 cin &gt;&gt; string
+cin自动忽略开头的空白，遇到空白停止读取，返回true 当cin输入错误或到达输入流末尾，返回false 1 2 3 4 5 6 int main() { string word; while (cin &gt;&gt; word) // read until end-of-file cout &lt;&lt; word &lt;&lt; endl; // write each word followed by a new line return 0; } getline(cin, string)
+定义在头文件 string 中，以一个 istream 对象和一个 string 对象为输入参数 getline读取输入流直到遇到换行符停止，然后将读入的数据存入 string 对象，适用于读取一行 getline也会读入换行符，但是不将换行符存入 string 对象：若只输入一个换行符，读取的结果为空字符串 getline读取为止 1 2 3 4 5 6 int main() { string line; // read input a line at a time until end-of-file while (getline(cin, line)) cout &lt;&lt; line &lt;&lt; endl; } 3.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch03/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8f541c169a12d0d6bb704527bb78f6481fb4f5a39b7171fc16fab8c03ae6b1bd.css" integrity="sha256-j1QcFpoS0Na7cEUnu3j2SB&#43;09aObcXH8Fvq4wDrmsb0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch03/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  
+
+<meta property="og:title" content="Chapter 3. Strings, Vectors, and Arrays" />
+<meta property="og:description" content="3.1 String 使用字符串字面值或字符数组初始化 string 对象时，string 不包含末尾的空字符。
+3.1.1 输入输出 cin &gt;&gt; string
+cin自动忽略开头的空白，遇到空白停止读取，返回true 当cin输入错误或到达输入流末尾，返回false 1 2 3 4 5 6 int main() { string word; while (cin &gt;&gt; word) // read until end-of-file cout &lt;&lt; word &lt;&lt; endl; // write each word followed by a new line return 0; } getline(cin, string)
+定义在头文件 string 中，以一个 istream 对象和一个 string 对象为输入参数 getline读取输入流直到遇到换行符停止，然后将读入的数据存入 string 对象，适用于读取一行 getline也会读入换行符，但是不将换行符存入 string 对象：若只输入一个换行符，读取的结果为空字符串 getline读取为止 1 2 3 4 5 6 int main() { string line; // read input a line at a time until end-of-file while (getline(cin, line)) cout &lt;&lt; line &lt;&lt; endl; } 3." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/posts/c&#43;&#43;-primer/ch03/" />
+<meta property="og:image" content="http://localhost:1313/images/papermod-cover.png" />
+<meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-08-27T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-08-27T00:00:00+00:00" /><meta property="og:site_name" content="momo blog" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png" />
+<meta name="twitter:title" content="Chapter 3. Strings, Vectors, and Arrays"/>
+<meta name="twitter:description" content="3.1 String 使用字符串字面值或字符数组初始化 string 对象时，string 不包含末尾的空字符。
+3.1.1 输入输出 cin &gt;&gt; string
+cin自动忽略开头的空白，遇到空白停止读取，返回true 当cin输入错误或到达输入流末尾，返回false 1 2 3 4 5 6 int main() { string word; while (cin &gt;&gt; word) // read until end-of-file cout &lt;&lt; word &lt;&lt; endl; // write each word followed by a new line return 0; } getline(cin, string)
+定义在头文件 string 中，以一个 istream 对象和一个 string 对象为输入参数 getline读取输入流直到遇到换行符停止，然后将读入的数据存入 string 对象，适用于读取一行 getline也会读入换行符，但是不将换行符存入 string 对象：若只输入一个换行符，读取的结果为空字符串 getline读取为止 1 2 3 4 5 6 int main() { string line; // read input a line at a time until end-of-file while (getline(cin, line)) cout &lt;&lt; line &lt;&lt; endl; } 3."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "C++ Primer",
+      "item": "http://localhost:1313/posts/c++-primer/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "Chapter 3. Strings, Vectors, and Arrays",
+      "item": "http://localhost:1313/posts/c++-primer/ch03/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Chapter 3. Strings, Vectors, and Arrays",
+  "name": "Chapter 3. Strings, Vectors, and Arrays",
+  "description": "3.1 String 使用字符串字面值或字符数组初始化 string 对象时，string 不包含末尾的空字符。\n3.1.1 输入输出 cin \u0026gt;\u0026gt; string\ncin自动忽略开头的空白，遇到空白停止读取，返回true 当cin输入错误或到达输入流末尾，返回false 1 2 3 4 5 6 int main() { string word; while (cin \u0026gt;\u0026gt; word) // read until end-of-file cout \u0026lt;\u0026lt; word \u0026lt;\u0026lt; endl; // write each word followed by a new line return 0; } getline(cin, string)\n定义在头文件 string 中，以一个 istream 对象和一个 string 对象为输入参数 getline读取输入流直到遇到换行符停止，然后将读入的数据存入 string 对象，适用于读取一行 getline也会读入换行符，但是不将换行符存入 string 对象：若只输入一个换行符，读取的结果为空字符串 getline读取为止 1 2 3 4 5 6 int main() { string line; // read input a line at a time until end-of-file while (getline(cin, line)) cout \u0026lt;\u0026lt; line \u0026lt;\u0026lt; endl; } 3.",
+  "keywords": [
+    "lang", "C++"
+  ],
+  "articleBody": "3.1 String 使用字符串字面值或字符数组初始化 string 对象时，string 不包含末尾的空字符。\n3.1.1 输入输出 cin \u003e\u003e string\ncin自动忽略开头的空白，遇到空白停止读取，返回true 当cin输入错误或到达输入流末尾，返回false 1 2 3 4 5 6 int main() { string word; while (cin \u003e\u003e word) // read until end-of-file cout \u003c\u003c word \u003c\u003c endl; // write each word followed by a new line return 0; } getline(cin, string)\n定义在头文件 string 中，以一个 istream 对象和一个 string 对象为输入参数 getline读取输入流直到遇到换行符停止，然后将读入的数据存入 string 对象，适用于读取一行 getline也会读入换行符，但是不将换行符存入 string 对象：若只输入一个换行符，读取的结果为空字符串 getline读取为止 1 2 3 4 5 6 int main() { string line; // read input a line at a time until end-of-file while (getline(cin, line)) cout \u003c\u003c line \u003c\u003c endl; } 3.2.2 string access 遍历字符串中的每一个字符：使用C++11的新特性—range for循环\n1 2 for (declaration : expression) statement expression is an object of a type that represents a sequence declaration defines the variable that we’ll use to access the underlying elements in the sequence. On each iteration, the variable in declaration is initialized from the value of the next element in expression. 如果需要对expression的序列进行修改，declaration应为引用类型\n1 2 for (auto \u0026c : s) // for every char in s (note: c is a reference) c = toupper(c); // change char in s 获取字符串中特定位置的字符：索引或迭代器。索引的类型最好是size_type保证为正整数\n1 2 const string s = \"Keep out!\"; for (auto \u0026c : s) { /* ... */ } 3.2.3 其他 string 的 size() 成员函数返回类型为string::size_type。为什么不用unsigned int这样的类型？因为像size_type这样的伴随类型使得以独立于机器的方式使用库类型成为可能。因此在for循环中，使用auto关键字声明循环索引的类型。\n连接字符串 s1、s2，加号两边必须至少有一个是 string，不能都是字面值。如果有多个string相加，则从第一个字符串开始两两匹对，但仍需要保证匹对双方至少有一个是string类型\n1 2 string s5 = \"hello\" + \", \"; // error: no string operand string s7 = (\"hello\" + \", \") + s2; // error: can't add string literals 使用 c++ 版本的标准库头文件，即 cname 而非 name.h 类型的头文件。\n3.2 Vector vector是模板、vector是类型。模板用于告诉编译器如何创建类（类型）。\nTemplates are not themselves functions or classes. Instead, they can be thought of as instructions to the compiler for generating classes or functions.\n早期的C++需要这样声明vector",
+  "wordCount" : "305",
+  "inLanguage": "en",
+  "image": "http://localhost:1313/images/papermod-cover.png","datePublished": "2024-08-27T00:00:00Z",
+  "dateModified": "2024-08-27T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/c++-primer/ch03/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "momo blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="momo blog (Alt + H)">momo blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/archives/" title="archives">
+                    <span>archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="search (Alt &#43; /)" accesskey=/>
+                    <span>search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/c&#43;&#43;-primer/">C&#43;&#43; Primer</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Chapter 3. Strings, Vectors, and Arrays
+    </h1>
+    <div class="post-meta"><span title='2024-08-27 00:00:00 +0000 UTC'>August 27, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;305 words
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#31-string" aria-label="3.1 String">3.1 String</a><ul>
+                        
+                <li>
+                    <a href="#311-%e8%be%93%e5%85%a5%e8%be%93%e5%87%ba" aria-label="3.1.1 输入输出">3.1.1 输入输出</a></li>
+                <li>
+                    <a href="#322-string-access" aria-label="3.2.2 string access">3.2.2 string access</a></li>
+                <li>
+                    <a href="#323-%e5%85%b6%e4%bb%96" aria-label="3.2.3 其他">3.2.3 其他</a></li></ul>
+                </li>
+                <li>
+                    <a href="#32-vector" aria-label="3.2 Vector">3.2 Vector</a><ul>
+                        
+                <li>
+                    <a href="#321-%e5%88%9d%e5%a7%8b%e5%8c%96" aria-label="3.2.1 初始化">3.2.1 初始化</a></li>
+                <li>
+                    <a href="#323-%e6%93%8d%e4%bd%9c" aria-label="3.2.3 操作">3.2.3 操作</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h1 id="31-string">3.1 String<a hidden class="anchor" aria-hidden="true" href="#31-string">#</a></h1>
+<p>使用字符串字面值或字符数组初始化 string 对象时，string <strong>不包含末尾的空字符</strong>。</p>
+<h2 id="311-输入输出">3.1.1 输入输出<a hidden class="anchor" aria-hidden="true" href="#311-输入输出">#</a></h2>
+<p><code>cin &gt;&gt; string</code></p>
+<ul>
+<li><code>cin</code>自动忽略开头的空白，遇到空白停止读取，返回true</li>
+<li>当<code>cin</code>输入错误或到达输入流末尾，返回false</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">string</span> <span class="n">word</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">word</span><span class="p">)</span>       <span class="c1">// read until end-of-file
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">word</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="c1">// write each word followed by a new line
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>getline(cin, string)</code></p>
+<ul>
+<li>定义在<strong>头文件 string</strong> 中，以一个 istream 对象和一个 string 对象为输入参数</li>
+<li><code>getline</code>读取输入流直到<strong>遇到换行符停止</strong>，然后将读入的数据存入 string 对象，<strong>适用于读取一行</strong></li>
+<li><code>getline</code>也会读入换行符，但是不将换行符存入 string 对象：若只输入一个换行符，读取的结果为空字符串</li>
+<li><code>getline</code>读取为止</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">string</span> <span class="n">line</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// read input a line at a time until end-of-file
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">while</span> <span class="p">(</span><span class="n">getline</span><span class="p">(</span><span class="n">cin</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">line</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="322-string-access">3.2.2 string access<a hidden class="anchor" aria-hidden="true" href="#322-string-access">#</a></h2>
+<p>遍历字符串中的每一个字符：使用<code>C++11</code>的新特性—<code>range </code>for循环</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="nl">declaration</span> <span class="p">:</span> <span class="n">expression</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">statement</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<ul>
+<li><em>expression</em> is an object of a type that <strong>represents a sequence</strong></li>
+<li><em>declaration</em> defines the variable that we’ll use to access the underlying elements in the sequence.</li>
+<li>On each iteration, the variable in <em>declaration</em> is initialized from the value of the next element in <em>expression</em>.</li>
+</ul>
+</blockquote>
+<p>如果需要对expression的序列进行修改，declaration应为<strong>引用类型</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">c</span> <span class="p">:</span> <span class="n">s</span><span class="p">)</span>   <span class="c1">// for every char in s (note: c is a reference)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">c</span> <span class="o">=</span> <span class="n">toupper</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>  <span class="c1">// change char in s
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>获取字符串中特定位置的字符：索引或迭代器。索引的类型最好是<code>size_type</code>保证为正整数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">const</span> <span class="n">string</span> <span class="n">s</span> <span class="o">=</span> <span class="s">&#34;Keep out!&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">c</span> <span class="p">:</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ...  */</span> <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="323-其他">3.2.3 其他<a hidden class="anchor" aria-hidden="true" href="#323-其他">#</a></h2>
+<p>string 的 <code>size()</code> 成员函数返回类型为<code>string::size_type</code>。为什么不用<code>unsigned int</code>这样的类型？因为像<code>size_type</code>这样的伴随类型使得以独立于机器的方式使用库类型成为可能。因此在<code>for</code>循环中，使用<code>auto</code>关键字声明循环索引的类型。</p>
+<p>连接字符串 s1、s2，加号两边必须<strong>至少有一个是 string，不能都是字面值</strong>。如果有多个string相加，则从第一个字符串开始两两匹对，但仍需要保证匹对双方至少有一个是string类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">string</span> <span class="n">s5</span> <span class="o">=</span> <span class="s">&#34;hello&#34;</span> <span class="o">+</span> <span class="s">&#34;, &#34;</span><span class="p">;</span>      <span class="c1">// error: no string operand
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">string</span> <span class="n">s7</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#34;hello&#34;</span> <span class="o">+</span> <span class="s">&#34;, &#34;</span><span class="p">)</span> <span class="o">+</span> <span class="n">s2</span><span class="p">;</span> <span class="c1">// error: can&#39;t add string literals
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>使用 c++ 版本的标准库头文件，即 cname 而非 name.h 类型的头文件。</p>
+<h1 id="32-vector">3.2 Vector<a hidden class="anchor" aria-hidden="true" href="#32-vector">#</a></h1>
+<p><code>vector</code>是模板、<code>vector&lt;int&gt;</code>是类型。模板用于告诉编译器如何创建类（类型）。</p>
+<blockquote>
+<p>Templates are not themselves functions or classes. Instead, they can be thought of as instructions to the compiler for generating classes or functions.</p>
+</blockquote>
+<p>早期的C++需要这样声明<code>vector&lt;vector&lt;int&gt; &gt;</code>，<code>C++11</code>标准允许这样声明<code>vector&lt;vector&lt;int&gt;&gt;</code></p>
+<h2 id="321-初始化">3.2.1 初始化<a hidden class="anchor" aria-hidden="true" href="#321-初始化">#</a></h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">v</span> <span class="p">{</span><span class="mi">10</span><span class="p">};</span>        <span class="c1">// v 有 10 个默认初始化的元素
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">v</span> <span class="p">{</span><span class="mi">10</span><span class="p">,</span> <span class="s">&#34;hi&#34;</span><span class="p">};</span>  <span class="c1">// v 有 10 个值为 &#34;hi&#34; 的元素
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="323-操作">3.2.3 操作<a hidden class="anchor" aria-hidden="true" href="#323-操作">#</a></h2>
+<p>要使用<code>vector</code>的<code>size_type</code>，我们必须定义<code>vector</code>的类型，<strong>需要包含其元素类型</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">size_type</span> <span class="c1">// ok
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">vector</span><span class="o">::</span><span class="n">size_type</span>      <span class="c1">// error
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/lang/">Lang</a></li>
+      <li><a href="http://localhost:1313/tags/c&#43;&#43;/">C&#43;&#43;</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch06/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Chapter 4. Expressions</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/c&#43;&#43;%E5%85%AB%E8%82%A1/">
+    <span class="title">Next »</span>
+    <br>
+    <span>C&#43;&#43;八股</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/">momo blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

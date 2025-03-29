@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>compile | momo blog</title>
+<meta name="keywords" content="cpp, install&amp;configure">
+<meta name="description" content="compile">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/posts/compile/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8f541c169a12d0d6bb704527bb78f6481fb4f5a39b7171fc16fab8c03ae6b1bd.css" integrity="sha256-j1QcFpoS0Na7cEUnu3j2SB&#43;09aObcXH8Fvq4wDrmsb0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/compile/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  
+
+<meta property="og:title" content="compile" />
+<meta property="og:description" content="compile" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/posts/compile/" />
+<meta property="og:image" content="http://localhost:1313/images/papermod-cover.png" />
+<meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-09-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-09-12T00:00:00+00:00" /><meta property="og:site_name" content="momo blog" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png" />
+<meta name="twitter:title" content="compile"/>
+<meta name="twitter:description" content="compile"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "compile",
+      "item": "http://localhost:1313/posts/compile/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "compile",
+  "name": "compile",
+  "description": "compile",
+  "keywords": [
+    "cpp", "install\u0026configure"
+  ],
+  "articleBody": "编译的过程 预编译：源代码的预编译指令替换。宏替换、条件预编译指令、头文件展开#、#pragma\ngcc -E hello.c -o hello.i\n编译：源代码→汇编代码\ngcc -S hello.i -o hello.s\n汇编：汇编代码→目标代码\ngcc -c hello.s -o hello.o\n链接：将多个可重定位目标文件、库文件进行链接\ngcc hello1.o hello2.o -o hello 动态库和静态库 概念：\n静态库：在编译时，静态库的代码被直接嵌入到最终的可执行文件中。 动态库：在编译时，动态库的代码不会被嵌入到可执行文件中。而是在运行时，系统动态地加载动态库文件到内存中，并将其映射到进程的地址空间中。 文件名：\nLinux系统下，静态库后缀为.a，动态库后缀为.so Windows系统下，静态库后缀为.lib，动态库后缀为.dll 所在位置\nLinux系统下，头文件在/usr/include/下，库文件在/usr/lib64下 从以下三个角度分析静态库和动态库的适用场景：\n加载时间：使用静态库的程序启动时不需要额外的加载时间；使用动态库的程序由于需要在运行时加载动态库到进程的地址空间，需要额外的加载时间。\n由于静态库的代码与程序的其他部分紧密地结合在一起，因此可能获得更好的性能优化。\n内存占用：由于每个静态库在使用它的程序都会有一份代码的拷贝，因此使用静态库内存占用较高。特别是当多个程序同时使用相同的静态库时，这种内存浪费更加明显。而动态库允许多个程序共享同一份库代码，内存占用较低。当系统加载动态库时，它会在内存中为库代码创建一个单独的段，并将该段的地址映射到每个使用它的进程的地址空间中。\n更新与维护：所有使用静态库的程序在其更新时都需要重新编译。因为静态库的代码已经嵌入到可执行文件中，所以无法单独更新库文件。动态库更新后，只需替换旧的动态库文件即可，无需重新编译使用它的程序。\n参考文章\nLinux - 编译器 - 掘金 (juejin.cn)\nhttps://mp.weixin.qq.com/s/u1V_T8cSbL3TC_kq5lWaQw\n",
+  "wordCount" : "47",
+  "inLanguage": "en",
+  "image": "http://localhost:1313/images/papermod-cover.png","datePublished": "2024-09-12T00:00:00Z",
+  "dateModified": "2024-09-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/compile/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "momo blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="momo blog (Alt + H)">momo blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/archives/" title="archives">
+                    <span>archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="search (Alt &#43; /)" accesskey=/>
+                    <span>search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      compile
+    </h1>
+    <div class="post-description">
+      compile
+    </div>
+    <div class="post-meta"><span title='2024-09-12 00:00:00 +0000 UTC'>September 12, 2024</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;47 words
+
+</div>
+  </header> 
+  <div class="post-content"><h1 id="编译的过程">编译的过程<a hidden class="anchor" aria-hidden="true" href="#编译的过程">#</a></h1>
+<p>预编译：源代码的预编译指令替换。宏替换、条件预编译指令、<strong>头文件展开<code>#&lt;include&gt;</code></strong>、<strong><code>#pragma</code></strong></p>
+<p><code>gcc -E hello.c -o hello.i</code></p>
+<p>编译：源代码→汇编代码</p>
+<p><code>gcc -S hello.i -o hello.s</code></p>
+<p>汇编：汇编代码→目标代码</p>
+<p><code>gcc -c hello.s -o hello.o</code></p>
+<p>链接：将多个可重定位目标文件、库文件进行链接</p>
+<p><code>gcc hello1.o hello2.o -o hello </code></p>
+<h1 id="动态库和静态库">动态库和静态库<a hidden class="anchor" aria-hidden="true" href="#动态库和静态库">#</a></h1>
+<p>概念：</p>
+<ul>
+<li>静态库：在编译时，静态库的代码被直接嵌入到最终的可执行文件中。</li>
+<li>动态库：在编译时，动态库的代码不会被嵌入到可执行文件中。而是在运行时，系统动态地加载动态库文件到内存中，并将其映射到进程的地址空间中。</li>
+</ul>
+<p>文件名：</p>
+<ul>
+<li>Linux系统下，静态库后缀为<code>.a</code>，动态库后缀为<code>.so</code></li>
+<li>Windows系统下，静态库后缀为<code>.lib</code>，动态库后缀为<code>.dll</code></li>
+</ul>
+<p>所在位置</p>
+<ul>
+<li>Linux系统下，头文件在<code>/usr/include/</code>下，库文件在<code>/usr/lib64</code>下</li>
+</ul>
+<p>从以下三个角度分析静态库和动态库的<strong>适用场景</strong>：</p>
+<ul>
+<li>
+<p><strong>加载时间</strong>：使用静态库的程序启动时<strong>不需要额外的加载时间</strong>；使用动态库的程序由于需要在运行时加载动态库到进程的地址空间，需要额外的加载时间。</p>
+</li>
+<li>
+<p>由于静态库的代码与程序的其他部分紧密地结合在一起，因此可能获得更好的<strong>性能优化</strong>。</p>
+</li>
+<li>
+<p><strong>内存占用</strong>：由于每个静态库在使用它的程序都会有一份代码的拷贝，因此使用静态库内存占用较高。特别是当多个程序同时使用相同的静态库时，这种内存浪费更加明显。而动态库允许<strong>多个程序共享同一份库代码</strong>，内存占用较低。当系统加载动态库时，它会在内存中为库代码创建一个单独的段，并将该段的地址<strong>映射到每个使用它的进程的地址空间中</strong>。</p>
+</li>
+<li>
+<p><strong>更新与维护</strong>：所有使用静态库的程序在其更新时都<strong>需要重新编译</strong>。因为静态库的代码已经嵌入到可执行文件中，所以无法单独更新库文件。动态库更新后，只需替换旧的动态库文件即可，无需重新编译使用它的程序。</p>
+</li>
+</ul>
+<p>参考文章</p>
+<p><a href="https://juejin.cn/post/7284143489737981992?share_token=D3852499-09A5-49D3-A34D-48ADD3032891">Linux - 编译器 - 掘金 (juejin.cn)</a></p>
+<p><a href="https://mp.weixin.qq.com/s/u1V_T8cSbL3TC_kq5lWaQw">https://mp.weixin.qq.com/s/u1V_T8cSbL3TC_kq5lWaQw</a></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/cpp/">Cpp</a></li>
+      <li><a href="http://localhost:1313/tags/installconfigure/">Install&amp;configure</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/logback/log/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>slfj&#43;logback源码解析</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/c&#43;&#43;-primer/ch04/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Chapter 4. Expressions</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/">momo blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

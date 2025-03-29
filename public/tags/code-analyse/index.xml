@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Code Analyse on momo blog</title>
+    <link>http://localhost:1313/tags/code-analyse/</link>
+    <description>Recent content in Code Analyse on momo blog</description>
+    <image>
+      <title>momo blog</title>
+      <url>http://localhost:1313/images/papermod-cover.png</url>
+      <link>http://localhost:1313/images/papermod-cover.png</link>
+    </image>
+    <generator>Hugo -- 0.133.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 04 Oct 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/code-analyse/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>slfj&#43;logback源码解析</title>
+      <link>http://localhost:1313/posts/logback/log/</link>
+      <pubDate>Fri, 04 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/logback/log/</guid>
+      <description>SLF4j是一个日志门面，类似于JDBC，提供Java日志记录的统一接口
+Logback是一个日志实现，类似于mysql-connector，实现SLF4j提供的接口以实现日志打印功能。
+类似的日志实现还有Log4j、JDK Logging等。但由于这些日志实现实现的不是SLF4j提供的接口，因此需要使用转换器转换至SLF4j的接口
+Logback 核心模块主要包括以下部分：
+Core：处理日志事件的核心逻辑 Classic：基于 SLF4J 提供的接口实现日志记录功能 Access：用于 Web 应用程序中的 HTTP 访问日志记录 Logger的获取 Java项目中获取Logger示例：
+1 2 3 4 5 6 import org.slf4j.Logger; import org.slf4j.LoggerFactory; private static final Logger logger = LoggerFactory.getLogger(Example.class); // Class获取 private static final Logger logger = LoggerFactory.getLogger(&amp;#34;example&amp;#34;); // String获取 logger.info(&amp;#34;This is an info message&amp;#34;); LoggerFactory的创建 首先，通过LoggerFactory.getLogger()获得Logger对象
+返回底层日志实现的ILoggerFactory对象，若未初始化，先初始化日志实现的ILoggerFactory 获取特定ILoggerFactory生产的Logger对象 1 2 3 4 5 6 7 8 9 10 11 12 public static Logger getLogger(String name) { ILoggerFactory iLoggerFactory = getILoggerFactory(); // 初始化底层日志实现的ILoggerFactory return iLoggerFactory.</description>
+    </item>
+  </channel>
+</rss>
