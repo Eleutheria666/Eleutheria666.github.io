@@ -5,43 +5,53 @@ categories: ["MIT6.S081"]
 tags: ["OS"]
 aliases: ["/lab4-trap"]
 ShowToc: true
-TocOpen: false
+TocOpen: true
 ---
 
-## 2 Backtrace
+# Lec 6：基于Page faults的附加功能
 
-### 题目
+## 恢复page fault中断
 
-实现`backtrace()`函数：每个堆栈帧中的帧指针用于保存调用者帧指针的地址。你的回溯应该使用这些帧指针来遍历堆栈，并在每个堆栈帧中打印保存的返回地址。
+恢复page fault，需要三个要素：
 
-在`sys_sleep`中插入对该函数的调用，然后运行`bttest`，该命令调用`sys_sleep`，打印出当前堆栈上的函数调用列表。打印的结果如下：
+- 引起page fault的虚拟地址（STVAL）
+- 引起page fault原因的类型（SCAUSE）
+- 发生page fault时程序计数器值，即造成page fault的指令在用户虚拟空间的位置（SEPC）
 
-```shell
-backtrace:
-0x0000000080002cda
-0x0000000080002bb6
-0x0000000080002898
-```
+理想情况下，操作系统应能够在发生page fault中断时，对其进行响应的处理，继续运行后续指令
 
-退出qemu，使用`addr2line -e kernel/kernel`命令并输入上述结果，得到指定位置函数的函数名和所在文件
+## Lazy page allocation
 
-```shell
-$ addr2line -e kernel/kernel
-    0x0000000080002de2
-    0x0000000080002f4a
-    0x0000000080002bfc
-    Ctrl-D
-# output
-kernel/sysproc.c:74
-kernel/syscall.c:224
-kernel/trap.c:85
-```
+eager allocation：一旦调用了sbrk，内核会**立即分配应物理内存**。但会存在过多申请的内存过少使用的情况。
 
-### 思路
+lazy allocation：sbrk系统调不做任何事情，唯一需要做的事情就是提升`p->sz`，将`p->sz`增加n，其中n是需要新分配的内存page数量。但是内核在这个时间点并**不会分配任何物理内存**。之后某个时间点程序**使用到了新申请的那部分内存，会触发page fault**，因为我们还没有分配实际的物理内存（即新的内存未映射到page table）。所以，当我们看到了一个page fault，相应的虚拟地址小于当前`p->sz`，同时大于stack，那么我们就知道这是一个来自于heap的地址，但是内核还没有分配任何物理内存。
 
-1. 在`kernel/riscv.c`文件中添加用于读取当前栈顶寄存器值的函数`r_fp`
-2. 由于每个用户进程的栈只有一页的空间大小，使用`PGROUNDDOWN()`获取栈所在页的首位值
-3. 遍历栈，对于每一个栈帧打印调用生成该栈帧的函数地址`return address`，并通过`to prev frame`获得下一个栈帧的地址（地址往Low处走）
+## Copy on write fork
 
-### 源码
+调用`fork`时，先创建4个新的page，再将父进程page的内容拷贝至4个新的分配给子进程的page中。
 
+之后调用`exec`又会释放这些page，并分配新的page来包含echo相关的内容。
+
+优化：创建子进程时，与其创建分配拷贝内容到新的物理内存，不如**直接共享父进程的物理内存page并设置子进程的PTE指向父进程对应的物理内存page**。但是父进程和子进程之间的隔离性，要保证：**子进程对这些内存的修改应该对父进程不可见**，所以这里的**父进程和子进程的PTE的标志位都设置成只读的**。
+
+父进程和子进程继续运行，当父进程或子进程执行store指令更新一些全局变量时会触发page fault，因为现在在向一个只读PTE写数据。
+
+在得到page fault之后，先分配一个新的page，然后将父进程相应的page拷贝到新page，并将新page映射到子进程的页表中。这时，新分配的page只对子进程可见，相应的PTE设置成可读写，并且重新执行指令。对于触发page fault对应的物理page，因为现在只对父进程可见，相应的PTE对于父进程也变成可读写的了。
+
+释放：当我们释放page时，我们将物理内存page的引用数减1。**只有引用数为0时释放物理内存page**。
+
+## Least Recently Used（LRU)
+
+应用程序启动时，不会把全部指令加载到内存，也不会分配远超于需要的data内存区域。
+
+回收：当系统发生OOM，物理内存耗尽时，将部分内存page中的内容写回到文件系统再收回这个page
+
+回收哪些page：access位为0，回收最近未被访问过的page。此外，dirty位为0，表明当前page被修改过
+
+## Memory Mapped Files
+
+memory mapped files：将完整或者部分文件加载到内存中，这样就可以通过内存地址相关的load或者store指令来操纵文件。
+
+mmap系统调用：虚拟内存地址，长度，protection，标志位，一个**打开的文件描述符**，偏移量。从文件描述符对应的文件的偏移量位置开始，映射长度为len的内容到虚拟内存地址VA，同时加上一些保护，比如只读或者读写。
+
+mmap系统调用的过程：先记录一下这个PTE属于这个文件描述符。相应的信息保存在VMA结构体（Virtual Memory Area）。例如对于这里的文件f，会有一个VMA，在VMA中我们会记录文件描述符，偏移量等等，这些信息用来**表示对应的内存虚拟地址的实际内容在哪**，这样当我们得到一个位于VMA地址范围的page fault时，内核可以从磁盘中读数据，并加载到内存中。
