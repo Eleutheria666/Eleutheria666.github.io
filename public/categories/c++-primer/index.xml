@@ -37,20 +37,6 @@
 1 2 3 auto pbeg = v.begin(); while(pbeg != v.end()) cout &amp;lt;&amp;lt; *pbeg++ &amp;lt;&amp;lt; endl; 练习 *beg作为左值时已经+1</description>
     </item>
     <item>
-      <title>Chapter 4. Expressions</title>
-      <link>http://localhost:1313/posts/c&#43;&#43;-primer/ch05/</link>
-      <pubDate>Wed, 28 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/c&#43;&#43;-primer/ch05/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Chapter 4. Expressions</title>
-      <link>http://localhost:1313/posts/c&#43;&#43;-primer/ch06/</link>
-      <pubDate>Wed, 28 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/c&#43;&#43;-primer/ch06/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Chapter 3. Strings, Vectors, and Arrays</title>
       <link>http://localhost:1313/posts/c&#43;&#43;-primer/ch03/</link>
       <pubDate>Tue, 27 Aug 2024 00:00:00 +0000</pubDate>

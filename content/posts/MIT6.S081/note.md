@@ -3,7 +3,7 @@ title: "Note"
 date: 2024-09-10
 categories: ["MIT6.S081"]
 tags: ["OS"]
-aliases: ["/"]
+draft: true
 ---
 
 

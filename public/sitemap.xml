@@ -2,47 +2,50 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/tags/java/</loc>
-    <lastmod>2024-11-25T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/categories/</loc>
+    <lastmod>2024-10-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/mit6.s081/lab9-file-system/</loc>
+    <lastmod>2024-10-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/mit6.s081/</loc>
+    <lastmod>2024-10-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/mit6.s081/</loc>
+    <lastmod>2024-10-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2024-11-25T00:00:00+00:00</lastmod>
+    <lastmod>2024-10-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/netty/</loc>
-    <lastmod>2024-11-25T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/netty/</loc>
-    <lastmod>2024-11-25T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/netty/im%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF/</loc>
-    <lastmod>2024-11-25T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/netty/netty/</loc>
-    <lastmod>2024-11-25T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/tags/os/</loc>
+    <lastmod>2024-10-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/</loc>
-    <lastmod>2024-11-25T00:00:00+00:00</lastmod>
+    <lastmod>2024-10-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2024-11-25T00:00:00+00:00</lastmod>
+    <lastmod>2024-10-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/code-analyse/</loc>
+    <loc>http://localhost:1313/posts/mit6.s081/lab8-lock/</loc>
+    <lastmod>2024-10-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/backend/</loc>
     <lastmod>2024-10-04T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/logback/log/</loc>
-    <lastmod>2024-10-04T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/posts/mit6.s081/lab6-multithreading/</loc>
+    <lastmod>2024-09-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/ssm/</loc>
-    <lastmod>2024-10-04T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/posts/mit6.s081/lab5-copy-on-write/</loc>
+    <lastmod>2024-09-21T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/compile/</loc>
-    <lastmod>2024-09-12T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/posts/mit6.s081/lab4-trap/</loc>
+    <lastmod>2024-09-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/cpp/</loc>
-    <lastmod>2024-09-12T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/posts/mit6.s081/lab3-page-tables/</loc>
+    <lastmod>2024-09-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/installconfigure/</loc>
-    <lastmod>2024-09-12T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/posts/mit6.s081/lab2-system-calls/</loc>
+    <lastmod>2024-09-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/c&#43;&#43;/</loc>
     <lastmod>2024-08-28T00:00:00+00:00</lastmod>
@@ -53,16 +56,7 @@
     <loc>http://localhost:1313/posts/c&#43;&#43;-primer/</loc>
     <lastmod>2024-08-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
-    <lastmod>2024-08-28T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/posts/c&#43;&#43;-primer/ch04/</loc>
-    <lastmod>2024-08-28T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/c&#43;&#43;-primer/ch05/</loc>
-    <lastmod>2024-08-28T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/c&#43;&#43;-primer/ch06/</loc>
     <lastmod>2024-08-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/lang/</loc>
@@ -71,23 +65,8 @@
     <loc>http://localhost:1313/posts/c&#43;&#43;-primer/ch03/</loc>
     <lastmod>2024-08-27T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/c&#43;&#43;%E5%85%AB%E8%82%A1/</loc>
-    <lastmod>2024-08-26T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/posts/c&#43;&#43;-primer/ch02/</loc>
     <lastmod>2024-08-25T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/algorithm/</loc>
-    <lastmod>2024-08-24T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/beauty_of_programming/ch02/</loc>
-    <lastmod>2024-08-24T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/</loc>
-    <lastmod>2024-08-24T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/beauty_of_programming/</loc>
-    <lastmod>2024-08-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/installaion/</loc>
     <lastmod>2024-08-23T00:00:00+00:00</lastmod>
@@ -104,25 +83,12 @@
     <loc>http://localhost:1313/tags/hugo/</loc>
     <lastmod>2024-08-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/mit6.s081/lab8-file-system/</loc>
+    <loc>http://localhost:1313/tags/installconfigure/</loc>
     <lastmod>2024-08-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/mit6.s081/</loc>
-    <lastmod>2024-08-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/mit6.s081/</loc>
-    <lastmod>2024-08-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/os/</loc>
-    <lastmod>2024-08-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/mit6.s081/lab7-networking/</loc>
-    <lastmod>2024-08-17T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/mit6.s081/lab4-trap/</loc>
-    <lastmod>2024-08-14T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/archives/</loc>
+  </url><url>
+    <loc>http://localhost:1313/posts/mit6.s081/lab7-networking/</loc>
   </url><url>
     <loc>http://localhost:1313/search/</loc>
   </url>

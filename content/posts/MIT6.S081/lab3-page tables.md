@@ -1,14 +1,15 @@
 ---
 title: "Lab3: page tables"
-date: 2024-09-21
+date: 2024-09-07
 categories: ["MIT6.S081"]
 tags: ["OS"]
-aliases: ["/lab3-pagetables"]
 ShowToc: true
 TocOpen: true
 ---
 
-# Pre
+Lab链接：[Lab: page tables](https://pdos.csail.mit.edu/6.S081/2021/labs/pgtbl.html)
+
+Lab源码：[momo/MIT-6S081/pgtbl - Gitee.com](https://gitee.com/Eleutheria666/mit-6s081/tree/pgtbl/)
 
 ## xv6的页表机制
 
@@ -19,19 +20,19 @@ xv6的页表项（64位）
 - 页表项代表的页的物理地址（10~53）
 - 页表的操作权限（0~9）
 
-![image-20240726142304399](./../../images/image-20240726142304399.png)
+![image-20240726142304399](../../../images/image-20240726142304399.png)
 
 xv6的虚拟地址（64位）➡物理地址转换
 
 一级页表L2+二级页表L1+三级页表L0+三级页表中的偏移量Offset（9+9+9+12）
 
-![image-20240726142132505](./../../images/image-20240726142132505.png)
-
-
+![image-20240726142132505](../../../images/image-20240726142132505.png)
 
 内核拥有自己的页表。当进程进入内核态时，操作系统将内核根页表存入页表基地址寄存器；进程退出内核态时切换回进程根页表。
 
 进程在内核态执行程序时，使用内核根页表找到内核程序中虚拟地址对应的物理地址。
+
+
 
 ## xv6内核视角下，虚拟地址与物理地址对应关系
 
@@ -47,7 +48,7 @@ xv6的虚拟地址（64位）➡物理地址转换
 - kernel stack：系统会为每个进程分配一页保护页（Guard page）以及一页内核栈（Kstack）。保护页有效位被设置为 0 ，并且不分配对应的物理页。Kstack发生溢出，数据试图进入Guard page，由于Guard page无法转换为有效的物理地址，会触发缺页异常（page fault） 
 - trampoline：RX-，
 
-<img src="./../../images/image-20240726143551675.png" alt="image-20240726143551675" style="zoom:50%;" />
+<img src="../../../images/image-20240726143551675.png" alt="image-20240726143551675" style="zoom:50%;" />
 
 xv6内核启动（kernel/main.c），创建内核页表：
 
@@ -131,6 +132,8 @@ proc_mapstacks(pagetable_t kpgtbl) {
 }
 ```
 
+
+
 ## xv6进程在用户态下，虚拟内存空间分布
 
 - text：代码区
@@ -141,7 +144,7 @@ proc_mapstacks(pagetable_t kpgtbl) {
 - trampframe：进程信息
 - trampoline：存储切换内核态的指令
 
-<img src="./../../images/image-20240726161811748.png" alt="image-20240726161811748" style="zoom:40%;" />
+<img src="../../../images/image-20240726161811748.png" alt="image-20240726161811748" style="zoom:40%;" />
 
 xv6创建用户进程，内存初始化：创建进程三级页表 + 加载程序
 
@@ -250,6 +253,8 @@ uvmfree(pagetable_t pagetable, uint64 sz)
 }
 ```
 
+
+
 ## 内存物理空间管理器
 
 **kernel/kalloc.h**
@@ -259,6 +264,8 @@ uvmfree(pagetable_t pagetable, uint64 sz)
 以一个页表为单位进行分配/回收
 
 通过链表追踪可用的空闲页表地址，allocator只有一个kmem内存空间，链表上的其他结点信息均存储在空闲页表的首部
+
+
 
 ## 内存管理程序
 
@@ -319,8 +326,6 @@ walk(pagetable_t pagetable, uint64 va, int alloc)
 ```
 
 
-
-# Lab3: page tables
 
 ## 1 Speed up system calls
 

@@ -11,35 +11,132 @@
     </image>
     <generator>Hugo -- 0.133.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 20 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 20 Oct 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/os/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Lab9: File System</title>
-      <link>http://localhost:1313/posts/mit6.s081/lab8-file-system/</link>
-      <pubDate>Tue, 20 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/mit6.s081/lab8-file-system/</guid>
+      <title>Lab9: file system</title>
+      <link>http://localhost:1313/posts/mit6.s081/lab9-file-system/</link>
+      <pubDate>Sun, 20 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/mit6.s081/lab9-file-system/</guid>
       <description>Lab链接：Lab: file system (mit.edu)
-Lab答案源码：MIT-6.S081-2021 at fs (github.com)
+Lab源码：momo/MIT-6S081/fs - Gitee.com
 1 Large files 题目 当前xv6文件最大只能存储268 blocks的数据。你的任务是修改xv6的代码，将inode结点中的一个“直接索引”改为“二级索引”：该索引指向的block包含256个间接block的地址，每个间接block又包含256个数据block的地址，以扩大文件可存储数据的容量。
 思路 将struct inode中的NDIRECT直接索引的盘块号减一，腾出一个索引用于二级索引，其他变量随之改动。此时 struct dinode和struct inode的addrs数组大小应为[NDIRECT+2]
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 // kernel/fs.h #define NDIRECT 11 // 12-&amp;gt;11 #define NINDIRECT (BSIZE / sizeof(uint)) #define NDOUBLEINDIRECT (NINDIRECT*NINDIRECT) #define MAXFILE (NDIRECT + NINDIRECT + NDOUBLEINDIRECT) struct dinode { // ... uint addrs[NDIRECT+2]; // [NDIRECT+1] -&amp;gt; [NDIRECT+2] }; struct inode { // .</description>
     </item>
     <item>
-      <title>Lab7: Networking</title>
-      <link>http://localhost:1313/posts/mit6.s081/lab7-networking/</link>
-      <pubDate>Sat, 17 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/mit6.s081/lab7-networking/</guid>
-      <description></description>
+      <title>Lab8: locks</title>
+      <link>http://localhost:1313/posts/mit6.s081/lab8-lock/</link>
+      <pubDate>Fri, 11 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/mit6.s081/lab8-lock/</guid>
+      <description>Lab链接：Lab: locks
+Lab源码：momo/MIT-6S081/lock - Gitee.com
+1 Memory allocator&amp;#x2705; 题目 当前xv6，不同CPU核调用kalloc/kfree函数都是针对同一内存空间进行操作。为了保证数据的一致性，调用kalloc/kfree需要先获取kmem.lock锁。但是这个锁的颗粒度较大，锁住的是所有可分配的内存空间，这样会导致更多CPU竞争这个锁，更多的线程因为无法获取锁而原地等待，不能及时获取/回收相应的内存空间。
+你的任务是缩小锁的颗粒度，基本思想是为每个CPU维护一个空闲列表，每个列表都有自己的锁。这样不同CPU上的分配和释放可以并行运行，不会产生锁争用，因为每个CPU将在不同的列表上运行。
+若一个CPU的空闲列表为空，在这种情况下，通过“窃取”另一个CPU空闲列表的一部分进行分配，这会引入锁争用，但很少发生。
+思路 创建一个长度为NCPU的kmem列表，列表的每一项对应一个CPU，包含了锁核空闲列表的头节点 kinit初始化内存空间时，对于每一个CPU，只能在【end+id*INTERVAL，end+id*INTERVAL+PGSIZE】分配内存，所以freerange()的范围为【end+id*INTERVAL，end+id*INTERVAL+PGSIZE】 对于kfree函数，如果当前释放的地址pa不属于该CPU可控的内存空间之内，则通过pa定位当前该物理地址所属的CPU 对于kalloc函数，如果当前CPU的空闲列表为0，则遍历所有CPU，从第一个空闲列表不为空的CPU所控制的内存区域进行分配 通过减少锁锁住的共享资源，减少锁竞争的概率，从而提高执行效率，实现锁的优化。
+2 Buffer cache&amp;#x274c; 这个实验目标是对XV6的磁盘缓冲区进行优化。初始的XV6磁盘缓冲区中是使用一个LRU链表来维护的，而这就导致了每次获取、释放缓冲区时就要对整个链表加锁，也就是说缓冲区的操作是完全串行进行的。</description>
     </item>
     <item>
-      <title>Lab4: Trap</title>
+      <title>Lab6: multithreading</title>
+      <link>http://localhost:1313/posts/mit6.s081/lab6-multithreading/</link>
+      <pubDate>Sat, 28 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/mit6.s081/lab6-multithreading/</guid>
+      <description>Lab链接：Lab: Multithreading
+Lab源码：momo/MIT-6S081/thread - Gitee.com
+1 Uthread: switching between threads&amp;#x2b55; 题目 当前xv6的线程切换需要用户线程进入内核空间后，再调用CPU调度器线程完成线程切换。
+本lab需要你在用户空间完成线程切换。
+思路 Q：为什么只需要保存callee-saved register？
+A：调用swtch()前会保存caller-saved reg至栈帧，而swtch()是callee，该函数需保存callee-saved reg。对于trapframe，由于系统会在用户进程不经意间打断，所以需要保存所有的寄存器
+栈从高地址到低地址增长，因此初始化线程的sp指针应该是stack+STACK_SIZE-1
+2 Using threads​​ 3 Barrier​​ 实现多个线程的同步。</description>
+    </item>
+    <item>
+      <title>Lab5: copy on Write</title>
+      <link>http://localhost:1313/posts/mit6.s081/lab5-copy-on-write/</link>
+      <pubDate>Sat, 21 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/mit6.s081/lab5-copy-on-write/</guid>
+      <description>Lab链接：Lab: Copy-on-Write Fork for xv6
+Lab源码：momo/MIT-6S081/cow - Gitee.com
+基于Page faults的附加功能 恢复page fault中断 恢复page fault，需要三个要素：
+引起page fault的虚拟地址（STVAL） 引起page fault原因的类型（SCAUSE） 发生page fault时程序计数器值，即造成page fault的指令在用户虚拟空间的位置（SEPC） 理想情况下，操作系统应能够在发生page fault中断时，对其进行响应的处理，继续运行后续指令
+Lazy page allocation
+eager allocation：一旦调用了sbrk，内核会立即分配应物理内存。但会存在过多申请的内存过少使用的情况。
+lazy allocation：sbrk系统调不做任何事情，唯一需要做的事情就是提升p-&amp;gt;sz，将p-&amp;gt;sz增加n，其中n是需要新分配的内存page数量。但是内核在这个时间点并不会分配任何物理内存。之后某个时间点程序使用到了新申请的那部分内存，会触发page fault，因为我们还没有分配实际的物理内存（即新的内存未映射到page table）。所以，当我们看到了一个page fault，相应的虚拟地址小于当前p-&amp;gt;sz，同时大于stack，那么我们就知道这是一个来自于heap的地址，但是内核还没有分配任何物理内存。
+Copy on write fork 调用fork时，先创建4个新的page，再将父进程page的内容拷贝至4个新的分配给子进程的page中。
+之后调用exec又会释放这些page，并分配新的page来包含echo相关的内容。
+优化：创建子进程时，与其创建分配拷贝内容到新的物理内存，不如直接共享父进程的物理内存page并设置子进程的PTE指向父进程对应的物理内存page。但是父进程和子进程之间的隔离性，要保证：子进程对这些内存的修改应该对父进程不可见，所以这里的父进程和子进程的PTE的标志位都设置成只读的。
+父进程和子进程继续运行，当父进程或子进程执行store指令更新一些全局变量时会触发page fault，因为现在在向一个只读PTE写数据。
+在得到page fault之后，先分配一个新的page，然后将父进程相应的page拷贝到新page，并将新page映射到子进程的页表中。这时，新分配的page只对子进程可见，相应的PTE设置成可读写，并且重新执行指令。对于触发page fault对应的物理page，因为现在只对父进程可见，相应的PTE对于父进程也变成可读写的了。
+释放：当我们释放page时，我们将物理内存page的引用数减1。只有引用数为0时释放物理内存page。
+Least Recently Used（LRU) 应用程序启动时，不会把全部指令加载到内存，也不会分配远超于需要的data内存区域。
+回收：当系统发生OOM，物理内存耗尽时，将部分内存page中的内容写回到文件系统再收回这个page
+回收哪些page：access位为0，回收最近未被访问过的page。此外，dirty位为0，表明当前page被修改过
+Memory Mapped Files memory mapped files：将完整或者部分文件加载到内存中，这样就可以通过内存地址相关的load或者store指令来操纵文件。
+mmap系统调用：虚拟内存地址，长度，protection，标志位，一个打开的文件描述符，偏移量。从文件描述符对应的文件的偏移量位置开始，映射长度为len的内容到虚拟内存地址VA，同时加上一些保护，比如只读或者读写。
+mmap系统调用的过程：先记录一下这个PTE属于这个文件描述符。相应的信息保存在VMA结构体（Virtual Memory Area）。例如对于这里的文件f，会有一个VMA，在VMA中我们会记录文件描述符，偏移量等等，这些信息用来表示对应的内存虚拟地址的实际内容在哪，这样当我们得到一个位于VMA地址范围的page fault时，内核可以从磁盘中读数据，并加载到内存中。
+1 Implement copy-on write xv6 中fork系统调用会将父进程的所有内存数据复制给子进程。若父进程内存占用大，复制耗时久，且若子进程后续执行exec，复制的内存大概率被丢弃，造成资源浪费。
+copy-on write机制直到父子进程中的一方需写入页面时才进行实际的复制操作，以此提升系统效率 。</description>
+    </item>
+    <item>
+      <title>Lab4: traps</title>
       <link>http://localhost:1313/posts/mit6.s081/lab4-trap/</link>
-      <pubDate>Wed, 14 Aug 2024 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 14 Sep 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/mit6.s081/lab4-trap/</guid>
-      <description>2 Backtrace 题目 实现backtrace()函数：每个堆栈帧中的帧指针用于保存调用者帧指针的地址。你的回溯应该使用这些帧指针来遍历堆栈，并在每个堆栈帧中打印保存的返回地址。
-在sys_sleep中插入对该函数的调用，然后运行bttest，该命令调用sys_sleep，打印出当前堆栈上的函数调用列表。打印的结果如下：
-1 2 3 4 backtrace: 0x0000000080002cda 0x0000000080002bb6 0x0000000080002898 退出qemu，使用addr2line -e kernel/kernel命令并输入上述结果，得到指定位置函数的函数名和所在文件
-1 2 3 4 5 6 7 8 9 $ addr2line -e kernel/kernel 0x0000000080002de2 0x0000000080002f4a 0x0000000080002bfc Ctrl-D # output kernel/sysproc.c:74 kernel/syscall.c:224 kernel/trap.c:85 思路 在kernel/riscv.c文件中添加用于读取当前栈顶寄存器值的函数r_fp 由于每个用户进程的栈只有一页的空间大小，使用PGROUNDDOWN()获取栈所在页的首位值 遍历栈，对于每一个栈帧打印调用生成该栈帧的函数地址return address，并通过to prev frame获得下一个栈帧的地址（地址往Low处走） 源码 </description>
+      <description>Lab链接：Lab: Traps
+Lab源码：momo/MIT-6S081/traps - Gitee.com
+用户态切换为内核态发生在以下情形：
+系统调用 软件运行错误：page fault 设备发出中断 用户内核态的切换，要让硬件从适合用户程序运行的状态转化为适合内核程序运行的状态，包括：
+保存32个用户寄存器：内核会使用寄存器，用户程序在寄存器中的值不能被破坏 保存程序计数器：内核程序执行完毕后能够从用户程序中断的位置继续执行 改为supervisor mode：在内核中需要执行特权指令 SATP寄存器从user page table改为kernel page table 堆栈寄存器指向内核地址 相比用户态，内核态增加了以下权限：
+读写控制寄存器 使用PTE_U为0的页表：PTE_U设置为1用户态可使用 trapoline页表在用户和内核页表虚拟地址一致，映射的都是同一个物理页
+trapframe用于保存进程在用户态的相关数据，而context用于保存进程在内核态相关数据
+用户态➡内核态 用户进程调用fork系统调用，实际执行如下指令：
+1 2 3 4 5 .global fork fork: li a7, SYS_fork ecall ret 向a7寄存器写入系统调用编号 执行ecall指令，该指令在硬件层面完成： 切换为supervisor mode 进入中断处理程序：PC➡SEPC，STVEC➡PC（STVEC事先保存了中断处理程序uservec的地址） 此时进入中断处理程序uservec（此时未切换page table，虽进入内核态但仍使用用户态的页表）
+保存用户态通用寄存器，用于中断后恢复上下文：sscratch 寄存器事先存储了p-&amp;gt;trapframe ，交换 a0 和 sscratch 的值，使得 a0 指向进程trapframe的首地址 加载内核态上下文：栈指针、内核页表、从 TRAPFRAME 中读取 usertrap() 函数的地址，并将其加载到 t0 寄存器 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 .</description>
+    </item>
+    <item>
+      <title>Lab3: page tables</title>
+      <link>http://localhost:1313/posts/mit6.s081/lab3-page-tables/</link>
+      <pubDate>Sat, 07 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/mit6.s081/lab3-page-tables/</guid>
+      <description>Lab链接：Lab: page tables
+Lab源码：momo/MIT-6S081/pgtbl - Gitee.com
+xv6的页表机制 xv6采用64位地址，一页大小为4KB(4096B)
+xv6的页表项（64位）
+页表项代表的页的物理地址（10~53） 页表的操作权限（0~9） xv6的虚拟地址（64位）➡物理地址转换
+一级页表L2+二级页表L1+三级页表L0+三级页表中的偏移量Offset（9+9+9+12）
+内核拥有自己的页表。当进程进入内核态时，操作系统将内核根页表存入页表基地址寄存器；进程退出内核态时切换回进程根页表。
+进程在内核态执行程序时，使用内核根页表找到内核程序中虚拟地址对应的物理地址。
+xv6内核视角下，虚拟地址与物理地址对应关系 低于0x80000000：分配给I/O设备，作为外部设备的寄存器
+direct mapping memory-mapped：内核处理这个范围的虚拟地址时直接定位对应的物理地址，即外部设备接口，不需要通过RAM访问外部设备。 0x80000000~PHYSTOP（0x86400000）：存储内核程序、数据
+kernel text：内核代码，R-X，direct mapping kernel data：RW-，防止恶意程序写入kernel data并执行 kernel stack：系统会为每个进程分配一页保护页（Guard page）以及一页内核栈（Kstack）。保护页有效位被设置为 0 ，并且不分配对应的物理页。Kstack发生溢出，数据试图进入Guard page，由于Guard page无法转换为有效的物理地址，会触发缺页异常（page fault） trampoline：RX-， xv6内核启动（kernel/main.c），创建内核页表：
+申请一个空页表 关联IO设备的地址 关联内核程序，内核程序已成功加载到物理地址范围为 KERNBASE 至 exect 的区域，起始虚拟地址设定为 KERNBASE 关联trampoline 从最高虚拟地址往下，为每个进程分配一个内核栈页 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 #define TRAMPOLINE (MAXVA - PGSIZE) #define KERNBASE 0x80000000L #define PHYSTOP (KERNBASE + 128*1024*1024) extern char trampoline[]; // trampoline.</description>
+    </item>
+    <item>
+      <title>Lab2: system calls</title>
+      <link>http://localhost:1313/posts/mit6.s081/lab2-system-calls/</link>
+      <pubDate>Sun, 01 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/mit6.s081/lab2-system-calls/</guid>
+      <description>Lab链接：Lab: System calls
+Lab源码：momo/MIT-6S081/syscall - Gitee.com
+1 System call tracing 在操作系统开发与调试过程中，对程序进行系统调用进行跟踪有助于深入了解程序运行时的系统行为
+题目 创建一个新的系统调用 trace ，该系统调用接收一个整数参数 mask 。通过对 mask 二进制位的设置，指定需要跟踪的系统调用。例如，若要跟踪 fork 系统调用，程序需调用 trace(1 &amp;lt;&amp;lt; SYS_fork) ，其中 SYS_fork 是在 kernel/syscall.h 中定义系统调用编号。当每个系统调用即将返回时，若该系统调用的编号在 mask 中被设置，则打印一行信息，包含进程 ID、系统调用名称以及返回值，无需打印系统调用的参数。
+trace 系统调用应仅对调用它的进程及其后续通过 fork 创建的子进程启用跟踪功能，而不影响其他进程。
+（一）部分系统调用跟踪
+执行 trace 32 grep hello README ，其中 32 对应 1&amp;lt;&amp;lt;SYS_read ，表示仅跟踪 grep 执行过程中 read 系统调用，输出：
+1 2 3 4 3: syscall read -&amp;gt; 1023 3: syscall read -&amp;gt; 966 3: syscall read -&amp;gt; 70 3: syscall read -&amp;gt; 0 （二）全系统调用跟踪</description>
+    </item>
+    <item>
+      <title>Lab7: networking</title>
+      <link>http://localhost:1313/posts/mit6.s081/lab7-networking/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/mit6.s081/lab7-networking/</guid>
+      <description>Lab链接：Lab: networking
+Lab源码：momo/MIT-6S081/net - Gitee.com
+network&amp;#x2b55; 题目 完成一个网卡驱动程序中传输网络包处理程序e1000_transmit()和接受网络包处理程序e1000_recv()
+思路 传输数据包程序e1000_transmit()
+在内存开辟一个暂存待发送数据包的缓冲区，struct tx_desc中的addr字段指向内核将待发送数据包写入缓冲区的地址 维护一个struct tx_desc的环状数组 接受网络包处理程序e1000_recv()
+在内存开辟一个暂存接收到的数据包的缓冲区，struct rx_desc中的addr字段指向E1000将接受到的数据包写入缓冲区的地址 维护一个struct rx_desc的环状数组 </description>
     </item>
   </channel>
 </rss>

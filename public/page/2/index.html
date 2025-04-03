@@ -81,7 +81,7 @@
   "description": "",
   "thumbnailUrl": "http://localhost:1313/favicon.ico",
   "sameAs": [
-      "https://github.com/HuYumu", "https://instagram.com/", "https://twitter.com/", "https://ko-fi.com"
+      "https://gitee.com/Eleutheria666", "https://instagram.com/", "https://twitter.com/", "https://ko-fi.com"
   ]
 }
 </script>
@@ -154,18 +154,6 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">ch02: 数字之谜
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p></p>
-  </div>
-  <footer class="entry-footer"><span title='2024-08-24 00:00:00 +0000 UTC'>August 24, 2024</span>&nbsp;·&nbsp;0 min&nbsp;·&nbsp;0 words</footer>
-  <a class="entry-link" aria-label="post link to ch02: 数字之谜" href="http://localhost:1313/posts/beauty_of_programming/ch02/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
     <h2 class="entry-hint-parent">翻墙
     </h2>
   </header>
@@ -221,45 +209,19 @@ PaperMod主题修改 2024-06-10更新魔改Hugo主题PaperMod记录 | 阿甘博�
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Lab9: File System
+    <h2 class="entry-hint-parent">Lab7: networking
     </h2>
   </header>
   <div class="entry-content">
-    <p>Lab链接：Lab: file system (mit.edu)
-Lab答案源码：MIT-6.S081-2021 at fs (github.com)
-1 Large files 题目 当前xv6文件最大只能存储268 blocks的数据。你的任务是修改xv6的代码，将inode结点中的一个“直接索引”改为“二级索引”：该索引指向的block包含256个间接block的地址，每个间接block又包含256个数据block的地址，以扩大文件可存储数据的容量。
-思路 将struct inode中的NDIRECT直接索引的盘块号减一，腾出一个索引用于二级索引，其他变量随之改动。此时 struct dinode和struct inode的addrs数组大小应为[NDIRECT&#43;2]
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 // kernel/fs.h #define NDIRECT 11 // 12-&gt;11 #define NINDIRECT (BSIZE / sizeof(uint)) #define NDOUBLEINDIRECT (NINDIRECT*NINDIRECT) #define MAXFILE (NDIRECT &#43; NINDIRECT &#43; NDOUBLEINDIRECT) struct dinode { // ... uint addrs[NDIRECT&#43;2]; // [NDIRECT&#43;1] -&gt; [NDIRECT&#43;2] }; struct inode { // ....</p>
+    <p>Lab链接：Lab: networking
+Lab源码：momo/MIT-6S081/net - Gitee.com
+network⭕ 题目 完成一个网卡驱动程序中传输网络包处理程序e1000_transmit()和接受网络包处理程序e1000_recv()
+思路 传输数据包程序e1000_transmit()
+在内存开辟一个暂存待发送数据包的缓冲区，struct tx_desc中的addr字段指向内核将待发送数据包写入缓冲区的地址 维护一个struct tx_desc的环状数组 接受网络包处理程序e1000_recv()
+在内存开辟一个暂存接收到的数据包的缓冲区，struct rx_desc中的addr字段指向E1000将接受到的数据包写入缓冲区的地址 维护一个struct rx_desc的环状数组 </p>
   </div>
-  <footer class="entry-footer"><span title='2024-08-20 00:00:00 +0000 UTC'>August 20, 2024</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;420 words</footer>
-  <a class="entry-link" aria-label="post link to Lab9: File System" href="http://localhost:1313/posts/mit6.s081/lab8-file-system/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Lab7: Networking
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p></p>
-  </div>
-  <footer class="entry-footer"><span title='2024-08-17 00:00:00 +0000 UTC'>August 17, 2024</span>&nbsp;·&nbsp;0 min&nbsp;·&nbsp;0 words</footer>
-  <a class="entry-link" aria-label="post link to Lab7: Networking" href="http://localhost:1313/posts/mit6.s081/lab7-networking/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Lab4: Trap
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>2 Backtrace 题目 实现backtrace()函数：每个堆栈帧中的帧指针用于保存调用者帧指针的地址。你的回溯应该使用这些帧指针来遍历堆栈，并在每个堆栈帧中打印保存的返回地址。
-在sys_sleep中插入对该函数的调用，然后运行bttest，该命令调用sys_sleep，打印出当前堆栈上的函数调用列表。打印的结果如下：
-1 2 3 4 backtrace: 0x0000000080002cda 0x0000000080002bb6 0x0000000080002898 退出qemu，使用addr2line -e kernel/kernel命令并输入上述结果，得到指定位置函数的函数名和所在文件
-1 2 3 4 5 6 7 8 9 $ addr2line -e kernel/kernel 0x0000000080002de2 0x0000000080002f4a 0x0000000080002bfc Ctrl-D # output kernel/sysproc.c:74 kernel/syscall.c:224 kernel/trap.c:85 思路 在kernel/riscv.c文件中添加用于读取当前栈顶寄存器值的函数r_fp 由于每个用户进程的栈只有一页的空间大小，使用PGROUNDDOWN()获取栈所在页的首位值 遍历栈，对于每一个栈帧打印调用生成该栈帧的函数地址return address，并通过to prev frame获得下一个栈帧的地址（地址往Low处走） 源码 </p>
-  </div>
-  <footer class="entry-footer"><span title='2024-08-14 00:00:00 +0000 UTC'>August 14, 2024</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;46 words</footer>
-  <a class="entry-link" aria-label="post link to Lab4: Trap" href="http://localhost:1313/posts/mit6.s081/lab4-trap/"></a>
+  <footer class="entry-footer">1 min&nbsp;·&nbsp;19 words</footer>
+  <a class="entry-link" aria-label="post link to Lab7: networking" href="http://localhost:1313/posts/mit6.s081/lab7-networking/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

@@ -1,14 +1,15 @@
 ---
-title: "Lab4: Trap"
-date: 2024-08-14
+title: "Lab4: traps"
+date: 2024-09-14
 categories: ["MIT6.S081"]
 tags: ["OS"]
-aliases: ["/lab4-trap"]
 ShowToc: true
-TocOpen: false
+TocOpen: true
 ---
 
-# Lec 5：Trap
+Lab链接：[Lab: Traps](https://pdos.csail.mit.edu/6.S081/2021/labs/traps.html)
+
+Lab源码：[momo/MIT-6S081/traps - Gitee.com](https://gitee.com/Eleutheria666/mit-6s081/tree/traps/)
 
 用户态切换为内核态发生在以下**情形**：
 
@@ -213,15 +214,86 @@ userret:
         sret
 ```
 
-# Lab
+
+
+## 1 RISC-V assembly
+
+使用`make fs.img`命令生成`call.c`文件的汇编文件`call.asm`
+
+```assembly
+int g(int x) {
+   0:	1141                	addi	sp,sp,-16
+   2:	e422                	sd		s0,8(sp)
+   4:	0800                	addi	s0,sp,16
+  return x+3;
+}
+   6:	250d                	addiw	a0,a0,3
+   8:	6422                	ld		s0,8(sp)
+   a:	0141                	addi	sp,sp,16
+   c:	8082                	ret
+
+000000000000000e <f>:
+
+int f(int x) {
+   e:	1141                	addi	sp,sp,-16
+  10:	e422                	sd		s0,8(sp)
+  12:	0800                	addi	s0,sp,16
+  return g(x);
+}
+  14:	250d                	addiw	a0,a0,3
+  16:	6422                	ld		s0,8(sp)
+  18:	0141                	addi	sp,sp,16
+  1a:	8082                	ret
+
+000000000000001c <main>:
+
+void main(void) {
+  1c:	1141                	addi	sp,sp,-16
+  1e:	e406                	sd		ra,8(sp)
+  20:	e022                	sd		s0,0(sp)
+  22:	0800                	addi	s0,sp,16
+  printf("%d %d\n", f(8)+1, 13);
+  24:	4635                	li		a2,13
+  26:	45b1                	li		a1,12
+  28:	00000517          		auipc	a0,0x0
+  2c:	7b850513          		addi	a0,a0,1976 # 7e0 <malloc+0xea>
+  30:	00000097          		auipc	ra,0x0
+  34:	608080e7          		jalr	1544(ra) # 638 <printf>
+  exit(0);
+  38:	4501                	li		a0,0
+  3a:	00000097          		auipc	ra,0x0
+  3e:	276080e7          		jalr	630(ra) # 2b0 <exit>
+```
+
+回答以下问题：
+
+- Which registers contain arguments to functions? For example, which register holds 13 in main's call to `printf`?
+
+  RISC - V 架构，函数调用者在调用前，将参数按顺序依次存储在 `a0 - a7` 寄存器中，然后再调用函数。
+
+  第24行，`li a2 13`指令把立即数13存入寄存器a2，a2存入参数13，a1存入`f(8)+1`的结果，a0存入格式字符串**的地址。**
+
+- Where is the call to function `f` in the assembly code for main? Where is the call to `g`?
+
+  第26行， `li a1 12`指令表明main函数并未调用函数f，编译器直接计算`f(8)+1`的结果并存入寄存器a1。
+
+- At what address is the function `printf` located?
+
+  第34行，注释指出prinf函数位于**用户空间虚拟地址**0x638处。
+
+- What value is in the register `ra` just after the `jalr` to `printf` in `main`?
+
+  第30行，`auipc ra, 0x0` 把当前PC值高 20 位加载到 `ra` 寄存器，`jalr 1544(ra)` 跳转到 `printf` 函数，同时把下一条指令（地址为 0x38）的地址保存到 `ra` 寄存器。所以，在执行完 `jalr` 指令跳转到 `printf` 函数后，`ra` 寄存器的值是 0x38。
+
+
 
 ## 2 Backtrace
 
 ### 题目
 
-实现`backtrace()`函数：每个堆栈帧中的帧指针用于保存调用者帧指针的地址。你的回溯应该使用这些帧指针来遍历堆栈，并在每个堆栈帧中打印保存的返回地址。
+实现`backtrace()`函数：遍历当前程序的调用栈，按照函数调用的先后顺序，从当前时刻起，逆向打印每个栈帧中的返回地址 
 
-在`sys_sleep`中插入对该函数的调用，然后运行`bttest`，该命令调用`sys_sleep`，打印出当前堆栈上的函数调用列表。打印的结果如下：
+运行`bttest`，该程序调用`sys_sleep`，`sys_sleep()`调用`backtrace()`打印当前堆栈上的函数调用列表。打印的结果如下：
 
 ```shell
 backtrace:
@@ -230,7 +302,9 @@ backtrace:
 0x0000000080002898
 ```
 
-退出qemu，使用`addr2line -e kernel/kernel`命令并输入上述结果，得到指定位置函数的函数名和所在文件
+退出qemu，执行`addr2line -e kernel/kernel`命令并输入上述结果，得到地址对应的函数名和所在文件
+
+在终端中输入 `addr2line -e kernel/kernel` 命令，并输入之前获取到的地址信息。该命令解析输入的地址，得到其所处在哪个文件中的哪个位置，为调试进一步提供关键线索。
 
 ```shell
 $ addr2line -e kernel/kernel
@@ -238,7 +312,7 @@ $ addr2line -e kernel/kernel
     0x0000000080002f4a
     0x0000000080002bfc
     Ctrl-D
-# output
+# 上述命令执行结果：
 kernel/sysproc.c:74
 kernel/syscall.c:224
 kernel/trap.c:85
@@ -247,16 +321,46 @@ kernel/trap.c:85
 ### 思路
 
 1. 在`kernel/riscv.c`文件中添加用于读取当前栈顶寄存器值的函数`r_fp`
-2. 由于每个用户进程的栈只有一页的空间大小，使用`PGROUNDDOWN()`获取栈所在页的首位值
-3. 遍历栈，对于每一个栈帧打印调用生成该栈帧的函数地址`return address`，并通过`to prev frame`获得下一个栈帧的地址（地址往Low处走）
+
+2. 使用`PGROUNDDOWN()`获取栈所在页的顶部地址
+
+3. 下图展现了xv6栈的结构，栈帧从内存较高地址处起始，随着函数调用朝内存较低方向生成栈帧。
+
+   在遍历当前程序内核栈的过程中，针对每一个栈帧，打印该栈帧的函数地址，即 “返回地址（return address）”。同时，借助 “to prev frame（指向前一个栈帧）” 所指示的信息，获取调用该函数的栈帧的地址，进而推进栈的遍历流程 。
+
+![image-20240804214358144](../../../images/image-20240804214358144.png)
 
 ### 源码
 
+```C
+void            
+backtrace(void)
+{
+  printf("backtrace\n");
+
+  // get current working function's frame pointer
+  uint64 *fp = (uint64*)r_fp();
+
+  uint64 limit = PGROUNDUP((uint64)fp);
+
+  while((uint64)fp < limit) {
+    printf("%p\n", *(fp-1));
+    fp = (uint64*)(*(fp-2));
+  }
+}
+```
+
+> 指针所指向的地址虽然可表示为 64 位整数，但要获取指针所指向的数据内容，`fp` 的类型理应定义为 `uint64*`，而非 `uint64`。这是因为只有 `uint64*` 类型才能正确解引用，从而访问到目标数据。
+>
+> 当 `fp` 被定义为 `uint64` 类型的指针时，对该指针执行 `-1` 操作，实际上是在内存地址上向前移动了 `8 byte`。这是由于在 64 位系统中，`uint64` 类型数据占据 8 个字节，指针运算会根据其所指向的数据类型大小来调整偏移量 。
+
+运行结果：
+
+<img src="../../../images/image-20250401120211958.png" alt="image-20250401120211958" style="zoom:150%;" />
 
 
 
-
-## 3 Alarm:x:
+## 3 Alarm​​
 
 ### 题目
 

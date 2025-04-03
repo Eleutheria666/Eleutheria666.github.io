@@ -37,20 +37,6 @@
 1 2 3 auto pbeg = v.begin(); while(pbeg != v.end()) cout &amp;lt;&amp;lt; *pbeg++ &amp;lt;&amp;lt; endl; 练习 *beg作为左值时已经+1</description>
     </item>
     <item>
-      <title>Chapter 4. Expressions</title>
-      <link>http://localhost:1313/posts/c&#43;&#43;-primer/ch05/</link>
-      <pubDate>Wed, 28 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/c&#43;&#43;-primer/ch05/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Chapter 4. Expressions</title>
-      <link>http://localhost:1313/posts/c&#43;&#43;-primer/ch06/</link>
-      <pubDate>Wed, 28 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/c&#43;&#43;-primer/ch06/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Chapter 3. Strings, Vectors, and Arrays</title>
       <link>http://localhost:1313/posts/c&#43;&#43;-primer/ch03/</link>
       <pubDate>Tue, 27 Aug 2024 00:00:00 +0000</pubDate>
@@ -59,48 +45,6 @@
 3.1.1 输入输出 cin &amp;gt;&amp;gt; string
 cin自动忽略开头的空白，遇到空白停止读取，返回true 当cin输入错误或到达输入流末尾，返回false 1 2 3 4 5 6 int main() { string word; while (cin &amp;gt;&amp;gt; word) // read until end-of-file cout &amp;lt;&amp;lt; word &amp;lt;&amp;lt; endl; // write each word followed by a new line return 0; } getline(cin, string)
 定义在头文件 string 中，以一个 istream 对象和一个 string 对象为输入参数 getline读取输入流直到遇到换行符停止，然后将读入的数据存入 string 对象，适用于读取一行 getline也会读入换行符，但是不将换行符存入 string 对象：若只输入一个换行符，读取的结果为空字符串 getline读取为止 1 2 3 4 5 6 int main() { string line; // read input a line at a time until end-of-file while (getline(cin, line)) cout &amp;lt;&amp;lt; line &amp;lt;&amp;lt; endl; } 3.</description>
-    </item>
-    <item>
-      <title>C&#43;&#43;八股</title>
-      <link>http://localhost:1313/posts/c&#43;&#43;%E5%85%AB%E8%82%A1/</link>
-      <pubDate>Mon, 26 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/c&#43;&#43;%E5%85%AB%E8%82%A1/</guid>
-      <description>ch03 decltype 是什么，如何使用
-如何声明而非定义一个变量
-如果指针不初始化会有什么影响
-如何在多个文件间共享 const 对象
-使用 auto 来定义引用时要注意什么
-预处理变量的作用范围是什么
-C++属于静态类型语言，静态类型语言的含义是什么？
-C++有两种定义类型别名的方式，分别是什么
-指针和引用有4点不同，分别是哪些？
-const 对象必须怎样
-const 对象的作用范围
-什么是常量引用，如何声明，是顶层还是底层
-常量引用与常量对象、非常量对象的关系。
-什么是常量指针，如何声明，是顶层还是底层
-常量指针与常量对象、非常量对象的关系。
-顶层 const 和底层 const 都是什么，在什么位置
-如何区分顶层 const 和底层 const
-constexpr 是什么，特点是什么
-ch04 左值与右值的不同
-左值使用的是对象的身份（在内存中的位置），使用右值使用的是对象的值（内容）。需要右值的地方可以用左值代替，反之不行。
-左值对 decltype 的影响
-如果 decltype 中的表达式返回的是左值，那么 decltype 得到是一个引用类型。
-递增运算符的前置与后置版本
-sizeof 运算符的返回值是什么
-常见的隐式类型转换的方式
-四种显示类型转换是什么
-常见的如 int 转换为 double 这样的转换用什么
-const_cast 用于什么时候
-旧式的两种强制类型转换方式
-最长连续序列
-最长无重复字母：不固定窗口的移动模板代码
-找到字符串中所有字母异位词：固定窗口预先设定，vector直接比较
-螺旋矩阵：设定上右下左边界urdl，到边界则改变边界数值（l/u+1,r/d-1），当l&amp;gt;r || u&amp;gt;d退出
-旋转矩阵
-电话号码的数字组合 vector初始化方式
-括号生成 将tmp保存为结果的前提条件：pos==0</description>
     </item>
     <item>
       <title>Chapter 2. Variables and Basic Types</title>

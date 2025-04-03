@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Lab8: locks | momo blog</title>
+<meta name="keywords" content="OS">
+<meta name="description" content="Lab链接：Lab: locks
+Lab源码：momo/MIT-6S081/lock - Gitee.com
+1 Memory allocator&#x2705; 题目 当前xv6，不同CPU核调用kalloc/kfree函数都是针对同一内存空间进行操作。为了保证数据的一致性，调用kalloc/kfree需要先获取kmem.lock锁。但是这个锁的颗粒度较大，锁住的是所有可分配的内存空间，这样会导致更多CPU竞争这个锁，更多的线程因为无法获取锁而原地等待，不能及时获取/回收相应的内存空间。
+你的任务是缩小锁的颗粒度，基本思想是为每个CPU维护一个空闲列表，每个列表都有自己的锁。这样不同CPU上的分配和释放可以并行运行，不会产生锁争用，因为每个CPU将在不同的列表上运行。
+若一个CPU的空闲列表为空，在这种情况下，通过“窃取”另一个CPU空闲列表的一部分进行分配，这会引入锁争用，但很少发生。
+思路 创建一个长度为NCPU的kmem列表，列表的每一项对应一个CPU，包含了锁核空闲列表的头节点 kinit初始化内存空间时，对于每一个CPU，只能在【end&#43;id*INTERVAL，end&#43;id*INTERVAL&#43;PGSIZE】分配内存，所以freerange()的范围为【end&#43;id*INTERVAL，end&#43;id*INTERVAL&#43;PGSIZE】 对于kfree函数，如果当前释放的地址pa不属于该CPU可控的内存空间之内，则通过pa定位当前该物理地址所属的CPU 对于kalloc函数，如果当前CPU的空闲列表为0，则遍历所有CPU，从第一个空闲列表不为空的CPU所控制的内存区域进行分配 通过减少锁锁住的共享资源，减少锁竞争的概率，从而提高执行效率，实现锁的优化。
+2 Buffer cache&#x274c; 这个实验目标是对XV6的磁盘缓冲区进行优化。初始的XV6磁盘缓冲区中是使用一个LRU链表来维护的，而这就导致了每次获取、释放缓冲区时就要对整个链表加锁，也就是说缓冲区的操作是完全串行进行的。">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/posts/mit6.s081/lab8-lock/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8f541c169a12d0d6bb704527bb78f6481fb4f5a39b7171fc16fab8c03ae6b1bd.css" integrity="sha256-j1QcFpoS0Na7cEUnu3j2SB&#43;09aObcXH8Fvq4wDrmsb0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/mit6.s081/lab8-lock/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  
+
+<meta property="og:title" content="Lab8: locks" />
+<meta property="og:description" content="Lab链接：Lab: locks
+Lab源码：momo/MIT-6S081/lock - Gitee.com
+1 Memory allocator&#x2705; 题目 当前xv6，不同CPU核调用kalloc/kfree函数都是针对同一内存空间进行操作。为了保证数据的一致性，调用kalloc/kfree需要先获取kmem.lock锁。但是这个锁的颗粒度较大，锁住的是所有可分配的内存空间，这样会导致更多CPU竞争这个锁，更多的线程因为无法获取锁而原地等待，不能及时获取/回收相应的内存空间。
+你的任务是缩小锁的颗粒度，基本思想是为每个CPU维护一个空闲列表，每个列表都有自己的锁。这样不同CPU上的分配和释放可以并行运行，不会产生锁争用，因为每个CPU将在不同的列表上运行。
+若一个CPU的空闲列表为空，在这种情况下，通过“窃取”另一个CPU空闲列表的一部分进行分配，这会引入锁争用，但很少发生。
+思路 创建一个长度为NCPU的kmem列表，列表的每一项对应一个CPU，包含了锁核空闲列表的头节点 kinit初始化内存空间时，对于每一个CPU，只能在【end&#43;id*INTERVAL，end&#43;id*INTERVAL&#43;PGSIZE】分配内存，所以freerange()的范围为【end&#43;id*INTERVAL，end&#43;id*INTERVAL&#43;PGSIZE】 对于kfree函数，如果当前释放的地址pa不属于该CPU可控的内存空间之内，则通过pa定位当前该物理地址所属的CPU 对于kalloc函数，如果当前CPU的空闲列表为0，则遍历所有CPU，从第一个空闲列表不为空的CPU所控制的内存区域进行分配 通过减少锁锁住的共享资源，减少锁竞争的概率，从而提高执行效率，实现锁的优化。
+2 Buffer cache&#x274c; 这个实验目标是对XV6的磁盘缓冲区进行优化。初始的XV6磁盘缓冲区中是使用一个LRU链表来维护的，而这就导致了每次获取、释放缓冲区时就要对整个链表加锁，也就是说缓冲区的操作是完全串行进行的。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/posts/mit6.s081/lab8-lock/" />
+<meta property="og:image" content="http://localhost:1313/images/papermod-cover.png" />
+<meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-10-11T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-10-11T00:00:00+00:00" /><meta property="og:site_name" content="momo blog" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png" />
+<meta name="twitter:title" content="Lab8: locks"/>
+<meta name="twitter:description" content="Lab链接：Lab: locks
+Lab源码：momo/MIT-6S081/lock - Gitee.com
+1 Memory allocator&#x2705; 题目 当前xv6，不同CPU核调用kalloc/kfree函数都是针对同一内存空间进行操作。为了保证数据的一致性，调用kalloc/kfree需要先获取kmem.lock锁。但是这个锁的颗粒度较大，锁住的是所有可分配的内存空间，这样会导致更多CPU竞争这个锁，更多的线程因为无法获取锁而原地等待，不能及时获取/回收相应的内存空间。
+你的任务是缩小锁的颗粒度，基本思想是为每个CPU维护一个空闲列表，每个列表都有自己的锁。这样不同CPU上的分配和释放可以并行运行，不会产生锁争用，因为每个CPU将在不同的列表上运行。
+若一个CPU的空闲列表为空，在这种情况下，通过“窃取”另一个CPU空闲列表的一部分进行分配，这会引入锁争用，但很少发生。
+思路 创建一个长度为NCPU的kmem列表，列表的每一项对应一个CPU，包含了锁核空闲列表的头节点 kinit初始化内存空间时，对于每一个CPU，只能在【end&#43;id*INTERVAL，end&#43;id*INTERVAL&#43;PGSIZE】分配内存，所以freerange()的范围为【end&#43;id*INTERVAL，end&#43;id*INTERVAL&#43;PGSIZE】 对于kfree函数，如果当前释放的地址pa不属于该CPU可控的内存空间之内，则通过pa定位当前该物理地址所属的CPU 对于kalloc函数，如果当前CPU的空闲列表为0，则遍历所有CPU，从第一个空闲列表不为空的CPU所控制的内存区域进行分配 通过减少锁锁住的共享资源，减少锁竞争的概率，从而提高执行效率，实现锁的优化。
+2 Buffer cache&#x274c; 这个实验目标是对XV6的磁盘缓冲区进行优化。初始的XV6磁盘缓冲区中是使用一个LRU链表来维护的，而这就导致了每次获取、释放缓冲区时就要对整个链表加锁，也就是说缓冲区的操作是完全串行进行的。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "MIT6.S081-Lab",
+      "item": "http://localhost:1313/posts/mit6.s081/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "Lab8: locks",
+      "item": "http://localhost:1313/posts/mit6.s081/lab8-lock/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Lab8: locks",
+  "name": "Lab8: locks",
+  "description": "Lab链接：Lab: locks\nLab源码：momo/MIT-6S081/lock - Gitee.com\n1 Memory allocator\u0026#x2705; 题目 当前xv6，不同CPU核调用kalloc/kfree函数都是针对同一内存空间进行操作。为了保证数据的一致性，调用kalloc/kfree需要先获取kmem.lock锁。但是这个锁的颗粒度较大，锁住的是所有可分配的内存空间，这样会导致更多CPU竞争这个锁，更多的线程因为无法获取锁而原地等待，不能及时获取/回收相应的内存空间。\n你的任务是缩小锁的颗粒度，基本思想是为每个CPU维护一个空闲列表，每个列表都有自己的锁。这样不同CPU上的分配和释放可以并行运行，不会产生锁争用，因为每个CPU将在不同的列表上运行。\n若一个CPU的空闲列表为空，在这种情况下，通过“窃取”另一个CPU空闲列表的一部分进行分配，这会引入锁争用，但很少发生。\n思路 创建一个长度为NCPU的kmem列表，列表的每一项对应一个CPU，包含了锁核空闲列表的头节点 kinit初始化内存空间时，对于每一个CPU，只能在【end+id*INTERVAL，end+id*INTERVAL+PGSIZE】分配内存，所以freerange()的范围为【end+id*INTERVAL，end+id*INTERVAL+PGSIZE】 对于kfree函数，如果当前释放的地址pa不属于该CPU可控的内存空间之内，则通过pa定位当前该物理地址所属的CPU 对于kalloc函数，如果当前CPU的空闲列表为0，则遍历所有CPU，从第一个空闲列表不为空的CPU所控制的内存区域进行分配 通过减少锁锁住的共享资源，减少锁竞争的概率，从而提高执行效率，实现锁的优化。\n2 Buffer cache\u0026#x274c; 这个实验目标是对XV6的磁盘缓冲区进行优化。初始的XV6磁盘缓冲区中是使用一个LRU链表来维护的，而这就导致了每次获取、释放缓冲区时就要对整个链表加锁，也就是说缓冲区的操作是完全串行进行的。",
+  "keywords": [
+    "OS"
+  ],
+  "articleBody": "Lab链接：Lab: locks\nLab源码：momo/MIT-6S081/lock - Gitee.com\n1 Memory allocator✅ 题目 当前xv6，不同CPU核调用kalloc/kfree函数都是针对同一内存空间进行操作。为了保证数据的一致性，调用kalloc/kfree需要先获取kmem.lock锁。但是这个锁的颗粒度较大，锁住的是所有可分配的内存空间，这样会导致更多CPU竞争这个锁，更多的线程因为无法获取锁而原地等待，不能及时获取/回收相应的内存空间。\n你的任务是缩小锁的颗粒度，基本思想是为每个CPU维护一个空闲列表，每个列表都有自己的锁。这样不同CPU上的分配和释放可以并行运行，不会产生锁争用，因为每个CPU将在不同的列表上运行。\n若一个CPU的空闲列表为空，在这种情况下，通过“窃取”另一个CPU空闲列表的一部分进行分配，这会引入锁争用，但很少发生。\n思路 创建一个长度为NCPU的kmem列表，列表的每一项对应一个CPU，包含了锁核空闲列表的头节点 kinit初始化内存空间时，对于每一个CPU，只能在【end+id*INTERVAL，end+id*INTERVAL+PGSIZE】分配内存，所以freerange()的范围为【end+id*INTERVAL，end+id*INTERVAL+PGSIZE】 对于kfree函数，如果当前释放的地址pa不属于该CPU可控的内存空间之内，则通过pa定位当前该物理地址所属的CPU 对于kalloc函数，如果当前CPU的空闲列表为0，则遍历所有CPU，从第一个空闲列表不为空的CPU所控制的内存区域进行分配 通过减少锁锁住的共享资源，减少锁竞争的概率，从而提高执行效率，实现锁的优化。\n2 Buffer cache❌ 这个实验目标是对XV6的磁盘缓冲区进行优化。初始的XV6磁盘缓冲区中是使用一个LRU链表来维护的，而这就导致了每次获取、释放缓冲区时就要对整个链表加锁，也就是说缓冲区的操作是完全串行进行的。\n",
+  "wordCount" : "22",
+  "inLanguage": "en",
+  "image": "http://localhost:1313/images/papermod-cover.png","datePublished": "2024-10-11T00:00:00Z",
+  "dateModified": "2024-10-11T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/mit6.s081/lab8-lock/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "momo blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="momo blog (Alt + H)">momo blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/archives/" title="archives">
+                    <span>archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="search (Alt &#43; /)" accesskey=/>
+                    <span>search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/mit6.s081/">MIT6.S081-Lab</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Lab8: locks
+    </h1>
+    <div class="post-meta"><span title='2024-10-11 00:00:00 +0000 UTC'>October 11, 2024</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;22 words
+
+</div>
+  </header> <div class="toc">
+    <details  open>
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#1-memory-allocatorwhite_check_mark" aria-label="1 Memory allocator&#x2705;">1 Memory allocator&#x2705;</a><ul>
+                        
+                <li>
+                    <a href="#%e9%a2%98%e7%9b%ae" aria-label="题目">题目</a></li>
+                <li>
+                    <a href="#%e6%80%9d%e8%b7%af" aria-label="思路">思路</a></li></ul>
+                </li>
+                <li>
+                    <a href="#2-buffer-cachex" aria-label="2 Buffer cache&#x274c;">2 Buffer cache&#x274c;</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>Lab链接：<a href="https://pdos.csail.mit.edu/6.S081/2021/labs/lock.html">Lab: locks</a></p>
+<p>Lab源码：<a href="https://gitee.com/Eleutheria666/mit-6s081/tree/lock/">momo/MIT-6S081/lock - Gitee.com</a></p>
+<h2 id="1-memory-allocatorwhite_check_mark">1 Memory allocator&#x2705;<a hidden class="anchor" aria-hidden="true" href="#1-memory-allocatorwhite_check_mark">#</a></h2>
+<h3 id="题目">题目<a hidden class="anchor" aria-hidden="true" href="#题目">#</a></h3>
+<p>当前xv6，不同CPU核调用<code>kalloc</code>/<code>kfree</code>函数都是针对同一内存空间进行操作。为了保证数据的一致性，调用<code>kalloc</code>/<code>kfree</code>需要先获取<code>kmem.lock</code>锁。但是这个锁的颗粒度较大，锁住的是所有可分配的内存空间，这样会导致更多CPU竞争这个锁，更多的线程因为无法获取锁而原地等待，不能及时获取/回收相应的内存空间。</p>
+<p>你的任务是缩小锁的颗粒度，基本思想是为每个CPU维护一个空闲列表，每个列表都有自己的锁。这样不同CPU上的分配和释放可以并行运行，不会产生锁争用，因为每个CPU将在不同的列表上运行。</p>
+<p>若一个CPU的空闲列表为空，在这种情况下，通过“窃取”另一个CPU空闲列表的一部分进行分配，这会引入锁争用，但很少发生。</p>
+<h3 id="思路">思路<a hidden class="anchor" aria-hidden="true" href="#思路">#</a></h3>
+<ol>
+<li>创建一个长度为<code>NCPU</code>的<code>kmem</code>列表，列表的每一项对应一个CPU，包含了锁核空闲列表的头节点</li>
+<li><code>kinit</code>初始化内存空间时，对于每一个CPU，只能在【<code>end+id*INTERVAL</code>，<code>end+id*INTERVAL+PGSIZE</code>】分配内存，所以<code>freerange()</code>的范围为【<code>end+id*INTERVAL</code>，<code>end+id*INTERVAL+PGSIZE</code>】</li>
+<li>对于<code>kfree</code>函数，如果当前释放的地址<code>pa</code>不属于该CPU可控的内存空间之内，则通过<code>pa</code>定位当前该物理地址所属的CPU</li>
+<li>对于<code>kalloc</code>函数，如果当前CPU的空闲列表为0，则遍历所有CPU，从第一个空闲列表不为空的CPU所控制的内存区域进行分配</li>
+</ol>
+<p>通过减少锁锁住的共享资源，减少锁竞争的概率，从而提高执行效率，实现锁的优化。</p>
+<h2 id="2-buffer-cachex">2 Buffer cache&#x274c;<a hidden class="anchor" aria-hidden="true" href="#2-buffer-cachex">#</a></h2>
+<p>这个实验目标是对XV6的磁盘缓冲区进行优化。初始的XV6磁盘缓冲区中是使用一个LRU链表来维护的，而这就导致了每次获取、释放缓冲区时就要对整个链表加锁，也就是说缓冲区的操作是完全串行进行的。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/os/">OS</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/mit6.s081/lab9-file-system/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Lab9: file system</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/mit6.s081/lab6-multithreading/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Lab6: multithreading</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/">momo blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

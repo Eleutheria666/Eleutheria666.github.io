@@ -1,18 +1,15 @@
 ---
-title: "Lab2: System call"
+title: "Lab2: system calls"
 date: 2024-09-01
 categories: ["MIT6.S081"]
 tags: ["OS"]
-aliases: ["/lab2-syscall"]
 ShowToc: true
-TocOpen: false 
+TocOpen: true
 ---
 
-# Lab2： System call
+Lab链接：[Lab: System calls](https://pdos.csail.mit.edu/6.S081/2021/labs/syscall.html)
 
-实验原址：[Lab: System calls](https://pdos.csail.mit.edu/6.S081/2021/labs/syscall.html)
-
-源码地址：
+Lab源码：[momo/MIT-6S081/syscall - Gitee.com](https://gitee.com/Eleutheria666/mit-6s081/tree/syscall/)
 
 ## 1 System call tracing
 

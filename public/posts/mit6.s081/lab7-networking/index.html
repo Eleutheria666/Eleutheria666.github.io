@@ -5,9 +5,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Lab7: Networking | momo blog</title>
+<title>Lab7: networking | momo blog</title>
 <meta name="keywords" content="OS">
-<meta name="description" content="Lab7: Networking - momo blog">
+<meta name="description" content="Lab链接：Lab: networking
+Lab源码：momo/MIT-6S081/net - Gitee.com
+network&#x2b55; 题目 完成一个网卡驱动程序中传输网络包处理程序e1000_transmit()和接受网络包处理程序e1000_recv()
+思路 传输数据包程序e1000_transmit()
+在内存开辟一个暂存待发送数据包的缓冲区，struct tx_desc中的addr字段指向内核将待发送数据包写入缓冲区的地址 维护一个struct tx_desc的环状数组 接受网络包处理程序e1000_recv()
+在内存开辟一个暂存接收到的数据包的缓冲区，struct rx_desc中的addr字段指向E1000将接受到的数据包写入缓冲区的地址 维护一个struct rx_desc的环状数组 ">
 <meta name="author" content="">
 <link rel="canonical" href="http://localhost:1313/posts/mit6.s081/lab7-networking/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.8f541c169a12d0d6bb704527bb78f6481fb4f5a39b7171fc16fab8c03ae6b1bd.css" integrity="sha256-j1QcFpoS0Na7cEUnu3j2SB&#43;09aObcXH8Fvq4wDrmsb0=" rel="preload stylesheet" as="style">
@@ -58,19 +63,29 @@
 </noscript>
   
 
-<meta property="og:title" content="Lab7: Networking" />
-<meta property="og:description" content="" />
+<meta property="og:title" content="Lab7: networking" />
+<meta property="og:description" content="Lab链接：Lab: networking
+Lab源码：momo/MIT-6S081/net - Gitee.com
+network&#x2b55; 题目 完成一个网卡驱动程序中传输网络包处理程序e1000_transmit()和接受网络包处理程序e1000_recv()
+思路 传输数据包程序e1000_transmit()
+在内存开辟一个暂存待发送数据包的缓冲区，struct tx_desc中的addr字段指向内核将待发送数据包写入缓冲区的地址 维护一个struct tx_desc的环状数组 接受网络包处理程序e1000_recv()
+在内存开辟一个暂存接收到的数据包的缓冲区，struct rx_desc中的addr字段指向E1000将接受到的数据包写入缓冲区的地址 维护一个struct rx_desc的环状数组 " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://localhost:1313/posts/mit6.s081/lab7-networking/" />
 <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png" />
 <meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2024-08-17T00:00:00+00:00" />
-<meta property="article:modified_time" content="2024-08-17T00:00:00+00:00" /><meta property="og:site_name" content="momo blog" />
+
+<meta property="og:site_name" content="momo blog" />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png" />
-<meta name="twitter:title" content="Lab7: Networking"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:title" content="Lab7: networking"/>
+<meta name="twitter:description" content="Lab链接：Lab: networking
+Lab源码：momo/MIT-6S081/net - Gitee.com
+network&#x2b55; 题目 完成一个网卡驱动程序中传输网络包处理程序e1000_transmit()和接受网络包处理程序e1000_recv()
+思路 传输数据包程序e1000_transmit()
+在内存开辟一个暂存待发送数据包的缓冲区，struct tx_desc中的addr字段指向内核将待发送数据包写入缓冲区的地址 维护一个struct tx_desc的环状数组 接受网络包处理程序e1000_recv()
+在内存开辟一个暂存接收到的数据包的缓冲区，struct rx_desc中的addr字段指向E1000将接受到的数据包写入缓冲区的地址 维护一个struct rx_desc的环状数组 "/>
 
 
 <script type="application/ld+json">
@@ -93,7 +108,7 @@
     {
       "@type": "ListItem",
       "position":  3 ,
-      "name": "Lab7: Networking",
+      "name": "Lab7: networking",
       "item": "http://localhost:1313/posts/mit6.s081/lab7-networking/"
     }
   ]
@@ -103,17 +118,17 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Lab7: Networking",
-  "name": "Lab7: Networking",
-  "description": "",
+  "headline": "Lab7: networking",
+  "name": "Lab7: networking",
+  "description": "Lab链接：Lab: networking\nLab源码：momo/MIT-6S081/net - Gitee.com\nnetwork\u0026#x2b55; 题目 完成一个网卡驱动程序中传输网络包处理程序e1000_transmit()和接受网络包处理程序e1000_recv()\n思路 传输数据包程序e1000_transmit()\n在内存开辟一个暂存待发送数据包的缓冲区，struct tx_desc中的addr字段指向内核将待发送数据包写入缓冲区的地址 维护一个struct tx_desc的环状数组 接受网络包处理程序e1000_recv()\n在内存开辟一个暂存接收到的数据包的缓冲区，struct rx_desc中的addr字段指向E1000将接受到的数据包写入缓冲区的地址 维护一个struct rx_desc的环状数组 ",
   "keywords": [
     "OS"
   ],
-  "articleBody": "",
-  "wordCount" : "0",
+  "articleBody": "Lab链接：Lab: networking\nLab源码：momo/MIT-6S081/net - Gitee.com\nnetwork⭕ 题目 完成一个网卡驱动程序中传输网络包处理程序e1000_transmit()和接受网络包处理程序e1000_recv()\n思路 传输数据包程序e1000_transmit()\n在内存开辟一个暂存待发送数据包的缓冲区，struct tx_desc中的addr字段指向内核将待发送数据包写入缓冲区的地址 维护一个struct tx_desc的环状数组 接受网络包处理程序e1000_recv()\n在内存开辟一个暂存接收到的数据包的缓冲区，struct rx_desc中的addr字段指向E1000将接受到的数据包写入缓冲区的地址 维护一个struct rx_desc的环状数组 ",
+  "wordCount" : "19",
   "inLanguage": "en",
-  "image": "http://localhost:1313/images/papermod-cover.png","datePublished": "2024-08-17T00:00:00Z",
-  "dateModified": "2024-08-17T00:00:00Z",
+  "image": "http://localhost:1313/images/papermod-cover.png","datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "http://localhost:1313/posts/mit6.s081/lab7-networking/"
@@ -199,27 +214,62 @@
   <header class="post-header">
     <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/mit6.s081/">MIT6.S081-Lab</a></div>
     <h1 class="post-title entry-hint-parent">
-      Lab7: Networking
+      Lab7: networking
     </h1>
-    <div class="post-meta"><span title='2024-08-17 00:00:00 +0000 UTC'>August 17, 2024</span>&nbsp;·&nbsp;0 min&nbsp;·&nbsp;0 words
+    <div class="post-meta">1 min&nbsp;·&nbsp;19 words
 
 </div>
-  </header> 
+  </header> <div class="toc">
+    <details  open>
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#networko" aria-label="network&#x2b55;">network&#x2b55;</a><ul>
+                        
+                <li>
+                    <a href="#%e9%a2%98%e7%9b%ae" aria-label="题目">题目</a></li>
+                <li>
+                    <a href="#%e6%80%9d%e8%b7%af" aria-label="思路">思路</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>Lab链接：<a href="https://pdos.csail.mit.edu/6.S081/2021/labs/net.html">Lab: networking</a></p>
+<p>Lab源码：<a href="https://gitee.com/Eleutheria666/mit-6s081/tree/net/">momo/MIT-6S081/net - Gitee.com</a></p>
+<h2 id="networko">network&#x2b55;<a hidden class="anchor" aria-hidden="true" href="#networko">#</a></h2>
+<h3 id="题目">题目<a hidden class="anchor" aria-hidden="true" href="#题目">#</a></h3>
+<p>完成一个网卡驱动程序中传输网络包处理程序<code>e1000_transmit()</code>和接受网络包处理程序<code>e1000_recv()</code></p>
+<h3 id="思路">思路<a hidden class="anchor" aria-hidden="true" href="#思路">#</a></h3>
+<p>传输数据包程序<code>e1000_transmit()</code></p>
+<ul>
+<li>在内存开辟一个暂存待发送数据包的缓冲区，<code>struct tx_desc</code>中的addr字段指向内核将待发送数据包写入缓冲区的地址</li>
+<li>维护一个<code>struct tx_desc</code>的环状数组</li>
+</ul>
+<p>接受网络包处理程序<code>e1000_recv()</code></p>
+<ul>
+<li>在内存开辟一个暂存接收到的数据包的缓冲区，<code>struct rx_desc</code>中的addr字段指向E1000将接受到的数据包写入缓冲区的地址</li>
+<li>维护一个<code>struct rx_desc</code>的环状数组</li>
+</ul>
+
+
+  </div>
 
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="http://localhost:1313/tags/os/">OS</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="http://localhost:1313/posts/mit6.s081/lab8-file-system/">
+  <a class="prev" href="http://localhost:1313/posts/hugo/">
     <span class="title">« Prev</span>
     <br>
-    <span>Lab9: File System</span>
-  </a>
-  <a class="next" href="http://localhost:1313/posts/mit6.s081/lab4-trap/">
-    <span class="title">Next »</span>
-    <br>
-    <span>Lab4: Trap</span>
+    <span>hugo</span>
   </a>
 </nav>
 
